@@ -2,8 +2,9 @@
 
 import { useState, useMemo } from 'react'
 import { experiences } from '@/data/experience'
-import { Timeline } from './Timeline'
+import { Timeline, instId } from './Timeline'
 import { TimelineScrubber } from './TimelineScrubber'
+import { YearNav } from '@/components/ui/YearNav'
 
 const MIN_YEAR = 2015
 const MAX_YEAR = 2026
@@ -37,8 +38,22 @@ export function ExperienceView() {
     })
   }, [activeYear])
 
+  // Year nav items in visual scroll order: post-sec → secondary → primary
+  const yearNavItems = useMemo(() => {
+    const ordered = [
+      ...filtered.filter(e => e.level === 'post-secondary'),
+      ...filtered.filter(e => e.level === 'secondary'),
+      ...filtered.filter(e => e.level === 'primary'),
+    ]
+    return ordered.map(inst => ({
+      year: inst.dateStart.match(/\d{4}/)?.[0] ?? inst.dateStart,
+      id: instId(inst.name),
+    }))
+  }, [filtered])
+
   return (
     <>
+      <YearNav items={yearNavItems} />
       <TimelineScrubber
         value={scrubValue}
         activeYear={activeYear}

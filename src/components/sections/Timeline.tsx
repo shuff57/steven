@@ -48,12 +48,17 @@ function ExpandableCourse({ course }: { course: Course }) {
   )
 }
 
+export function instId(name: string) {
+  return `inst-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
+}
+
 function TimelineItem({ institution }: { institution: Institution }) {
+  const id = instId(institution.name)
   const isCurrent = institution.status === 'current'
   const dateRange = `${institution.dateStart} – ${institution.dateEnd || 'Present'}`
   
   return (
-    <div className="relative pl-8 pb-12 last:pb-0 group">
+    <div id={id} className="relative pl-8 pb-12 last:pb-0 group">
       {/* Timeline Line */}
       <div 
         className="absolute left-[3px] top-2 bottom-0 w-[2px]"

@@ -5,6 +5,12 @@ import { Project } from '@/data/projects'
 import Link from 'next/link'
 import { ScrollReveal } from '@/components/animations/ScrollReveal'
 import { AnimatePresence, m } from 'framer-motion'
+import { YearNav } from '@/components/ui/YearNav'
+
+const PROJECT_YEAR_NAV = [
+  { year: '2026', id: 'section-tools' },
+  { year: '2022', id: 'section-achievements' },
+]
 
 interface ProjectGridProps {
   projects: Project[]
@@ -65,6 +71,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
 
   return (
     <section className="py-20 px-4 md:px-8 max-w-7xl mx-auto">
+      <YearNav items={PROJECT_YEAR_NAV} />
       <ScrollReveal animation="slide-up">
         <div className="mb-16 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 font-display">
@@ -77,7 +84,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
       </ScrollReveal>
 
       {/* Section 1: Tools & Software */}
-      <div className="mb-20">
+      <div id="section-tools" className="mb-20">
         <ScrollReveal animation="fade-in">
           <h2 className="text-3xl font-bold mb-8 font-display border-b border-[var(--color-border)] pb-4 inline-block">
             Tools & Software
@@ -211,7 +218,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
       </div>
 
       {/* Section 2: Achievements & Initiatives */}
-      <div>
+      <div id="section-achievements">
         <ScrollReveal animation="fade-in">
           <h2 className="text-3xl font-bold mb-8 font-display border-b border-[var(--color-border)] pb-4 inline-block">
             Achievements & Initiatives

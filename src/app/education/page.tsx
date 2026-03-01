@@ -1,8 +1,14 @@
 import { ScrollReveal } from '@/components/animations/ScrollReveal'
-import { education } from '@/data/education';
-import { profile } from '@/data/profile';
-
+import { education } from '@/data/education'
+import { profile } from '@/data/profile'
 import { TrigCurve } from '@/components/math-viz/TrigCurve'
+import { YearNav } from '@/components/ui/YearNav'
+
+const EDUCATION_YEAR_NAV = [
+  { year: 2015, id: 'section-degrees' },
+  { year: 2021, id: 'section-thesis' },
+  { year: 2023, id: 'section-credentials' },
+]
 export default function EducationPage() {
   return (
     <main className="min-h-screen bg-[var(--color-bg-primary)] text-[var(--color-text-primary)] font-sans selection:bg-[var(--color-accent-muted)] selection:text-white pb-20">
@@ -20,9 +26,12 @@ export default function EducationPage() {
           </div>
         </ScrollReveal>
 
+        {/* YearNav: fixed left side */}
+        <YearNav items={EDUCATION_YEAR_NAV} />
+
         {/* Degrees */}
         <ScrollReveal animation="stagger" staggerSelector=".chalk-card">
-          <section className="mb-16">
+          <section id="section-degrees" className="mb-16">
             <h2 className="text-3xl font-bold mb-8 font-display chalk-underline decoration-[var(--color-accent)]">Degrees</h2>
             <div className="grid gap-6">
               {education.degrees.map((degree, index) => (
@@ -48,7 +57,7 @@ export default function EducationPage() {
         {/* Thesis Highlight - Only show if thesis exists */}
         {education.thesis && (
           <ScrollReveal animation="scale-in" delay={0.1}>
-            <section className="mb-16">
+          <section id="section-thesis" className="mb-16">
                <div className="chalk-card border-l-4 border-l-[var(--color-accent)] p-8 md:p-10 relative overflow-hidden group">
                   {/* Background icon for decoration */}
                   <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none" aria-hidden="true">
@@ -92,7 +101,7 @@ export default function EducationPage() {
 
         {/* Credentials */}
         <ScrollReveal animation="fade-in" delay={0.2}>
-          <section className="mb-20">
+          <section id="section-credentials" className="mb-20">
             <h2 className="text-3xl font-bold mb-8 font-display chalk-underline decoration-[var(--color-accent)]">Credentials</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {education.credentials.map((cred, index) => (
