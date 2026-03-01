@@ -1,0 +1,59 @@
+/* Graph paper background pattern - CSS only, no images */
+.graph-paper-bg {
+  background-image:
+    linear-gradient(rgba(45, 212, 191, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(45, 212, 191, 0.05) 1px, transparent 1px);
+  background-size: 40px 40px;
+  background-position: -1px -1px;
+}
+
+/* Subtle graph paper variant (lighter) */
+.graph-paper-subtle {
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+/* Chalk-style dashed divider */
+.chalk-divider {
+  border: none;
+  border-top: 2px dashed rgba(255, 255, 255, 0.2);
+  margin: 2rem 0;
+}
+
+/* Chalk underline for headings */
+.chalk-underline {
+  text-decoration: underline;
+  text-decoration-style: wavy;
+  text-decoration-color: var(--color-accent);
+  text-underline-offset: 4px;
+}
+
+/* Accent gradient text */
+.accent-gradient {
+  background: linear-gradient(135deg, #2dd4bf, #0ea5e9);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Card base style */
+.chalk-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-card-pad);
+  transition: box-shadow 0.3s, border-color 0.3s;
+}
+
+.chalk-card:hover {
+  border-color: rgba(45, 212, 191, 0.3);
+  box-shadow: var(--shadow-card-hover);
+}
+
+/* Status badge styles */
+.status-active { background-color: rgba(45, 212, 191, 0.15); color: #2dd4bf; }
+.status-progress { background-color: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+.status-concept { background-color: rgba(107, 114, 128, 0.15); color: #9ca3af; }
+.status-completed { background-color: rgba(16, 185, 129, 0.15); color: #10b981; }
