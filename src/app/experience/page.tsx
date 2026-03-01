@@ -1,6 +1,5 @@
-import { experiences } from '@/data/experience'
-import { Timeline } from '@/components/sections/Timeline'
+import { ExperienceView } from '@/components/sections/ExperienceView'
 
 export default function ExperiencePage() {
-  return <Timeline experiences={experiences} />
+  return <ExperienceView />
 }

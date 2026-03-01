@@ -195,6 +195,13 @@ export function Timeline({ experiences }: { experiences: Institution[] }) {
             </div>
           </section>
         )}
+
+        {postSecondary.length === 0 && secondary.length === 0 && primary.length === 0 && (
+          <div className="text-center py-20" style={{ color: 'var(--color-text-muted)' }}>
+            <p className="text-4xl mb-4" aria-hidden="true">∅</p>
+            <p className="text-sm">No teaching positions in that year.</p>
+          </div>
+        )}
       </div>
     </div>
   )
