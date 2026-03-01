@@ -1,36 +1,55 @@
-import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
-import "./globals.css";
+import type { Metadata } from 'next'
+import { Inter, Crimson_Pro } from 'next/font/google'
+import './globals.css'
+import { LenisProvider } from '@/lib/lenis'
+import { Navigation } from '@/components/ui/Navigation'
+import { Footer } from '@/components/ui/Footer'
+import { PageTransition } from '@/components/ui/PageTransition'
+
 
 const inter = Inter({
-  variable: "--font-sans",
-  subsets: ["latin"],
-  display: "swap",
-});
+  variable: '--font-sans',
+  subsets: ['latin'],
+  display: 'swap',
+})
 
-const playfair = Playfair_Display({
-  variable: "--font-display",
-  subsets: ["latin"],
-  display: "swap",
-});
+const crimsonPro = Crimson_Pro({
+  variable: '--font-display',
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+})
 
 export const metadata: Metadata = {
-  title: "Interactive CV",
-  description: "A chalkboard-themed interactive CV",
-};
+  title: 'Steven Huff | Math Educator & Developer',
+  description:
+    'Interactive CV for Steven Huff — math educator, CS teacher, curriculum developer, and tool builder at Pleasant Valley High School and Butte College.',
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${inter.variable} ${playfair.variable} antialiased`}
-      >
-        {children}
+      <body className={`${inter.variable} ${crimsonPro.variable} antialiased`}>
+        {/* Skip to main content — keyboard accessibility */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[var(--color-accent)] focus:text-[var(--color-bg-primary)] focus:font-bold focus:rounded focus:no-underline"
+        >
+          Skip to main content
+        </a>
+        <LenisProvider>
+          <Navigation />
+          <main id="main-content">
+            <PageTransition>{children}</PageTransition>
+          </main>
+          <Footer />
+        </LenisProvider>
       </body>
     </html>
-  );
+  )
 }
