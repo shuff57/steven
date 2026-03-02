@@ -1,5 +1,4 @@
 import { ScrollReveal } from '@/components/animations/ScrollReveal'
-import { conferences } from '@/data/conferences';
 import { profile } from '@/data/profile';
 
 export default function ContactPage() {
@@ -55,46 +54,7 @@ export default function ContactPage() {
         </ScrollReveal>
       </section>
 
-      {/* Professional Development Section */}
-      <section id="section-conferences" className="px-6 py-20 max-w-5xl mx-auto border-t border-[var(--color-border)]">
-        <ScrollReveal animation="fade-in">
-          <div className="mb-12">
-            <h2 className="text-3xl font-bold mb-2 font-display text-[var(--color-text-primary)]">
-              Conferences & Professional Development
-            </h2>
-            <p className="text-[var(--color-text-muted)]">
-              Workshops, trainings, and conferences attended
-            </p>
-          </div>
-        </ScrollReveal>
 
-        <ScrollReveal animation="stagger" staggerSelector=".flex.flex-col">
-          <div className="grid gap-x-12 gap-y-12 md:grid-cols-2">
-            {conferences.map((item, index) => (
-              <div key={index} className="flex flex-col">
-                <div className="flex justify-between items-start gap-4 mb-2">
-                  <h3 className="font-medium text-[var(--color-text-primary)] text-lg leading-tight">
-                    {item.title}
-                  </h3>
-                  {item.date && (
-                    <span className="text-sm text-[var(--color-text-muted)] whitespace-nowrap shrink-0 mt-0.5">
-                      {item.date}
-                    </span>
-                  )}
-                </div>
-                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-1">
-                  {item.description}
-                </p>
-                {item.location && (
-                  <p className="text-xs text-[var(--color-text-muted)] italic">
-                    {item.location}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-        </ScrollReveal>
-      </section>
     </main>
   );
 }
