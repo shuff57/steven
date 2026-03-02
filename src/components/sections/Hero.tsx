@@ -1,54 +1,53 @@
 'use client'
-import { useRef, useState, useEffect } from 'react'
+import { useRef } from 'react'
 import { gsap } from '@/lib/gsapConfig'
 import { useGSAP } from '@gsap/react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { Squares } from '@/components/animations'
 import RotatingText from '@/components/ui/RotatingText'
-import { Folder } from '@/components/ui/Folder'
+import PixelTransition from '@/components/ui/PixelTransition'
 
-const heroFolders = [
+const statCards = [
   {
     value: '10+',
     label: 'Years Teaching',
-    items: [
+    links: [
       { title: 'Post-Secondary', href: '/experience#section-post-secondary' },
       { title: 'Secondary', href: '/experience#section-secondary' },
       { title: 'Elementary', href: '/experience#section-elementary' },
     ],
   },
   {
-    value: '10+',
-    label: 'Tools Built',
-    items: [
-      { title: 'Tools & Software', href: '/projects#section-tools' },
-      { title: 'Achievements', href: '/projects#section-achievements' },
+    value: '20+',
+    label: 'Courses Taught',
+    links: [
+      { title: 'Browse Catalog', href: '/courses' },
     ],
   },
   {
     value: '$300K',
     label: 'Grant Awarded',
-    items: [
+    links: [
       { title: 'Degrees & Credentials', href: '/education#section-degrees' },
       { title: "Master's Thesis", href: '/education#section-thesis' },
       { title: 'Interests', href: '/education#section-interests' },
     ],
   },
   {
-    value: '35+',
-    label: 'Skills',
-    items: [
-      { title: 'Languages & Software', href: '/skills#section-languages' },
-      { title: 'Systems & Hardware', href: '/skills#section-lms' },
-      { title: 'Courses I Can Teach', href: '/skills#section-teaching' },
+    value: '10+',
+    label: 'Tools Built',
+    links: [
+      { title: 'Tools & Software', href: '/projects#section-tools' },
+      { title: 'Achievements', href: '/projects#section-achievements' },
     ],
   },
   {
-    value: '20+',
-    label: 'Courses Taught',
-    items: [
-      { title: 'Browse Catalog', href: '/courses' },
+    value: '35+',
+    label: 'Skills',
+    links: [
+      { title: 'Languages & Software', href: '/skills#section-languages' },
+      { title: 'Systems & Hardware', href: '/skills#section-lms' },
+      { title: 'Courses I Can Teach', href: '/skills#section-teaching' },
     ],
   },
 ]
@@ -59,99 +58,33 @@ export function Hero() {
   const headingRef = useRef<HTMLHeadingElement>(null)
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const taglineRef = useRef<HTMLParagraphElement>(null)
-  const folderGridRef = useRef<HTMLDivElement>(null)
+  const statsRef = useRef<HTMLDivElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
 
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
-  const router = useRouter()
-
   useGSAP(() => {
-    // Respect prefers-reduced-motion
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (prefersReducedMotion) return
 
-    const tl = gsap.timeline({ delay: 0.35 }) // Start after PageTransition fade-in completes
+    const tl = gsap.timeline({ delay: 0.35 })
 
-    // Σ watermark: scale up and fade in
-    tl.fromTo(
-      watermarkRef.current,
-      { opacity: 0, scale: 0.8 },
-      { opacity: 0.06, scale: 1, duration: 1.2, ease: 'power3.out' },
-      0
-    )
-
-    // Name: slide up from below
-    tl.fromTo(
-      headingRef.current,
-      { opacity: 0, y: 40 },
-      { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' },
-      0.1
-    )
-
-    // Subtitle (roles): fade in
-    tl.fromTo(
-      subtitleRef.current,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
-      0.3
-    )
-
-    // Tagline: fade in
-    tl.fromTo(
-      taglineRef.current,
-      { opacity: 0, y: 15 },
-      { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
-      0.45
-    )
-
-    // Folder grid: fade + slide up as a unit
-    tl.fromTo(
-      folderGridRef.current,
-      { opacity: 0, y: 25 },
-      { opacity: 1, y: 0, duration: 0.55, ease: 'back.out(1.4)' },
-      0.6
-    )
-
-    // CTA buttons: slide up as a unit
-    tl.fromTo(
-      ctaRef.current,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' },
-      0.85
-    )
+    tl.fromTo(watermarkRef.current, { opacity: 0, scale: 0.8 }, { opacity: 0.06, scale: 1, duration: 1.2, ease: 'power3.out' }, 0)
+    tl.fromTo(headingRef.current, { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 0.1)
+    tl.fromTo(subtitleRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.3)
+    tl.fromTo(taglineRef.current, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.45)
+    tl.fromTo(statsRef.current, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.55, ease: 'back.out(1.4)' }, 0.6)
+    tl.fromTo(ctaRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.85)
   }, { scope: containerRef })
 
-  useEffect(() => {
-    function handleClickOutside(e: MouseEvent) {
-      if (folderGridRef.current && !folderGridRef.current.contains(e.target as Node)) {
-        setOpenIndex(null)
-      }
-    }
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
-  }, [])
-
   return (
-    <section 
+    <section
       ref={containerRef}
       className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden py-24 px-6"
     >
-      {/* Animated grid background */}
       <div className="absolute inset-0" aria-hidden="true">
-        <Squares
-          speed={0.1}
-          squareSize={36}
-          direction="diagonal"
-          borderColor="rgba(240, 237, 232, 0.1)"
-          hoverFillColor="rgba(94, 206, 195, 0.15)"
-        />
+        <Squares speed={0.1} squareSize={36} direction="diagonal" borderColor="rgba(240, 237, 232, 0.1)" hoverFillColor="rgba(94, 206, 195, 0.15)" />
       </div>
 
-      {/* Decorative watermark — large sigma symbol */}
-      <div
-        className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
-        aria-hidden="true"
-      >
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none" aria-hidden="true">
         <span
           ref={watermarkRef}
           className="text-[14rem] sm:text-[20rem] md:text-[30rem] lg:text-[40rem] leading-none"
@@ -159,21 +92,14 @@ export function Hero() {
         >
           Σ
         </span>
-
       </div>
 
-      {/* Content */}
       <div className="relative z-10 w-full max-w-5xl mx-auto flex flex-col items-center text-center space-y-12">
-        {/* Hero header */}
         <div className="space-y-6">
           <h1
             ref={headingRef}
-className="text-5xl md:text-7xl font-bold tracking-tight"
-style={{
-fontFamily: 'var(--font-display)',
-              color: 'var(--color-text-primary)',
-              opacity: 0,
-            }}
+            className="text-5xl md:text-7xl font-bold tracking-tight"
+            style={{ fontFamily: 'var(--font-display)', color: 'var(--color-text-primary)', opacity: 0 }}
           >
             Steven Huff
           </h1>
@@ -202,49 +128,53 @@ fontFamily: 'var(--font-display)',
             style={{ color: 'var(--color-text-secondary)', opacity: 0 }}
           >
             Dedicated to building bridges between abstract mathematics and student
-            intuition&nbsp;&mdash; through innovative curriculum, technology, and
+            intuition — through innovative curriculum, technology, and
             hands-on learning at the high school and college level.
           </p>
         </div>
 
-        {/* Folder navigation grid */}
-        <div
-          ref={folderGridRef}
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 w-full overflow-visible opacity-0"
-        >
-          {heroFolders.map((folder, idx) => {
-            const isOpen = openIndex === idx
-            const paperItems = folder.items.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className="text-[10px] font-medium p-1 w-full h-full flex items-center justify-center text-center leading-tight hover:opacity-80 transition-opacity"
-                style={{ color: 'var(--color-text-primary)' }}
-                onClick={(e) => {
-                  e.stopPropagation()
-                  setOpenIndex(null)
-                }}
-              >
-                {item.title}
-              </Link>
-            ))
-            return (
-              <div key={folder.label} className="flex items-center justify-center">
-                <Folder
-                  color="#5ECEC3"
-                  size={1}
-                  label={`${folder.value}\n${folder.label}`}
-                  items={paperItems}
-                  open={isOpen}
-                  onToggle={() => setOpenIndex(isOpen ? null : idx)}
-                  onPaperClick={(i) => {
-                    router.push(folder.items[i].href)
-                    setOpenIndex(null)
-                  }}
-                />
-              </div>
-            )
-          })}
+        {/* Key stats */}
+        <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 w-full opacity-0">
+          {statCards.map((stat) => (
+            <PixelTransition
+              key={stat.label}
+              height={150}
+              ariaLabel={`${stat.value} ${stat.label}`}
+              firstContent={
+                <div className="chalk-card h-full flex flex-col items-center justify-center p-6 text-center">
+                  <span
+                    className="text-3xl md:text-4xl font-bold mb-1"
+                    style={{ fontFamily: 'var(--font-display)', color: 'var(--color-accent-warm)' }}
+                  >
+                    {stat.value}
+                  </span>
+                  <span
+                    className="text-xs md:text-sm uppercase tracking-wider"
+                    style={{ color: 'var(--color-text-muted)' }}
+                  >
+                    {stat.label}
+                  </span>
+                </div>
+              }
+              secondContent={
+                <div
+                  className="h-full flex flex-col items-center justify-center gap-2 p-4"
+                  style={{ background: 'var(--color-bg-secondary)', border: '1px solid rgba(94,206,195,0.4)' }}
+                >
+                  {stat.links.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className="text-sm font-medium text-center leading-tight hover:opacity-80 transition-opacity"
+                      style={{ color: 'var(--color-accent)' }}
+                    >
+                      {link.title}
+                    </Link>
+                  ))}
+                </div>
+              }
+            />
+          ))}
         </div>
 
         {/* Call to action */}
@@ -252,26 +182,17 @@ fontFamily: 'var(--font-display)',
           <Link
             href="/experience"
             className="px-8 py-3 rounded-md text-base font-semibold transition-all hover:scale-105 active:scale-95"
-            style={{
-              backgroundColor: 'var(--color-accent)',
-              color: 'var(--color-bg-primary)',
-              boxShadow: '0 0 15px rgba(94, 206, 195, 0.3)',
-            }}
+            style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-bg-primary)', boxShadow: '0 0 15px rgba(94, 206, 195, 0.3)' }}
           >
             View My Work
           </Link>
-
           <Link
             href="/projects"
             className="px-8 py-3 rounded-md text-base font-semibold border transition-all hover:bg-white/5"
-            style={{
-              borderColor: 'var(--color-accent)',
-              color: 'var(--color-accent)',
-            }}
+            style={{ borderColor: 'var(--color-accent)', color: 'var(--color-accent)' }}
           >
             See Projects
           </Link>
-
           <a
             href="/Curriculum%20Vitae.pdf"
             download
