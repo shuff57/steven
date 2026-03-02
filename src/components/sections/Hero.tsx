@@ -21,7 +21,7 @@ const statCards = [
     value: '20+',
     label: 'Courses Taught',
     links: [
-      { title: 'Browse Catalog', href: '/courses' },
+      { title: 'Browse Catalog', href: '/experience?view=catalog' },
     ],
   },
   {

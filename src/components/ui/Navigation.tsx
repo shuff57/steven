@@ -10,7 +10,7 @@ const navLinks = [
   { href: '/projects', label: 'Projects' },
   { href: '/education', label: 'Education' },
   { href: '/skills', label: 'Skills' },
-  { href: '/courses', label: 'Courses' },
+  { href: '/professional-development', label: 'Prof. Development' },
   { href: '/contact', label: 'Contact' },
 ]
 
