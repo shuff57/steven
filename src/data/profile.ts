@@ -1,7 +1,6 @@
 export interface Profile {
   name: string
   email: string
-  phone: string // NOTE: personal phone — Steven may want to remove for public site
   researchInterests: string[]
   teachingInterests: string[]
 }
@@ -9,7 +8,6 @@ export interface Profile {
 export const profile: Profile = {
   name: 'Steven Huff',
   email: 'shuff57@gmail.com',
-  phone: '(209)-986-0301', // NOTE: personal phone — Steven may want to remove for public site
   researchInterests: [
     'Student(s) use of tutoring/support services',
     'Problem-based learning',

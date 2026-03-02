@@ -30,14 +30,7 @@ export function Footer() {
               >
                 shuff57@gmail.com
               </a>
-              {/* Personal phone — Steven may want to remove for public site */}
-              <a
-                href="tel:+12099860301"
-                className="transition-opacity hover:opacity-70"
-                style={{ color: 'var(--color-text-muted)' }}
-              >
-                (209) 986-0301
-              </a>
+
             </div>
           </div>
 
