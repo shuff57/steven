@@ -54,6 +54,7 @@ export const projects: Project[] = [
     featured: true,
     externalUrl: 'https://rashio.pages.dev',
     repoUrl: 'https://github.com/shuff57',
+    iframeUrl: 'https://rashio.pages.dev/',
     type: 'tool',
   },
   {
