@@ -7,6 +7,7 @@ export interface FolderProps {
   size?: number;
   items?: React.ReactNode[];
   className?: string;
+  label?: string;
   onPaperClick?: (index: number) => void;
   open?: boolean;
   onToggle?: () => void;
@@ -34,6 +35,7 @@ export function Folder({
   size = 1, 
   items = [], 
   className = '',
+  label,
   onPaperClick,
   open: controlledOpen,
   onToggle
@@ -189,6 +191,18 @@ export function Folder({
               ...(open && { transform: 'skew(-15deg) scaleY(0.6)' })
             }}
           ></div>
+          {label && (
+            <div
+              className={`absolute z-50 inset-0 flex items-center justify-center pointer-events-none transition-opacity duration-300 ${open ? 'opacity-0' : 'opacity-100'}`}
+            >
+              <span
+                className="text-[9px] font-semibold text-center leading-tight px-1 select-none"
+                style={{ color: 'rgba(255,255,255,0.95)' }}
+              >
+                {label}
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </div>

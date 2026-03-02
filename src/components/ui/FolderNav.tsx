@@ -105,10 +105,11 @@ export function FolderNav() {
           ))
 
           return (
-            <div key={section.label} className="flex flex-col items-center">
+            <div key={section.label}>
               <Folder
                 color="#5ECEC3"
                 size={0.6}
+                label={section.label}
                 items={paperItems}
                 open={isOpen}
                 onToggle={() => setOpenIndex(isOpen ? null : idx)}
@@ -117,12 +118,6 @@ export function FolderNav() {
                   setOpenIndex(null)
                 }}
               />
-              <span
-                className="text-[9px] font-medium text-center mt-1 block whitespace-nowrap"
-                style={{ color: 'var(--color-text-muted)' }}
-              >
-                {section.label}
-              </span>
             </div>
           )
         })}
