@@ -11,6 +11,7 @@ export interface Project {
   featured: boolean
   externalUrl?: string   // live app / demo URL
   repoUrl?: string       // GitHub / source code URL
+  iframeUrl?: string     // embeddable preview URL
   type: 'tool' | 'initiative' | 'grant' | 'curriculum'
 }
 
@@ -65,6 +66,7 @@ export const projects: Project[] = [
     dateEnd: '2026',
     status: 'active',
     featured: true,
+    iframeUrl: 'https://shuff57.github.io/bookSHelf/',
     type: 'tool',
   },
   {
