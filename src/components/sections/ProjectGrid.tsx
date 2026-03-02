@@ -65,7 +65,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
       {/* Section 1: Tools & Software — pixel transition cards */}
       <div id="section-tools" className="mb-20">
         <ScrollReveal animation="fade-in">
-          <h2 className="text-3xl font-bold mb-8 font-display border-b border-[var(--color-border)] pb-4 inline-block">
+          <h2 className="text-3xl font-bold mb-8 font-display border-b border-[var(--color-border)] pb-4 text-center">
             Tools & Software
           </h2>
         </ScrollReveal>
@@ -169,7 +169,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
       {/* Section 2: Achievements & Initiatives — unchanged */}
       <div id="section-achievements">
         <ScrollReveal animation="fade-in">
-          <h2 className="text-3xl font-bold mb-8 font-display border-b border-[var(--color-border)] pb-4 inline-block">
+          <h2 className="text-3xl font-bold mb-8 font-display border-b border-[var(--color-border)] pb-4 text-center">
             Achievements & Initiatives
           </h2>
         </ScrollReveal>
