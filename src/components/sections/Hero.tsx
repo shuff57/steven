@@ -3,6 +3,7 @@ import { useRef } from 'react'
 import { gsap } from '@/lib/gsapConfig'
 import { useGSAP } from '@gsap/react'
 import Link from 'next/link'
+import { Squares } from '@/components/animations'
 
 const stats = [
   { value: '10+', label: 'Years Teaching' },
@@ -81,8 +82,19 @@ export function Hero() {
   return (
     <section 
       ref={containerRef}
-      className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden graph-paper-bg py-24 px-6"
+      className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden py-24 px-6"
     >
+      {/* Animated grid background */}
+      <div className="absolute inset-0" aria-hidden="true">
+        <Squares
+          speed={0.1}
+          squareSize={36}
+          direction="diagonal"
+          borderColor="rgba(240, 237, 232, 0.1)"
+          hoverFillColor="rgba(94, 206, 195, 0.15)"
+        />
+      </div>
+
       {/* Decorative watermark — large sigma symbol */}
       <div
         className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
