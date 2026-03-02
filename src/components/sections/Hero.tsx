@@ -27,7 +27,7 @@ export function Hero() {
 
     const tl = gsap.timeline({ delay: 0.35 }) // Start after PageTransition fade-in completes
 
-    // ∫ watermark: scale up and fade in
+    // Σ watermark: scale up and fade in
     tl.fromTo(
       watermarkRef.current,
       { opacity: 0, scale: 0.8 },
@@ -83,7 +83,7 @@ export function Hero() {
       ref={containerRef}
       className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden graph-paper-bg py-24 px-6"
     >
-      {/* Decorative watermark — large integral symbol */}
+      {/* Decorative watermark — large sigma symbol */}
       <div
         className="absolute inset-0 flex items-center justify-center pointer-events-none select-none"
         aria-hidden="true"
@@ -93,7 +93,7 @@ export function Hero() {
           className="text-[14rem] sm:text-[20rem] md:text-[30rem] lg:text-[40rem] leading-none"
           style={{ color: 'var(--color-accent)', fontFamily: 'serif', opacity: 0 }}
         >
-          ∫
+          Σ
         </span>
 
       </div>
