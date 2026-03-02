@@ -1,15 +1,80 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { Project } from '@/data/projects'
 import Link from 'next/link'
 import { ScrollReveal } from '@/components/animations/ScrollReveal'
-import { YearNav } from '@/components/ui/YearNav'
 import PixelTransition from '@/components/ui/PixelTransition'
 
-const PROJECT_TOC = [
-  { year: 'Tools & Software', id: 'section-tools' },
-  { year: 'Achievements & Initiatives', id: 'section-achievements' },
-]
+function ProjectTOC() {
+  const [activeId, setActiveId] = useState('section-tools')
+
+  useEffect(() => {
+    const ids = ['section-tools', 'section-achievements']
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.filter((e) => e.isIntersecting)
+        if (!visible.length) return
+        const topmost = visible.reduce((best, e) =>
+          Math.abs(e.boundingClientRect.top) < Math.abs(best.boundingClientRect.top) ? e : best
+        )
+        setActiveId(topmost.target.id)
+      },
+      { rootMargin: '-15% 0px -55% 0px', threshold: 0 }
+    )
+    ids.forEach((id) => {
+      const el = document.getElementById(id)
+      if (el) observer.observe(el)
+    })
+    return () => observer.disconnect()
+  }, [])
+
+  const items = [
+    { label: 'Tools & Software', id: 'section-tools' },
+    { label: 'Achievements & Initiatives', id: 'section-achievements' },
+  ]
+
+  return (
+    <nav className="fixed left-4 xl:left-8 top-1/2 -translate-y-1/2 z-30 hidden lg:block print:hidden">
+      <div
+        className="flex flex-col gap-1 p-2 rounded-xl"
+        style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+      >
+        {items.map((item) => {
+          const isActive = activeId === item.id
+          return (
+            <button
+              key={item.id}
+              onClick={() => {
+                document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                setActiveId(item.id)
+              }}
+              className="flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 cursor-pointer w-full border-none"
+              style={{ background: isActive ? 'rgba(94,206,195,0.15)' : 'transparent' }}
+            >
+              <span
+                className="block rounded-full flex-shrink-0 transition-all duration-300"
+                style={{
+                  width: isActive ? '10px' : '7px',
+                  height: isActive ? '10px' : '7px',
+                  background: isActive ? 'var(--color-accent)' : 'var(--color-text-muted)',
+                  boxShadow: isActive ? '0 0 8px var(--color-accent)' : 'none',
+                  opacity: isActive ? 1 : 0.5,
+                }}
+              />
+              <span
+                className="text-sm font-medium whitespace-nowrap transition-colors duration-200"
+                style={{ color: isActive ? 'var(--color-accent)' : 'var(--color-text-secondary)' }}
+              >
+                {item.label}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+    </nav>
+  )
+}
 
 interface ProjectGridProps {
   projects: Project[]
@@ -50,7 +115,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
 
   return (
     <section className="py-20 px-4 md:px-8 max-w-7xl mx-auto">
-      <YearNav items={PROJECT_TOC} alwaysShowLabels />
+      <ProjectTOC />
       <ScrollReveal animation="slide-up">
         <div className="mb-16 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 font-display">
