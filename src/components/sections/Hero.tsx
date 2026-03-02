@@ -1,17 +1,57 @@
 'use client'
-import { useRef } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { gsap } from '@/lib/gsapConfig'
 import { useGSAP } from '@gsap/react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Squares } from '@/components/animations'
 import RotatingText from '@/components/ui/RotatingText'
+import { Folder } from '@/components/ui/Folder'
 
-const stats = [
-  { value: '10+', label: 'Years Teaching' },
-  { value: '20+', label: 'Courses Taught' },
-  { value: '$300K', label: 'Grant Awarded' },
-  { value: '10+', label: 'Tools Built' },
-] as const
+const heroFolders = [
+  {
+    value: '10+',
+    label: 'Years Teaching',
+    items: [
+      { title: 'Post-Secondary', href: '/experience#section-post-secondary' },
+      { title: 'Secondary', href: '/experience#section-secondary' },
+      { title: 'Elementary', href: '/experience#section-elementary' },
+    ],
+  },
+  {
+    value: '10+',
+    label: 'Tools Built',
+    items: [
+      { title: 'Tools & Software', href: '/projects#section-tools' },
+      { title: 'Achievements', href: '/projects#section-achievements' },
+    ],
+  },
+  {
+    value: '$300K',
+    label: 'Grant Awarded',
+    items: [
+      { title: 'Degrees & Credentials', href: '/education#section-degrees' },
+      { title: "Master's Thesis", href: '/education#section-thesis' },
+      { title: 'Interests', href: '/education#section-interests' },
+    ],
+  },
+  {
+    value: '35+',
+    label: 'Skills',
+    items: [
+      { title: 'Languages & Software', href: '/skills#section-languages' },
+      { title: 'Systems & Hardware', href: '/skills#section-lms' },
+      { title: 'Courses I Can Teach', href: '/skills#section-teaching' },
+    ],
+  },
+  {
+    value: '20+',
+    label: 'Courses Taught',
+    items: [
+      { title: 'Browse Catalog', href: '/courses' },
+    ],
+  },
+]
 
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null)
@@ -19,8 +59,11 @@ export function Hero() {
   const headingRef = useRef<HTMLHeadingElement>(null)
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const taglineRef = useRef<HTMLParagraphElement>(null)
-  const statsRef = useRef<HTMLDivElement>(null)
+  const folderGridRef = useRef<HTMLDivElement>(null)
   const ctaRef = useRef<HTMLDivElement>(null)
+
+  const [openIndex, setOpenIndex] = useState<number | null>(null)
+  const router = useRouter()
 
   useGSAP(() => {
     // Respect prefers-reduced-motion
@@ -61,16 +104,14 @@ export function Hero() {
       0.45
     )
 
-    // Stats cards: stagger
-    // Stats grid: fade + slide up as a unit
+    // Folder grid: fade + slide up as a unit
     tl.fromTo(
-      statsRef.current,
+      folderGridRef.current,
       { opacity: 0, y: 25 },
       { opacity: 1, y: 0, duration: 0.55, ease: 'back.out(1.4)' },
       0.6
     )
 
-    // CTA buttons: slide up
     // CTA buttons: slide up as a unit
     tl.fromTo(
       ctaRef.current,
@@ -79,6 +120,16 @@ export function Hero() {
       0.85
     )
   }, { scope: containerRef })
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (folderGridRef.current && !folderGridRef.current.contains(e.target as Node)) {
+        setOpenIndex(null)
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   return (
     <section 
@@ -156,30 +207,44 @@ fontFamily: 'var(--font-display)',
           </p>
         </div>
 
-        {/* Key stats */}
-        <div ref={statsRef} className="grid grid-cols-2 md:grid-cols-4 gap-4 w-full opacity-0">
-          {stats.map((s) => (
-            <div
-              key={s.label}
-              className="chalk-card flex flex-col items-center justify-center p-6 text-center"
-            >
-              <span
-                className="text-3xl md:text-4xl font-bold mb-1"
-                style={{
-                  fontFamily: 'var(--font-display)',
-                  color: 'var(--color-accent-warm)',
+        {/* Folder navigation grid */}
+        <div
+          ref={folderGridRef}
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 w-full overflow-visible opacity-0"
+        >
+          {heroFolders.map((folder, idx) => {
+            const isOpen = openIndex === idx
+            const paperItems = folder.items.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="text-[10px] font-medium p-1 w-full h-full flex items-center justify-center text-center leading-tight hover:opacity-80 transition-opacity"
+                style={{ color: 'var(--color-text-primary)' }}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setOpenIndex(null)
                 }}
               >
-                {s.value}
-              </span>
-              <span
-                className="text-xs md:text-sm uppercase tracking-wider"
-                style={{ color: 'var(--color-text-muted)' }}
-              >
-                {s.label}
-              </span>
-            </div>
-          ))}
+                {item.title}
+              </Link>
+            ))
+            return (
+              <div key={folder.label} className="flex items-center justify-center">
+                <Folder
+                  color="#5ECEC3"
+                  size={1}
+                  label={`${folder.value}\n${folder.label}`}
+                  items={paperItems}
+                  open={isOpen}
+                  onToggle={() => setOpenIndex(isOpen ? null : idx)}
+                  onPaperClick={(i) => {
+                    router.push(folder.items[i].href)
+                    setOpenIndex(null)
+                  }}
+                />
+              </div>
+            )
+          })}
         </div>
 
         {/* Call to action */}
