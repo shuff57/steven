@@ -30,7 +30,7 @@ const LEVEL_FILTERS: Array<{ value: CourseLevel | 'all'; label: string }> = [
 ]
 
 const SUBJECT_COLORS: Record<CourseSubject, string> = {
-  math: 'rgba(94, 206, 195, 0.15)',
+  math: 'rgba(240, 192, 96, 0.15)',
   statistics: 'rgba(240, 208, 96, 0.15)',
   'computer-science': 'rgba(129, 140, 248, 0.15)',
   technology: 'rgba(251, 146, 60, 0.15)',
@@ -38,7 +38,7 @@ const SUBJECT_COLORS: Record<CourseSubject, string> = {
 }
 
 const SUBJECT_TEXT: Record<CourseSubject, string> = {
-  math: '#5ecec3',
+  math: '#f0c060',
   statistics: '#f0d060',
   'computer-science': '#818cf8',
   technology: '#fb923c',
@@ -237,7 +237,7 @@ export function CourseCatalog() {
                 secondContent={
                   <div
                     className="h-full flex flex-col p-4 overflow-hidden"
-                    style={{ background: 'var(--color-bg-secondary)', border: '1px solid rgba(94,206,195,0.4)' }}
+                    style={{ background: 'var(--color-bg-secondary)', border: '1px solid rgba(240,192,96,0.4)' }}
                   >
                     {hasDesc ? (
                       <div className="flex flex-col gap-2">

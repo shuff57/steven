@@ -81,7 +81,7 @@ export function Hero() {
       className="relative w-full min-h-screen flex flex-col items-center justify-center overflow-hidden py-24 px-6"
     >
       <div className="absolute inset-0" aria-hidden="true">
-        <Squares speed={0.1} squareSize={36} direction="diagonal" borderColor="rgba(240, 237, 232, 0.1)" hoverFillColor="rgba(94, 206, 195, 0.15)" />
+        <Squares speed={0.1} squareSize={36} direction="diagonal" borderColor="rgba(240, 237, 232, 0.1)" hoverFillColor="rgba(240, 192, 96, 0.15)" />
       </div>
 
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none" aria-hidden="true">
@@ -112,12 +112,15 @@ export function Hero() {
           >
             <RotatingText
               texts={['Math Educator', 'Innovator', 'CS Teacher', 'Trailblazer', 'Curriculum Developer', 'Problem Solver', 'Tool Builder', 'Change Maker']}
-              mainClassName="px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 md:py-2.5 justify-center rounded-full overflow-hidden bg-[#5ecec3]"
+              mainClassName="px-5 sm:px-6 md:px-7 py-2 sm:py-2.5 md:py-3 justify-center overflow-hidden bg-[#f0c060]"
+              style={{ borderRadius: '1.5rem', fontFamily: 'var(--font-handwritten)', fontSize: '1.35em' }}
+              elementLevelClassName="origin-bottom"
               staggerFrom="last"
-              initial={{ y: '100%', opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: '-120%', opacity: 0 }}
-              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              staggerDuration={0.025}
+              initial={{ y: '80%', opacity: 0, rotateZ: -8 }}
+              animate={{ y: 0, opacity: 1, rotateZ: 0 }}
+              exit={{ y: '-80%', opacity: 0, rotateZ: 8 }}
+              transition={{ type: 'spring', damping: 22, stiffness: 280 }}
               rotationInterval={3000}
             />
           </p>
@@ -144,7 +147,7 @@ export function Hero() {
                 <div className="chalk-card h-full flex flex-col items-center justify-center p-6 text-center">
                   <span
                     className="text-3xl md:text-4xl font-bold mb-1"
-                    style={{ fontFamily: 'var(--font-display)', color: 'var(--color-accent-warm)' }}
+                    style={{ fontFamily: 'var(--font-display)', color: 'var(--color-text-primary)' }}
                   >
                     {stat.value}
                   </span>
@@ -159,7 +162,7 @@ export function Hero() {
               secondContent={
                 <div
                   className="h-full flex flex-col items-center justify-center gap-2 p-4"
-                  style={{ background: 'var(--color-bg-secondary)', border: '1px solid rgba(94,206,195,0.4)' }}
+                  style={{ background: 'var(--color-bg-secondary)', border: '1px solid rgba(240,192,96,0.4)' }}
                 >
                   {stat.links.map((link) => (
                     <Link
@@ -182,7 +185,7 @@ export function Hero() {
           <Link
             href="/experience"
             className="px-8 py-3 rounded-md text-base font-semibold transition-all hover:scale-105 active:scale-95"
-            style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-bg-primary)', boxShadow: '0 0 15px rgba(94, 206, 195, 0.3)' }}
+            style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-bg-primary)', boxShadow: '0 0 15px rgba(240, 192, 96, 0.3)' }}
           >
             View My Work
           </Link>

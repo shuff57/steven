@@ -54,7 +54,7 @@ const REGION_DATA = [
     sublabel: 'within 3σ',
     min: -3,
     max: 3,
-    color: 'rgba(94, 206, 195, 0.12)',
+    color: 'rgba(240, 192, 96, 0.12)',
   },
   {
     id: '2sigma' as Region,
@@ -62,7 +62,7 @@ const REGION_DATA = [
     sublabel: 'within 2σ',
     min: -2,
     max: 2,
-    color: 'rgba(94, 206, 195, 0.22)',
+    color: 'rgba(240, 192, 96, 0.22)',
   },
   {
     id: '1sigma' as Region,
@@ -70,7 +70,7 @@ const REGION_DATA = [
     sublabel: 'within 1σ',
     min: -1,
     max: 1,
-    color: 'rgba(94, 206, 195, 0.40)',
+    color: 'rgba(240, 192, 96, 0.40)',
   },
 ]
 
@@ -91,7 +91,7 @@ export function NormalDist({ className }: { className?: string }) {
           <path
             key={r.id}
             d={areaPath(r.min, r.max)}
-            fill={hovered === null || hovered === r.id ? r.color : 'rgba(94,206,195,0.05)'}
+            fill={hovered === null || hovered === r.id ? r.color : 'rgba(240,192,96,0.05)'}
             style={{ transition: 'fill 0.25s ease', cursor: 'pointer' }}
             tabIndex={0}
             role="button"

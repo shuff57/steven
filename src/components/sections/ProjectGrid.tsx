@@ -50,7 +50,7 @@ function ProjectTOC() {
                 setActiveId(item.id)
               }}
               className="flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 cursor-pointer w-full border-none"
-              style={{ background: isActive ? 'rgba(94,206,195,0.15)' : 'transparent' }}
+              style={{ background: isActive ? 'rgba(240,192,96,0.15)' : 'transparent' }}
             >
               <span
                 className="block rounded-full flex-shrink-0 transition-all duration-300"
@@ -175,7 +175,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
                   secondContent={
                     <div
                       className="h-full flex flex-col p-6"
-                      style={{ background: 'var(--color-bg-secondary)', border: '1px solid rgba(94,206,195,0.4)' }}
+                      style={{ background: 'var(--color-bg-secondary)', border: '1px solid rgba(240,192,96,0.4)' }}
                     >
                       <div className="flex flex-col h-full gap-3">
                         <h3 className="text-base font-bold font-display text-[var(--color-text-primary)]">

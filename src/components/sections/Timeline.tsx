@@ -48,9 +48,9 @@ function CourseCard({ course }: { course: FlatCourse }) {
                 <span
                   className="text-[10px] font-bold px-1.5 py-0.5 rounded-full shrink-0"
                   style={{
-                    background: 'rgba(94,206,195,0.15)',
+                    background: 'rgba(240,192,96,0.15)',
                     color: 'var(--color-accent)',
-                    border: '1px solid rgba(94,206,195,0.3)',
+                    border: '1px solid rgba(240,192,96,0.3)',
                   }}
                 >
                   Current
@@ -72,7 +72,7 @@ function CourseCard({ course }: { course: FlatCourse }) {
       secondContent={
         <div
           className="h-full flex flex-col p-4 overflow-hidden"
-          style={{ background: 'var(--color-bg-secondary)', border: '1px solid rgba(94,206,195,0.4)' }}
+          style={{ background: 'var(--color-bg-secondary)', border: '1px solid rgba(240,192,96,0.4)' }}
         >
           <p className="text-xs font-semibold text-[var(--color-accent)] mb-2">
             {course.positionTitle}
@@ -132,7 +132,7 @@ export function Timeline({ experiences }: { experiences: Institution[] }) {
                   <h2 className="text-2xl font-display font-bold text-[var(--color-accent)] whitespace-nowrap">
                     {SECTION_LABELS[level]}
                   </h2>
-                  <div className="h-px bg-[rgba(94,206,195,0.3)] flex-1 max-w-xs" />
+                  <div className="h-px bg-[rgba(240,192,96,0.3)] flex-1 max-w-xs" />
                 </div>
               </ScrollReveal>
 

@@ -159,7 +159,7 @@ export default function EducationPage() {
                   {profile.teachingInterests.map((interest, index) => (
                     <span 
                       key={index} 
-                      className="px-4 py-2 text-sm bg-[var(--color-surface)] border border-[var(--color-border)] rounded-full text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-muted)] transition-all duration-300 cursor-default shadow-sm hover:shadow-[0_0_15px_rgba(94,206,195,0.1)]"
+                      className="px-4 py-2 text-sm bg-[var(--color-surface)] border border-[var(--color-border)] rounded-full text-[var(--color-text-secondary)] hover:text-[var(--color-accent)] hover:border-[var(--color-accent)] hover:bg-[var(--color-accent-muted)] transition-all duration-300 cursor-default shadow-sm hover:shadow-[0_0_15px_rgba(240,192,96,0.1)]"
                     >
                       {interest}
                     </span>

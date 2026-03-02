@@ -13,12 +13,12 @@
   --color-text-secondary: #a8b09e;
   --color-text-muted: #7a806e;
   
-  --color-accent: #5ecec3;
-  --color-accent-hover: #3db8ae;
-  --color-accent-muted: rgba(94, 206, 195, 0.15);
+  --color-accent: #f0c060;
+  --color-accent-hover: #d4a832;
+  --color-accent-muted: rgba(240, 192, 96, 0.15);
   --color-accent-warm: #f0d060;
   
-  --color-status-active: #5ecec3;
+  --color-status-active: #f0c060;
   --color-status-progress: #f59e0b;
   --color-status-concept: #6b7280;
   --color-status-completed: #10b981;
@@ -28,6 +28,7 @@
   /* Typography */
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
+  --font-handwritten: var(--font-handwritten);
   --font-mono: 'Courier New', monospace;
 
   --text-xs: 0.75rem;
@@ -56,7 +57,7 @@
   /* Shadows */
   --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.4);
   --shadow-card-hover: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 20px rgba(94, 206, 195, 0.2);
+  --shadow-glow: 0 0 20px rgba(240, 192, 96, 0.2);
 }
 
 :root {
@@ -88,7 +89,7 @@ a:hover {
 }
 
 ::selection {
-  background: rgba(94, 206, 195, 0.3);
+  background: rgba(240, 192, 96, 0.3);
   color: var(--color-text-primary);
 }
 
@@ -133,7 +134,7 @@ a:hover {
   border-radius: 50%;
   background: var(--color-text-primary);
   border: 2px solid var(--color-accent);
-  box-shadow: 0 0 6px rgba(94, 206, 195, 0.3);
+  box-shadow: 0 0 6px rgba(240, 192, 96, 0.3);
   cursor: grab;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
@@ -141,13 +142,13 @@ a:hover {
 .timeline-scrubber:hover::-webkit-slider-thumb,
 .timeline-scrubber:focus::-webkit-slider-thumb {
   transform: scale(1.3);
-  box-shadow: 0 0 10px rgba(94, 206, 195, 0.6);
+  box-shadow: 0 0 10px rgba(240, 192, 96, 0.6);
 }
 
 .timeline-scrubber:active::-webkit-slider-thumb {
   cursor: grabbing;
   transform: scale(1.1);
-  box-shadow: 0 0 14px rgba(94, 206, 195, 0.8);
+  box-shadow: 0 0 14px rgba(240, 192, 96, 0.8);
 }
 
 .timeline-scrubber::-moz-range-thumb {
@@ -156,7 +157,7 @@ a:hover {
   border-radius: 50%;
   background: var(--color-text-primary);
   border: 2px solid var(--color-accent);
-  box-shadow: 0 0 6px rgba(94, 206, 195, 0.3);
+  box-shadow: 0 0 6px rgba(240, 192, 96, 0.3);
   cursor: grab;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
@@ -200,7 +201,7 @@ a:hover {
     --color-text-secondary: #333333;
     --color-text-muted: #555555;
     --color-border: #cccccc;
-    --color-accent: #0d9488;
+    --color-accent: #b8860b;
   }
 
   /* Hide interactive/navigational elements */
