@@ -8,8 +8,9 @@ export interface FolderProps {
   items?: React.ReactNode[];
   className?: string;
   onPaperClick?: (index: number) => void;
+  open?: boolean;
+  onToggle?: () => void;
 }
-
 const darkenColor = (hex: string, percent: number): string => {
   let color = hex.startsWith('#') ? hex.slice(1) : hex;
   if (color.length === 3) {
@@ -33,12 +34,15 @@ export function Folder({
   size = 1, 
   items = [], 
   className = '',
-  onPaperClick 
+  onPaperClick,
+  open: controlledOpen,
+  onToggle
 }: FolderProps) {
   const maxItems = 3;
   const papers = items.slice(0, maxItems);
 
-  const [open, setOpen] = useState(false);
+  const [internalOpen, setInternalOpen] = useState(false);
+  const open = controlledOpen !== undefined ? controlledOpen : internalOpen;
   const [peeking, setPeeking] = useState(false);
   const [paperOffsets, setPaperOffsets] = useState<{ x: number; y: number }[]>(
     Array.from({ length: maxItems }, () => ({ x: 0, y: 0 }))
@@ -50,7 +54,10 @@ export function Folder({
   const paper3 = '#ffffff';
 
   const handleClick = () => {
-    setOpen((prev) => !prev);
+    if (controlledOpen === undefined) {
+      setInternalOpen((prev) => !prev);
+    }
+    onToggle?.();
     if (open) {
       setPaperOffsets(Array.from({ length: maxItems }, () => ({ x: 0, y: 0 })));
     }
