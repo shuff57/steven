@@ -2,7 +2,7 @@
 
 import type { Institution } from '@/data/experience'
 import { ScrollReveal } from '@/components/animations/ScrollReveal'
-import { FlipCard, FlipFront, FlipBack } from '@/components/ui/FlipCard'
+import PixelTransition from '@/components/ui/PixelTransition'
 
 type FlatCourse = {
   code: string
@@ -34,44 +34,55 @@ function flattenCourses(experiences: Institution[]): FlatCourse[] {
 
 function CourseCard({ course }: { course: FlatCourse }) {
   return (
-    <FlipCard height={200}>
-      <FlipFront>
-        <div>
-          <div className="flex items-start justify-between gap-2 mb-2">
-            <span className="font-mono text-xs font-bold text-[var(--color-accent)]">
-              {course.code}
-            </span>
-            {course.isCurrent && (
-              <span
-                className="text-[10px] font-bold px-1.5 py-0.5 rounded-full shrink-0"
-                style={{
-                  background: 'rgba(94,206,195,0.15)',
-                  color: 'var(--color-accent)',
-                  border: '1px solid rgba(94,206,195,0.3)',
-                }}
-              >
-                Current
+    <PixelTransition
+      height={200}
+      ariaLabel={`${course.code} - ${course.name}`}
+      firstContent={
+        <div className="chalk-card h-full flex flex-col justify-between p-4">
+          <div>
+            <div className="flex items-start justify-between gap-2 mb-2">
+              <span className="font-mono text-xs font-bold text-[var(--color-accent)]">
+                {course.code}
               </span>
-            )}
+              {course.isCurrent && (
+                <span
+                  className="text-[10px] font-bold px-1.5 py-0.5 rounded-full shrink-0"
+                  style={{
+                    background: 'rgba(94,206,195,0.15)',
+                    color: 'var(--color-accent)',
+                    border: '1px solid rgba(94,206,195,0.3)',
+                  }}
+                >
+                  Current
+                </span>
+              )}
+            </div>
+            <p className="text-sm font-semibold text-[var(--color-text-primary)] leading-snug mb-2">
+              {course.name}
+            </p>
+            <p className="text-xs text-[var(--color-text-muted)] leading-snug">
+              {course.institutionName}
+            </p>
+            <p className="text-xs text-[var(--color-text-muted)] font-mono mt-0.5">
+              {course.dateRange}
+            </p>
           </div>
-          <p className="text-sm font-semibold text-[var(--color-text-primary)] leading-snug mb-2">
-            {course.name}
-          </p>
-          <p className="text-xs text-[var(--color-text-muted)] leading-snug">
-            {course.institutionName}
-          </p>
-          <p className="text-xs text-[var(--color-text-muted)] font-mono mt-0.5">
-            {course.dateRange}
-          </p>
         </div>
-      </FlipFront>
-      <FlipBack>
-        <p className="text-xs font-semibold text-[var(--color-accent)] mb-2">
-          {course.positionTitle}
-        </p>
-        {course.description}
-      </FlipBack>
-    </FlipCard>
+      }
+      secondContent={
+        <div
+          className="h-full flex flex-col p-4 overflow-hidden"
+          style={{ background: 'var(--color-bg-secondary)', border: '1px solid rgba(94,206,195,0.4)' }}
+        >
+          <p className="text-xs font-semibold text-[var(--color-accent)] mb-2">
+            {course.positionTitle}
+          </p>
+          <div className="flex-1 overflow-y-auto text-sm text-[var(--color-text-secondary)] leading-relaxed pr-1">
+            {course.description}
+          </div>
+        </div>
+      }
+    />
   )
 }
 
@@ -80,6 +91,11 @@ const SECTION_LABELS: Record<Institution['level'], string> = {
   'secondary': 'Secondary',
   'primary': 'Elementary',
 }
+
+export function instId(name: string): string {
+  return `inst-${name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
+}
+
 
 export const SECTION_IDS: Record<Institution['level'], string> = {
   'post-secondary': 'section-post-secondary',
