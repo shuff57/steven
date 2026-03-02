@@ -71,14 +71,9 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
         </ScrollReveal>
 
         <ScrollReveal animation="stagger" staggerSelector=".flip-project-card">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 auto-rows-min">
+          <div className="grid grid-cols-1 max-w-2xl mx-auto gap-6 w-full">
             {tools.map((project) => (
-              <div
-                key={project.id}
-                className={`flip-project-card ${
-                  project.featured ? 'md:col-span-2 lg:col-span-2' : 'col-span-1'
-                }`}
-              >
+              <div key={project.id} className="flip-project-card">
                 <PixelTransition
                   height={260}
                   ariaLabel={project.title}
@@ -179,7 +174,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
           </h2>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 max-w-2xl mx-auto gap-6 w-full">
           {achievements.map((project, idx) => {
             const isGrant = project.id === 'golden-state-pathways-grant'
 
