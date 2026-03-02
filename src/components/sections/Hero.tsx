@@ -134,7 +134,7 @@ fontFamily: 'var(--font-display)',
             aria-label="Roles: Math Educator, CS Teacher, Curriculum Developer, Tool Builder"
           >
             <RotatingText
-              texts={['Math Educator', 'CS Teacher', 'Curriculum Developer', 'Tool Builder']}
+              texts={['Math Educator', 'Innovator', 'CS Teacher', 'Limit Pusher', 'Curriculum Developer', 'Problem Solver', 'Tool Builder', 'Change Maker']}
               mainClassName="px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 md:py-2.5 justify-center rounded-full overflow-hidden bg-[#5ecec3]"
               staggerFrom="last"
               initial={{ y: '100%', opacity: 0 }}
