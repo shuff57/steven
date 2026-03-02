@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, type ReactNode } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { experiences } from '@/data/experience'
 import type { Institution } from '@/data/experience'
+import { conferences } from '@/data/conferences'
 
 type FlatCourse = {
   code: string
@@ -102,9 +103,55 @@ function CourseCard({ course }: { course: FlatCourse }) {
   )
 }
 
+const PROF_DEV_ID = 'section-professional-development'
+
+function ConferenceCard({ item }: { item: typeof conferences[number] }) {
+  const [isExpanded, setIsExpanded] = useState(false)
+  const bodyRef = useRef<HTMLDivElement>(null)
+
+  return (
+    <div
+      className="chalk-card rounded-xl border border-[var(--color-border)] overflow-hidden"
+      onMouseEnter={() => setIsExpanded(true)}
+      onMouseLeave={() => setIsExpanded(false)}
+    >
+      <div className="px-5 py-4 flex justify-between items-start">
+        <div className="flex-1 min-w-0 pr-3">
+          <h3 className="text-lg font-bold font-display text-[var(--color-text-primary)] leading-snug">
+            {item.title}
+          </h3>
+          {item.location && (
+            <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{item.location}</p>
+          )}
+        </div>
+        {item.date && (
+          <span className="text-xs font-mono text-[var(--color-text-muted)] shrink-0 mt-0.5 whitespace-nowrap">
+            {item.date}
+          </span>
+        )}
+      </div>
+
+      <div
+        style={{
+          height: isExpanded ? `${bodyRef.current?.scrollHeight ?? 120}px` : '0px',
+          overflow: 'hidden',
+          transition: 'height 0.3s ease-in-out',
+        }}
+      >
+        <div ref={bodyRef} className="px-5 pb-5 border-t border-[var(--color-border)]">
+          <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-3">
+            {item.description}
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function ExperienceTOC() {
-  const ids = sortedExperiences.map(inst => getInstitutionId(inst.name))
-  const [activeId, setActiveId] = useState(ids[0])
+  const teachingIds = sortedExperiences.map(inst => getInstitutionId(inst.name))
+  const allIds = [...teachingIds, PROF_DEV_ID]
+  const [activeId, setActiveId] = useState(allIds[0])
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -118,17 +165,20 @@ function ExperienceTOC() {
       },
       { rootMargin: '-15% 0px -55% 0px', threshold: 0 }
     )
-    ids.forEach(id => {
+    allIds.forEach(id => {
       const el = document.getElementById(id)
       if (el) observer.observe(el)
     })
     return () => observer.disconnect()
   }, [])
 
-  const items = sortedExperiences.map(inst => ({
-    label: inst.name,
-    id: getInstitutionId(inst.name),
-  }))
+  const items = [
+    ...sortedExperiences.map(inst => ({
+      label: inst.name,
+      id: getInstitutionId(inst.name),
+    })),
+    { label: 'Prof. Development', id: PROF_DEV_ID },
+  ]
 
   return (
     <nav className="fixed left-4 xl:left-8 top-1/2 -translate-y-1/2 z-30 hidden lg:block print:hidden">
@@ -211,6 +261,26 @@ export function ExperienceView() {
             </div>
           )
         })}
+      </div>
+
+      {/* Professional Development */}
+      <div id={PROF_DEV_ID} className="space-y-20 mt-20">
+        <div>
+          <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
+            Professional Development
+          </h2>
+          <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
+            Conferences, workshops, and technical trainings
+          </p>
+
+          <div className="grid grid-cols-1 max-w-2xl mx-auto gap-3 w-full">
+            {conferences.map((item, idx) => (
+              <AnimatedItem key={idx}>
+                <ConferenceCard item={item} />
+              </AnimatedItem>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   )
