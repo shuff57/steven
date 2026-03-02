@@ -73,7 +73,7 @@ export default function SkillsPage() {
             Section 1 — Languages (most prominent)
            ══════════════════════════════════════════ */}
         <ScrollReveal animation="stagger" staggerSelector="span">
-          <div style={{ marginTop: 'var(--spacing-section)' }}>
+          <div id="section-languages" style={{ marginTop: 'var(--spacing-section)' }}>
             <SectionHeading>Languages</SectionHeading>
             <div
               style={{
@@ -110,7 +110,7 @@ export default function SkillsPage() {
             Section 2 — Software
            ══════════════════════════════════════════ */}
         <ScrollReveal animation="stagger" staggerSelector="span">
-          <div>
+          <div id="section-software">
             <SectionHeading>Software</SectionHeading>
             <div
               style={{
@@ -180,7 +180,7 @@ export default function SkillsPage() {
             Section 3 — Learning Management Systems
            ══════════════════════════════════════════ */}
         <ScrollReveal animation="stagger" staggerSelector="div > div">
-          <div>
+          <div id="section-lms">
             <SectionHeading>Learning Management Systems</SectionHeading>
             <div
               style={{
@@ -215,7 +215,7 @@ export default function SkillsPage() {
             Section 4 — Hardware
            ══════════════════════════════════════════ */}
         <ScrollReveal animation="stagger" staggerSelector="span">
-          <div>
+          <div id="section-hardware">
             <SectionHeading>Hardware</SectionHeading>
             <div
               style={{
@@ -266,7 +266,7 @@ export default function SkillsPage() {
             Section 5 — Teaching Interests
            ══════════════════════════════════════════ */}
         <ScrollReveal animation="stagger" staggerSelector="span">
-          <div style={{ marginBottom: '4rem' }}>
+          <div id="section-teaching" style={{ marginBottom: '4rem' }}>
             <h2
               className="text-3xl font-bold"
               style={{

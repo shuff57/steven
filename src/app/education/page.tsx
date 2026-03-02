@@ -126,7 +126,7 @@ export default function EducationPage() {
         </div>
 
         {/* Interests Section */}
-        <div className="grid md:grid-cols-12 gap-12">
+        <div id="section-interests" className="grid md:grid-cols-12 gap-12">
            
            {/* Research Interests */}
            <ScrollReveal animation="slide-up">
