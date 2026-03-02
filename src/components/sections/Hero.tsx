@@ -4,6 +4,7 @@ import { gsap } from '@/lib/gsapConfig'
 import { useGSAP } from '@gsap/react'
 import Link from 'next/link'
 import { Squares } from '@/components/animations'
+import RotatingText from '@/components/ui/RotatingText'
 
 const stats = [
   { value: '10+', label: 'Years Teaching' },
@@ -128,11 +129,20 @@ fontFamily: 'var(--font-display)',
 
           <p
             ref={subtitleRef}
-            className="text-lg md:text-2xl font-medium tracking-wide max-w-3xl mx-auto"
+            className="text-lg md:text-2xl font-medium tracking-wide max-w-3xl mx-auto flex items-center justify-center"
             style={{ color: 'var(--color-accent)', opacity: 0 }}
+            aria-label="Roles: Math Educator, CS Teacher, Curriculum Developer, Tool Builder"
           >
-            Math Educator&nbsp;&middot;&nbsp;CS Teacher&nbsp;&middot;&nbsp;Curriculum
-            Developer&nbsp;&middot;&nbsp;Tool Builder
+            <RotatingText
+              texts={['Math Educator', 'CS Teacher', 'Curriculum Developer', 'Tool Builder']}
+              mainClassName="px-2 sm:px-2 md:px-3 overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+              staggerFrom="last"
+              initial={{ y: '100%' }}
+              animate={{ y: 0 }}
+              exit={{ y: '-120%' }}
+              transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+              rotationInterval={3000}
+            />
           </p>
 
           <p
