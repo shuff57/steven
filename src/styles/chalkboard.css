@@ -1,8 +1,8 @@
 /* Graph paper background pattern - CSS only, no images */
 .graph-paper-bg {
   background-image:
-    linear-gradient(rgba(94, 206, 195, 0.05) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(94, 206, 195, 0.05) 1px, transparent 1px);
+    linear-gradient(rgba(240, 192, 96, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(240, 192, 96, 0.05) 1px, transparent 1px);
   background-size: 40px 40px;
   background-position: -1px -1px;
   will-change: auto; /* Contains many animated children */
@@ -33,7 +33,7 @@
 
 /* Accent gradient text */
 .accent-gradient {
-  background: linear-gradient(135deg, #5ecec3, #38bdf8);
+  background: linear-gradient(135deg, #f0c060, #f07820);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -55,7 +55,7 @@
 }
 
 /* Status badge styles */
-.status-active { background-color: rgba(94, 206, 195, 0.15); color: #5ecec3; }
+.status-active { background-color: rgba(240, 192, 96, 0.15); color: #f0c060; }
 .status-progress { background-color: rgba(245, 158, 11, 0.15); color: #f59e0b; }
 .status-concept { background-color: rgba(107, 114, 128, 0.15); color: #9ca3af; }
 .status-completed { background-color: rgba(16, 185, 129, 0.15); color: #10b981; }

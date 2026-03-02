@@ -1,10 +1,11 @@
 import type { Metadata } from 'next'
-import { Inter, Crimson_Pro } from 'next/font/google'
+import { Inter, Crimson_Pro, Caveat } from 'next/font/google'
 import './globals.css'
 import { LenisProvider } from '@/lib/lenis'
 import { Navigation } from '@/components/ui/Navigation'
 import { Footer } from '@/components/ui/Footer'
 import { PageTransition } from '@/components/ui/PageTransition'
+import { NavigationLoader } from '@/components/ui/NavigationLoader'
 
 
 const inter = Inter({
@@ -21,6 +22,13 @@ const crimsonPro = Crimson_Pro({
   style: ['normal', 'italic'],
 })
 
+const caveat = Caveat({
+  variable: '--font-handwritten',
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+})
+
 export const metadata: Metadata = {
   title: 'Steven Huff | Math Educator & Developer',
   description:
@@ -34,7 +42,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${crimsonPro.variable} antialiased`}>
+      <body className={`${inter.variable} ${crimsonPro.variable} ${caveat.variable} antialiased`}>
         {/* Skip to main content — keyboard accessibility */}
         <a
           href="#main-content"
@@ -43,6 +51,7 @@ export default function RootLayout({
           Skip to main content
         </a>
         <LenisProvider>
+          <NavigationLoader />
           <Navigation />
           <main id="main-content">
             <PageTransition>{children}</PageTransition>
