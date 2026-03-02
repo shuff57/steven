@@ -9,9 +9,10 @@ export interface YearNavItem {
 
 interface Props {
   items: YearNavItem[]
+  alwaysShowLabels?: boolean
 }
 
-export function YearNav({ items }: Props) {
+export function YearNav({ items, alwaysShowLabels = false }: Props) {
   const [activeId, setActiveId] = useState<string>(items[0]?.id ?? '')
 
   useEffect(() => {
@@ -98,7 +99,7 @@ export function YearNav({ items }: Props) {
                   className="text-[10px] font-mono leading-none whitespace-nowrap transition-all duration-300"
                   style={{
                     color: isActive ? 'var(--color-accent)' : 'var(--color-text-muted)',
-                    opacity: isActive ? 1 : 0,
+                    opacity: (alwaysShowLabels || isActive) ? 1 : 0,
                     fontWeight: isActive ? 700 : 400,
                     // Only show label when active — hover reveals it too
                   }}
