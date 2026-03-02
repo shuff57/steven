@@ -7,9 +7,11 @@ export interface ConferenceItem {
 
 export const conferences: ConferenceItem[] = [
   {
-    title: 'Trained on Industry level machinery',
-    date: null,
-    description: 'Trained on Industry level machinery.',
+    title: 'Norfield trained on industry level Haas Mills',
+    date: 'Summer 2025',
+    description:
+      'Completed 90+ hours of intensive technical training at Norfield in the setup and operation of Haas CNC vertical mills to fabricate precision components for industrial door machinery. Responsibilities included interpreting CAD/CAM files and engineering drawings to maintain tight tolerances through meticulous tool calibration, parts inspection, and routine preventive maintenance. This role also required supporting multi-stage assembly operations to ensure strict adherence to quality control standards within a high-output production environment.',
+    location: 'Norfield, Chico, CA',
   },
   {
     title: 'SLC Math Tutor Training Facilitator',

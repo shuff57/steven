@@ -31,16 +31,7 @@ export default function ContactPage() {
                 </a>
               </div>
               
-              {/* Personal phone — Steven may want to remove for public site */}
-              <div className="flex items-center gap-4">
-                <span className="text-2xl" aria-hidden="true">📞</span>
-                <a 
-                  href={`tel:${profile.phone.replace(/[^0-9]/g, '')}`} 
-                  className="text-xl text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors"
-                >
-                  {profile.phone}
-                </a>
-              </div>
+
             </div>
           </div>
         </ScrollReveal>
