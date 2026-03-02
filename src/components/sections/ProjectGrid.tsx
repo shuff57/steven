@@ -6,9 +6,9 @@ import { ScrollReveal } from '@/components/animations/ScrollReveal'
 import { YearNav } from '@/components/ui/YearNav'
 import PixelTransition from '@/components/ui/PixelTransition'
 
-const PROJECT_YEAR_NAV = [
-  { year: '2026', id: 'section-tools' },
-  { year: '2022', id: 'section-achievements' },
+const PROJECT_TOC = [
+  { year: 'Tools & Software', id: 'section-tools' },
+  { year: 'Achievements & Initiatives', id: 'section-achievements' },
 ]
 
 interface ProjectGridProps {
@@ -50,7 +50,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
 
   return (
     <section className="py-20 px-4 md:px-8 max-w-7xl mx-auto">
-      <YearNav items={PROJECT_YEAR_NAV} />
+      <YearNav items={PROJECT_TOC} alwaysShowLabels />
       <ScrollReveal animation="slide-up">
         <div className="mb-16 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 font-display">
