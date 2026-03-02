@@ -36,7 +36,6 @@ export default function PixelTransition({
   const [isActive, setIsActive] = useState(false)
   const [isTouchDevice, setIsTouchDevice] = useState(false)
 
-  // SSR-safe touch detection — only runs in browser
   useEffect(() => {
     setIsTouchDevice(
       'ontouchstart' in window ||
@@ -74,7 +73,7 @@ export default function PixelTransition({
     const activeEl = activeRef.current
     if (!pixelGridEl || !activeEl) return
 
-    // Respect reduced motion — swap instantly, no animation
+    // Reduced motion — swap instantly
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       setIsActive(activate)
       activeEl.style.display = activate ? 'block' : 'none'
@@ -94,20 +93,17 @@ export default function PixelTransition({
 
     gsap.set(pixels, { display: 'none' })
 
-    // Show pixels in random order
     gsap.to(pixels, {
       display: 'block',
       duration: 0,
       stagger: { each: staggerDuration, from: 'random' },
     })
 
-    // Swap content at the midpoint
     delayedCallRef.current = gsap.delayedCall(animationStepDuration, () => {
       activeEl.style.display = activate ? 'block' : 'none'
-      activeEl.style.pointerEvents = 'auto' // Always allow clicks inside secondContent
+      activeEl.style.pointerEvents = 'auto'
     })
 
-    // Hide pixels after swap
     gsap.to(pixels, {
       display: 'none',
       duration: 0,
@@ -150,12 +146,10 @@ export default function PixelTransition({
         }
       }}
     >
-      {/* First content (default visible) */}
       <div className="absolute inset-0 w-full h-full" aria-hidden={isActive}>
         {firstContent}
       </div>
 
-      {/* Second content (revealed on hover/click) */}
       <div
         ref={activeRef}
         className="absolute inset-0 w-full h-full z-[2]"
