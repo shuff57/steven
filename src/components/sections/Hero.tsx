@@ -130,16 +130,16 @@ fontFamily: 'var(--font-display)',
           <p
             ref={subtitleRef}
             className="text-lg md:text-2xl font-medium tracking-wide max-w-3xl mx-auto flex items-center justify-center"
-            style={{ color: 'var(--color-accent)', opacity: 0 }}
+            style={{ color: 'var(--color-bg-primary)', opacity: 0 }}
             aria-label="Roles: Math Educator, CS Teacher, Curriculum Developer, Tool Builder"
           >
             <RotatingText
               texts={['Math Educator', 'CS Teacher', 'Curriculum Developer', 'Tool Builder']}
-              mainClassName="px-2 sm:px-2 md:px-3 overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
+              mainClassName="px-4 sm:px-5 md:px-6 py-1.5 sm:py-2 md:py-2.5 justify-center rounded-full overflow-hidden bg-[#5ecec3]"
               staggerFrom="last"
-              initial={{ y: '100%' }}
-              animate={{ y: 0 }}
-              exit={{ y: '-120%' }}
+              initial={{ y: '100%', opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: '-120%', opacity: 0 }}
               transition={{ type: 'spring', damping: 25, stiffness: 300 }}
               rotationInterval={3000}
             />
