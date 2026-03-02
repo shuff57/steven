@@ -8,7 +8,7 @@ import {
   type CourseSubject,
   type CourseLevel,
 } from '@/data/courseCatalog'
-import PixelTransition from '@/components/ui/PixelTransition'
+import { FlipCard, FlipFront, FlipBack } from '@/components/ui/FlipCard'
 
 const ALL_COURSES = buildCourseCatalog()
 
@@ -194,68 +194,58 @@ export function CourseCatalog() {
             const id = `${course.code}|${course.institution}`
             const hasDesc = course.description && course.description !== course.name
             return (
-              <PixelTransition
-                key={id}
-                height={220}
-                ariaLabel={`${course.code} - ${course.name}`}
-                firstContent={
-                  <div className="chalk-card h-full flex flex-col justify-between p-4">
-                    <div>
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        <span
-                          className="inline-block text-xs font-bold px-2 py-0.5 rounded"
-                          style={{
-                            background: SUBJECT_COLORS[course.subject],
-                            color: SUBJECT_TEXT[course.subject],
-                          }}
-                        >
-                          {SUBJECT_LABELS[course.subject]}
-                        </span>
-                        <span
-                          className="text-xs px-2 py-0.5 rounded shrink-0"
-                          style={{
-                            background: 'rgba(240, 237, 232, 0.07)',
-                            color: 'var(--color-text-muted)',
-                            border: '1px solid var(--color-border)',
-                          }}
-                        >
-                          {LEVEL_LABELS[course.level]}
-                        </span>
-                      </div>
-                      <h3 className="font-mono text-sm font-bold text-[var(--color-text-primary)] mb-1">
-                        {course.code}
-                      </h3>
-                      <h4 className="font-display text-base font-semibold text-[var(--color-text-primary)] leading-snug">
-                        {course.name}
-                      </h4>
+              <FlipCard key={id} height={220}>
+                <FlipFront>
+                  <div>
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <span
+                        className="inline-block text-xs font-bold px-2 py-0.5 rounded"
+                        style={{
+                          background: SUBJECT_COLORS[course.subject],
+                          color: SUBJECT_TEXT[course.subject],
+                        }}
+                      >
+                        {SUBJECT_LABELS[course.subject]}
+                      </span>
+                      <span
+                        className="text-xs px-2 py-0.5 rounded shrink-0"
+                        style={{
+                          background: 'rgba(240, 237, 232, 0.07)',
+                          color: 'var(--color-text-muted)',
+                          border: '1px solid var(--color-border)',
+                        }}
+                      >
+                        {LEVEL_LABELS[course.level]}
+                      </span>
                     </div>
-                    <p className="text-xs text-[var(--color-text-muted)] font-mono">
-                      {course.institution}
-                    </p>
+                    <h3 className="font-mono text-sm font-bold text-[var(--color-text-primary)] mb-1">
+                      {course.code}
+                    </h3>
+                    <h4 className="font-display text-base font-semibold text-[var(--color-text-primary)] leading-snug">
+                      {course.name}
+                    </h4>
                   </div>
-                }
-                secondContent={
-                  <div
-                    className="h-full flex flex-col p-4 overflow-hidden"
-                    style={{ background: 'var(--color-bg-secondary)', border: '1px solid rgba(94,206,195,0.4)' }}
-                  >
-                    {hasDesc ? (
-                      <div className="flex flex-col gap-2">
-                        <p className="text-xs font-semibold text-[var(--color-accent)] font-mono">
-                          {course.code} · {course.institution}
-                        </p>
-                        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                          {course.description}
-                        </p>
-                      </div>
-                    ) : (
-                      <p className="text-sm text-[var(--color-text-muted)] italic">
-                        No additional description available.
+                  <p className="text-xs text-[var(--color-text-muted)] font-mono">
+                    {course.institution}
+                  </p>
+                </FlipFront>
+                <FlipBack>
+                  {hasDesc ? (
+                    <div className="flex flex-col gap-2">
+                      <p className="text-xs font-semibold text-[var(--color-accent)] font-mono">
+                        {course.code} · {course.institution}
                       </p>
-                    )}
-                  </div>
-                }
-              />
+                      <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                        {course.description}
+                      </p>
+                    </div>
+                  ) : (
+                    <p className="text-sm text-[var(--color-text-muted)] italic">
+                      No additional description available.
+                    </p>
+                  )}
+                </FlipBack>
+              </FlipCard>
             )
           })}
         </div>
