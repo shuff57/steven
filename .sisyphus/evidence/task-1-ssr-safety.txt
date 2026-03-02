@@ -1,0 +1,2 @@
+44:      window.matchMedia('(pointer: coarse)').matches
+78:    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

@@ -8,6 +8,7 @@ import {
   type CourseSubject,
   type CourseLevel,
 } from '@/data/courseCatalog'
+import PixelTransition from '@/components/ui/PixelTransition'
 
 const ALL_COURSES = buildCourseCatalog()
 
@@ -48,7 +49,6 @@ export function CourseCatalog() {
   const [query, setQuery] = useState('')
   const [activeSubject, setActiveSubject] = useState<CourseSubject | 'all'>('all')
   const [activeLevel, setActiveLevel] = useState<CourseLevel | 'all'>('all')
-  const [expandedId, setExpandedId] = useState<string | null>(null)
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim()
@@ -62,9 +62,6 @@ export function CourseCatalog() {
       return true
     })
   }, [query, activeSubject, activeLevel])
-
-  const toggleExpand = (id: string) =>
-    setExpandedId((prev) => (prev === id ? null : id))
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
@@ -192,81 +189,73 @@ export function CourseCatalog() {
           <p>No courses match your search.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filtered.map((course) => {
             const id = `${course.code}|${course.institution}`
-            const isExpanded = expandedId === id
+            const hasDesc = course.description && course.description !== course.name
             return (
-              <div
+              <PixelTransition
                 key={id}
-                className="chalk-card flex flex-col transition-all duration-200"
-              >
-                {/* Card top: subject badge + code */}
-                <div className="flex items-start justify-between gap-3 mb-3">
-                  <div>
-                    <span
-                      className="inline-block text-xs font-bold px-2 py-0.5 rounded mb-2"
-                      style={{
-                        background: SUBJECT_COLORS[course.subject],
-                        color: SUBJECT_TEXT[course.subject],
-                      }}
-                    >
-                      {SUBJECT_LABELS[course.subject]}
-                    </span>
-                    <h3 className="font-mono text-sm font-bold text-[var(--color-text-primary)]">
-                      {course.code}
-                    </h3>
-                  </div>
-                  <span
-                    className="text-xs px-2 py-0.5 rounded shrink-0 mt-1"
-                    style={{
-                      background: 'rgba(240, 237, 232, 0.07)',
-                      color: 'var(--color-text-muted)',
-                      border: '1px solid var(--color-border)',
-                    }}
-                  >
-                    {LEVEL_LABELS[course.level]}
-                  </span>
-                </div>
-
-                <h4 className="font-display text-base font-semibold text-[var(--color-text-primary)] mb-1 leading-snug">
-                  {course.name}
-                </h4>
-                <p className="text-xs text-[var(--color-text-muted)] mb-3">{course.institution}</p>
-
-                {/* Description — collapsed by default */}
-                {course.description && course.description !== course.name && (
-                  <>
-                    <div
-                      className={`text-sm text-[var(--color-text-secondary)] leading-relaxed overflow-hidden transition-all duration-300 ${
-                        isExpanded ? 'max-h-96' : 'max-h-0'
-                      }`}
-                      aria-hidden={!isExpanded}
-                      id={`desc-${id.replace(/[^a-z0-9]/gi, '-')}`}
-                    >
-                      <p className="pt-1 pb-3 border-t border-[var(--color-border)]">
-                        {course.description}
-                      </p>
+                height={220}
+                ariaLabel={`${course.code} - ${course.name}`}
+                firstContent={
+                  <div className="chalk-card h-full flex flex-col justify-between p-4">
+                    <div>
+                      <div className="flex items-start justify-between gap-2 mb-2">
+                        <span
+                          className="inline-block text-xs font-bold px-2 py-0.5 rounded"
+                          style={{
+                            background: SUBJECT_COLORS[course.subject],
+                            color: SUBJECT_TEXT[course.subject],
+                          }}
+                        >
+                          {SUBJECT_LABELS[course.subject]}
+                        </span>
+                        <span
+                          className="text-xs px-2 py-0.5 rounded shrink-0"
+                          style={{
+                            background: 'rgba(240, 237, 232, 0.07)',
+                            color: 'var(--color-text-muted)',
+                            border: '1px solid var(--color-border)',
+                          }}
+                        >
+                          {LEVEL_LABELS[course.level]}
+                        </span>
+                      </div>
+                      <h3 className="font-mono text-sm font-bold text-[var(--color-text-primary)] mb-1">
+                        {course.code}
+                      </h3>
+                      <h4 className="font-display text-base font-semibold text-[var(--color-text-primary)] leading-snug">
+                        {course.name}
+                      </h4>
                     </div>
-
-                    <button
-                      onClick={() => toggleExpand(id)}
-                      aria-expanded={isExpanded}
-                      aria-controls={`desc-${id.replace(/[^a-z0-9]/gi, '-')}`}
-                      className="text-xs text-[var(--color-accent)] font-semibold hover:text-[var(--color-accent-hover)] transition-colors mt-auto flex items-center gap-1 w-fit cursor-pointer"
-                    >
-                      {isExpanded ? 'Hide description' : 'Show description'}
-                      <span
-                        className="transition-transform duration-200"
-                        style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)', display: 'inline-block' }}
-                        aria-hidden="true"
-                      >
-                        ▼
-                      </span>
-                    </button>
-                  </>
-                )}
-              </div>
+                    <p className="text-xs text-[var(--color-text-muted)] font-mono">
+                      {course.institution}
+                    </p>
+                  </div>
+                }
+                secondContent={
+                  <div
+                    className="h-full flex flex-col p-4 overflow-hidden"
+                    style={{ background: 'var(--color-bg-secondary)', border: '1px solid rgba(94,206,195,0.4)' }}
+                  >
+                    {hasDesc ? (
+                      <div className="flex flex-col gap-2">
+                        <p className="text-xs font-semibold text-[var(--color-accent)] font-mono">
+                          {course.code} · {course.institution}
+                        </p>
+                        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                          {course.description}
+                        </p>
+                      </div>
+                    ) : (
+                      <p className="text-sm text-[var(--color-text-muted)] italic">
+                        No additional description available.
+                      </p>
+                    )}
+                  </div>
+                }
+              />
             )
           })}
         </div>
