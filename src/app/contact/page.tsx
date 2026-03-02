@@ -6,7 +6,7 @@ export default function ContactPage() {
   return (
     <main className="min-h-screen">
       {/* Contact Section */}
-      <section className="px-6 py-20 max-w-3xl mx-auto">
+      <section id="section-contact-info" className="px-6 py-20 max-w-3xl mx-auto">
         <ScrollReveal animation="slide-up">
           <div className="mb-20 text-center">
             <h1 className="text-5xl font-bold mb-4 font-display text-[var(--color-text-primary)]">
@@ -46,7 +46,7 @@ export default function ContactPage() {
         </ScrollReveal>
 
         <ScrollReveal animation="scale-in" delay={0.3}>
-          <div className="text-center mb-20">
+          <div id="section-download-cv" className="text-center mb-20">
             <h2 className="text-3xl font-bold mb-4 font-display text-[var(--color-text-primary)]">
               Prefer the Traditional Format?
             </h2>
@@ -65,7 +65,7 @@ export default function ContactPage() {
       </section>
 
       {/* Professional Development Section */}
-      <section className="px-6 py-20 max-w-5xl mx-auto border-t border-[var(--color-border)]">
+      <section id="section-conferences" className="px-6 py-20 max-w-5xl mx-auto border-t border-[var(--color-border)]">
         <ScrollReveal animation="fade-in">
           <div className="mb-12">
             <h2 className="text-3xl font-bold mb-2 font-display text-[var(--color-text-primary)]">
