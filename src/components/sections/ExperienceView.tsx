@@ -171,6 +171,14 @@ function ExperienceTOC({ visible }: { visible: boolean }) {
   const teachingIds = sortedExperiences.map(inst => getInstitutionId(inst.name))
   const allIds = [...teachingIds]
   const [activeId, setActiveId] = useState(allIds[0])
+  const [tocWidth, setTocWidth] = useState('calc(50vw - 358px)')
+
+  useEffect(() => {
+    const update = () => setTocWidth(`${Math.max(0, window.innerWidth / 2 - 358)}px`)
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
 
   useEffect(() => {
     if (!visible) return
@@ -200,10 +208,10 @@ function ExperienceTOC({ visible }: { visible: boolean }) {
   }))
 
   return (
-    <nav className="fixed left-4 xl:left-8 top-1/2 -translate-y-1/2 z-30 hidden lg:block print:hidden">
+    <nav className="hidden lg:block fixed left-0 top-1/2 -translate-y-1/2 z-40 print:hidden" style={{ width: tocWidth }}>
       <div
-        className="flex flex-col gap-1 p-2 rounded-xl"
-        style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+        className="flex flex-col gap-1 p-2 rounded-r-xl"
+        style={{ background: 'var(--color-surface)', borderTop: '1px solid var(--color-border)', borderRight: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}
       >
         {items.map(item => {
           const isActive = activeId === item.id
@@ -214,21 +222,12 @@ function ExperienceTOC({ visible }: { visible: boolean }) {
                 document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
                 setActiveId(item.id)
               }}
-              className="flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 cursor-pointer w-full border-none"
+              className="flex items-center px-4 py-3 rounded-lg text-left transition-all duration-200 cursor-pointer w-full border-none"
+              title={item.label}
               style={{ background: isActive ? 'rgba(240,192,96,0.15)' : 'transparent' }}
             >
               <span
-                className="block rounded-full flex-shrink-0 transition-all duration-300"
-                style={{
-                  width: isActive ? '10px' : '7px',
-                  height: isActive ? '10px' : '7px',
-                  background: isActive ? 'var(--color-accent)' : 'var(--color-text-muted)',
-                  boxShadow: isActive ? '0 0 8px var(--color-accent)' : 'none',
-                  opacity: isActive ? 1 : 0.5,
-                }}
-              />
-              <span
-                className="text-sm font-medium whitespace-nowrap transition-colors duration-200"
+                className="text-sm font-medium leading-snug break-words transition-colors duration-200"
                 style={{ color: isActive ? 'var(--color-accent)' : 'var(--color-text-secondary)' }}
               >
                 {item.label}
@@ -280,7 +279,6 @@ function ExperienceViewInner() {
 
   return (
     <section ref={sectionRef} className="py-20 px-4 md:px-8 max-w-7xl mx-auto">
-      <ExperienceTOC visible={activeTab === 'institution'} />
 
       {/* Header */}
       <div className="mb-16 text-center">
@@ -325,7 +323,9 @@ function ExperienceViewInner() {
 
       {/* Content */}
       {activeTab === 'institution' ? (
-        <div className="space-y-20">
+        <div>
+          <ExperienceTOC visible={true} />
+          <div className="max-w-2xl mx-auto space-y-20">
           {sortedExperiences.map(institution => {
             const sectionId = getInstitutionId(institution.name)
             const courses = flattenCourses(institution)
@@ -340,7 +340,7 @@ function ExperienceViewInner() {
                   {institution.location} · {dateRange}
                 </p>
 
-                <div className="grid grid-cols-1 max-w-2xl mx-auto gap-3 w-full">
+                <div className="grid grid-cols-1 gap-3 w-full">
                   {courses.map((course, idx) => (
                     <AnimatedItem key={`${institution.name}-${course.code}-${idx}`}>
                       <CourseCard course={course} />
@@ -350,6 +350,8 @@ function ExperienceViewInner() {
               </div>
             )
           })}
+          </div>
+
         </div>
       ) : (
         <div>
