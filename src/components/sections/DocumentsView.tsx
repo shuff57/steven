@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { SegmentedControl, PdfViewer } from '@/components/ui'
 import { CV_PDF_PATH, THESIS_PDF_PATH } from '@/lib/pdfConfig'
@@ -13,6 +13,11 @@ const DOC_OPTIONS = [
 export function DocumentsView() {
   const [active, setActive] = useState('cv')
 
+  // Read ?doc= query param on mount for direct deep-links from nav dropdown
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search)
+    if (params.get('doc') === 'thesis') setActive('thesis')
+  }, [])
   return (
     <div>
       {/* Segmented control bar */}

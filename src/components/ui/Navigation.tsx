@@ -2,7 +2,8 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { CV_PDF_PATH, THESIS_PDF_PATH } from '@/lib/pdfConfig'
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -11,22 +12,35 @@ const navLinks = [
   { href: '/education', label: 'Education' },
   { href: '/skills', label: 'Skills' },
   { href: '/professional-development', label: 'Prof. Development' },
-  { href: '/documents', label: 'Documents' },
   { href: '/contact', label: 'Contact' },
 ]
 
 export function Navigation() {
   const pathname = usePathname()
   const [mobileOpen, setMobileOpen] = useState(false)
-
-  // Close mobile menu on Escape key
+  const [dropdownOpen, setDropdownOpen] = useState(false)
+  const dropdownRef = useRef<HTMLDivElement>(null)
+  // Close mobile menu on Escape; close dropdown on Escape + outside click
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && mobileOpen) setMobileOpen(false)
+      if (e.key === 'Escape') {
+        if (mobileOpen) setMobileOpen(false)
+        if (dropdownOpen) setDropdownOpen(false)
+      }
     }
     document.addEventListener('keydown', handleEsc)
     return () => document.removeEventListener('keydown', handleEsc)
-  }, [mobileOpen])
+  }, [mobileOpen, dropdownOpen])
+
+  useEffect(() => {
+    const handleOutsideClick = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setDropdownOpen(false)
+      }
+    }
+    document.addEventListener('mousedown', handleOutsideClick)
+    return () => document.removeEventListener('mousedown', handleOutsideClick)
+  }, [])
 
   return (
     <header
@@ -38,7 +52,10 @@ export function Navigation() {
         WebkitBackdropFilter: 'blur(8px)',
       }}
     >
-      <nav className="max-w-6xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+      <nav
+        className="max-w-6xl mx-auto px-4 sm:px-6 h-16"
+        style={{ display: 'grid', gridTemplateColumns: '1fr auto 1fr', alignItems: 'center' }}
+      >
         {/* Logo */}
         <Link
           href="/"
@@ -52,8 +69,8 @@ export function Navigation() {
           Steven Huff
         </Link>
 
-        {/* Desktop nav links */}
-        <div className="hidden md:flex items-center gap-8">
+        {/* Desktop nav links — centered */}
+        <div className="hidden md:flex items-center justify-center gap-8">
           {navLinks.map(({ href, label }) => {
             const isActive = pathname === href
             return (
@@ -74,7 +91,121 @@ export function Navigation() {
           })}
         </div>
 
-        {/* Mobile toggle */}
+        {/* Right: Documents dropdown (desktop) + hamburger (mobile) */}
+        <div className="flex items-center justify-end gap-3">
+          <div ref={dropdownRef} className="hidden md:block" style={{ position: 'relative' }}>
+            {/* Trigger */}
+            <button
+              onClick={() => setDropdownOpen((o) => !o)}
+              aria-haspopup="true"
+              aria-expanded={dropdownOpen}
+              className="text-xl font-bold transition-opacity hover:opacity-80"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                border: 'none',
+                background: 'none',
+                padding: 0,
+                cursor: 'pointer',
+                fontFamily: 'var(--font-display)',
+                color: 'var(--color-accent)',
+              }}
+            >
+              Documents
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+                aria-hidden="true"
+                style={{
+                  transition: 'transform 0.15s',
+                  transform: dropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                }}
+              >
+                <path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+
+            {/* Dropdown panel */}
+            {dropdownOpen && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: 'calc(100% + 8px)',
+                  right: 0,
+                  minWidth: '180px',
+                  backgroundColor: 'var(--color-surface)',
+                  border: '1px solid var(--color-border)',
+                  borderRadius: 'var(--radius-md)',
+                  boxShadow: 'var(--shadow-card)',
+                  overflow: 'hidden',
+                  zIndex: 60,
+                }}
+              >
+                {([
+                  { label: 'View CV', href: '/documents', download: false },
+                  { label: 'Download CV', href: CV_PDF_PATH, download: true },
+                ] as const).map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    {...(item.download ? { download: true } : {})}
+                    onClick={() => setDropdownOpen(false)}
+                    style={{
+                      display: 'block',
+                      padding: '8px 14px',
+                      fontSize: '0.875rem',
+                      color: 'var(--color-text-secondary)',
+                      textDecoration: 'none',
+                      transition: 'background-color 0.1s, color 0.1s',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--color-accent-muted)'
+                      e.currentTarget.style.color = 'var(--color-accent)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'transparent'
+                      e.currentTarget.style.color = 'var(--color-text-secondary)'
+                    }}
+                  >
+                    {item.label}
+                  </a>
+                ))}
+                <div style={{ borderTop: '1px solid var(--color-border)', margin: '2px 0' }} />
+                {([
+                  { label: 'View Thesis', href: '/documents?doc=thesis', download: false },
+                  { label: 'Download Thesis', href: THESIS_PDF_PATH, download: true },
+                ] as const).map((item) => (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    {...(item.download ? { download: true } : {})}
+                    onClick={() => setDropdownOpen(false)}
+                    style={{
+                      display: 'block',
+                      padding: '8px 14px',
+                      fontSize: '0.875rem',
+                      color: 'var(--color-text-secondary)',
+                      textDecoration: 'none',
+                      transition: 'background-color 0.1s, color 0.1s',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = 'var(--color-accent-muted)'
+                      e.currentTarget.style.color = 'var(--color-accent)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'transparent'
+                      e.currentTarget.style.color = 'var(--color-text-secondary)'
+                    }}
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </div>
+            )}
+          </div>
 
           {/* Hamburger button */}
           <button
@@ -109,6 +240,7 @@ export function Navigation() {
               }}
             />
           </button>
+        </div>
       </nav>
 
       {/* Mobile drawer */}
@@ -139,6 +271,31 @@ export function Navigation() {
               </Link>
             )
           })}
+          {/* Documents section in mobile drawer */}
+          <div style={{ borderTop: '1px solid var(--color-border)', marginTop: '8px', paddingTop: '8px' }}>
+            {([
+              { label: 'View CV', href: '/documents', download: false },
+              { label: 'Download CV', href: CV_PDF_PATH, download: true },
+              { label: 'View Thesis', href: '/documents?doc=thesis', download: false },
+              { label: 'Download Thesis', href: THESIS_PDF_PATH, download: true },
+            ] as const).map((item) => (
+              <a
+                key={item.label}
+                href={item.href}
+                {...(item.download ? { download: true } : {})}
+                className="block py-3 px-2 text-base rounded-md transition-colors duration-200"
+                style={{
+                  color: !item.download && pathname === '/documents' ? 'var(--color-accent)' : 'var(--color-text-secondary)',
+                  backgroundColor: !item.download && pathname === '/documents' ? 'var(--color-accent-muted)' : 'transparent',
+                  textDecoration: 'none',
+                }}
+                onClick={() => setMobileOpen(false)}
+                tabIndex={mobileOpen ? 0 : -1}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </header>
