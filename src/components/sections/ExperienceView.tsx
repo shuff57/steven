@@ -172,6 +172,7 @@ function ExperienceTOC({ visible }: { visible: boolean }) {
   const allIds = [...teachingIds]
   const [activeId, setActiveId] = useState(allIds[0])
   const [tocWidth, setTocWidth] = useState('calc(50vw - 358px)')
+  const [tocTop, setTocTop] = useState<number | null>(null)
 
   useEffect(() => {
     const update = () => setTocWidth(`${Math.max(0, window.innerWidth / 2 - 358)}px`)
@@ -179,6 +180,44 @@ function ExperienceTOC({ visible }: { visible: boolean }) {
     window.addEventListener('resize', update)
     return () => window.removeEventListener('resize', update)
   }, [])
+
+  // Scroll-aware vertical positioning:
+  // On page load, align TOC top with the first section heading.
+  // As the user scrolls and the section moves up, follow it until the TOC
+  // reaches its centered position — then lock there.
+  useEffect(() => {
+    if (!visible) return
+
+    const firstId = allIds[0]
+    // Approximate TOC height: 6 items × ~48px + 16px container padding
+    const tocHeight = sortedExperiences.length * 48 + 16
+
+    const updateTop = () => {
+      const el = document.getElementById(firstId)
+      if (!el) return
+
+      const sectionTop = el.getBoundingClientRect().top
+      const viewportHeight = window.innerHeight
+
+      // The top offset that would vertically center the TOC in the viewport
+      const centeredTop = (viewportHeight - tocHeight) / 2
+
+      // Start at section level (below center); move toward center as section
+      // scrolls up; lock once the TOC would be centered.
+      // Intentionally unclamped — TOC may start off-screen if the section is
+      // below the fold, which is fine.
+      setTocTop(Math.max(centeredTop, sectionTop))
+    }
+
+    updateTop()
+    window.addEventListener('scroll', updateTop, { passive: true })
+    window.addEventListener('resize', updateTop)
+
+    return () => {
+      window.removeEventListener('scroll', updateTop)
+      window.removeEventListener('resize', updateTop)
+    }
+  }, [visible])
 
   useEffect(() => {
     if (!visible) return
@@ -200,7 +239,7 @@ function ExperienceTOC({ visible }: { visible: boolean }) {
     return () => observer.disconnect()
   }, [visible])
 
-  if (!visible) return null
+  if (!visible || tocTop === null) return null
 
   const items = sortedExperiences.map(inst => ({
     label: inst.name,
@@ -208,7 +247,7 @@ function ExperienceTOC({ visible }: { visible: boolean }) {
   }))
 
   return (
-    <nav className="hidden lg:block fixed left-0 top-1/2 -translate-y-1/2 z-40 print:hidden" style={{ width: tocWidth }}>
+    <nav className="hidden lg:block fixed left-0 z-40 print:hidden" style={{ width: tocWidth, top: `${tocTop}px` }}>
       <div
         className="flex flex-col gap-1 p-2 rounded-r-xl"
         style={{ background: 'var(--color-surface)', borderTop: '1px solid var(--color-border)', borderRight: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}

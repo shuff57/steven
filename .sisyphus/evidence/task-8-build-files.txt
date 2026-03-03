@@ -1,0 +1,9 @@
+=== Checking out/cv.html ===
+out/cv.html
+=== Checking out/thesis.html ===
+out/thesis.html
+=== Checking out/Curriculum Vitae.pdf ===
+out/Curriculum Vitae.pdf
+=== Checking out/MS Thesis.pdf ===
+out/MS Thesis.pdf
+=== ALL FILES VERIFIED ===
