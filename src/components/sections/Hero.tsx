@@ -160,7 +160,7 @@ export function Hero() {
               secondContent={
                 <div
                   className="h-full flex flex-col items-center justify-center gap-2 p-4"
-                  style={{ background: 'var(--color-bg-secondary)', border: '1px solid rgba(240,192,96,0.4)' }}
+                  style={{ background: 'var(--color-bg-secondary)', border: '1px solid rgba(240,192,96,0.4)', borderRadius: '1rem' }}
                 >
                   {stat.links.map((link) => (
                     <Link

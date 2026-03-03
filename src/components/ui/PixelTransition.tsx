@@ -152,7 +152,7 @@ export default function PixelTransition({
       <div
         ref={activeRef}
         className="absolute inset-0 w-full h-full z-[2]"
-        style={{ display: 'none' }}
+        style={{ display: 'none', borderRadius: 'inherit', overflow: 'hidden' }}
         aria-hidden={!isActive}
       >
         {secondContent}
