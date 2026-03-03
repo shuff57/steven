@@ -1,3 +1,5 @@
+import { CV_PDF_PATH, THESIS_PDF_PATH } from '@/lib/pdfConfig'
+
 export function Footer() {
   const year = new Date().getFullYear()
 
@@ -34,18 +36,40 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Download CTA */}
-          <a
-            href="/Curriculum%20Vitae.pdf"
-            download
-            className="px-5 py-2 text-sm rounded border transition-opacity hover:opacity-80"
-            style={{
-              borderColor: 'var(--color-accent)',
-              color: 'var(--color-accent)',
-            }}
-          >
-            ↓ Download Full CV
-          </a>
+          {/* Download CTAs */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}>
+            <a
+              href={CV_PDF_PATH}
+              download
+              className="text-sm transition-opacity hover:opacity-75"
+              style={{
+                padding: '7px 14px',
+                border: '1px solid var(--color-accent)',
+                borderRight: 'none',
+                borderRadius: 'var(--radius-md) 0 0 var(--radius-md)',
+                color: 'var(--color-accent)',
+                textDecoration: 'none',
+                textAlign: 'center',
+              }}
+            >
+              ↓ Download CV
+            </a>
+            <a
+              href={THESIS_PDF_PATH}
+              download
+              className="text-sm transition-opacity hover:opacity-75"
+              style={{
+                padding: '7px 14px',
+                border: '1px solid var(--color-accent)',
+                borderRadius: '0 var(--radius-md) var(--radius-md) 0',
+                color: 'var(--color-accent)',
+                textDecoration: 'none',
+                textAlign: 'center',
+              }}
+            >
+              ↓ Download Thesis
+            </a>
+          </div>
 
           {/* Copyright */}
           <p
