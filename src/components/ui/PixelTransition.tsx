@@ -32,16 +32,14 @@ export default function PixelTransition({
   const pixelGridRef = useRef<HTMLDivElement | null>(null)
   const activeRef = useRef<HTMLDivElement | null>(null)
   const delayedCallRef = useRef<gsap.core.Tween | null>(null)
+  // Sync ref for stale-closure-safe hover checks
+  const isActiveRef = useRef(false)
 
   const [isActive, setIsActive] = useState(false)
   const [isTouchDevice, setIsTouchDevice] = useState(false)
 
   useEffect(() => {
-    setIsTouchDevice(
-      'ontouchstart' in window ||
-      navigator.maxTouchPoints > 0 ||
-      window.matchMedia('(pointer: coarse)').matches
-    )
+    setIsTouchDevice(window.matchMedia('(pointer: coarse)').matches)
   }, [])
 
   // Build the pixel grid whenever gridSize or pixelColor changes
@@ -73,15 +71,16 @@ export default function PixelTransition({
     const activeEl = activeRef.current
     if (!pixelGridEl || !activeEl) return
 
+    // Keep ref in sync synchronously so handlers never read stale state
+    isActiveRef.current = activate
+    setIsActive(activate)
+
     // Reduced motion — swap instantly
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      setIsActive(activate)
       activeEl.style.display = activate ? 'block' : 'none'
       activeEl.style.pointerEvents = 'auto'
       return
     }
-
-    setIsActive(activate)
 
     const pixels = pixelGridEl.querySelectorAll<HTMLDivElement>('.pixelated-image-card__pixel')
     if (!pixels.length) return
@@ -113,13 +112,13 @@ export default function PixelTransition({
   }
 
   function handleEnter() {
-    if (!isActive) animatePixels(true)
+    if (!isActiveRef.current) animatePixels(true)
   }
   function handleLeave() {
-    if (isActive && !once) animatePixels(false)
+    if (isActiveRef.current && !once) animatePixels(false)
   }
   function handleClick() {
-    if (!isActive) animatePixels(true)
+    if (!isActiveRef.current) animatePixels(true)
     else if (!once) animatePixels(false)
   }
 

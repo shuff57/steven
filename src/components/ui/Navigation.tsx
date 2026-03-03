@@ -92,7 +92,7 @@ export function Navigation() {
         </div>
 
         {/* Right: Documents dropdown (desktop) + hamburger (mobile) */}
-        <div className="flex items-center justify-end gap-3">
+        <div className="flex items-center gap-3" style={{ justifySelf: 'end' }}>
           <div ref={dropdownRef} className="hidden md:block" style={{ position: 'relative' }}>
             {/* Trigger */}
             <button

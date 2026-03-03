@@ -59,7 +59,6 @@ export function Hero() {
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const taglineRef = useRef<HTMLParagraphElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
-  const ctaRef = useRef<HTMLDivElement>(null)
 
   useGSAP(() => {
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -72,7 +71,6 @@ export function Hero() {
     tl.fromTo(subtitleRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.3)
     tl.fromTo(taglineRef.current, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.45)
     tl.fromTo(statsRef.current, { opacity: 0, y: 25 }, { opacity: 1, y: 0, duration: 0.55, ease: 'back.out(1.4)' }, 0.6)
-    tl.fromTo(ctaRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5, ease: 'power2.out' }, 0.85)
   }, { scope: containerRef })
 
   return (
@@ -144,7 +142,7 @@ export function Hero() {
               height={150}
               ariaLabel={`${stat.value} ${stat.label}`}
               firstContent={
-                <div className="chalk-card h-full flex flex-col items-center justify-center p-6 text-center">
+                <div className="h-full flex flex-col items-center justify-center p-6 text-center">
                   <span
                     className="text-3xl md:text-4xl font-bold mb-1"
                     style={{ fontFamily: 'var(--font-display)', color: 'var(--color-text-primary)' }}
@@ -180,30 +178,6 @@ export function Hero() {
           ))}
         </div>
 
-        {/* Call to action */}
-        <div ref={ctaRef} className="flex flex-col sm:flex-row items-center gap-6 pt-4 opacity-0">
-          <Link
-            href="/experience"
-            className="px-8 py-3 rounded-md text-base font-semibold transition-all hover:scale-105 active:scale-95"
-            style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-bg-primary)', boxShadow: '0 0 15px rgba(240, 192, 96, 0.3)' }}
-          >
-            View My Work
-          </Link>
-          <Link
-            href="/projects"
-            className="px-8 py-3 rounded-md text-base font-semibold border transition-all hover:bg-white/5"
-            style={{ borderColor: 'var(--color-accent)', color: 'var(--color-accent)' }}
-          >
-            See Projects
-          </Link>
-          <Link
-            href="/documents"
-            className="px-8 py-3 rounded-md text-base font-semibold border transition-all hover:bg-white/5"
-            style={{ borderColor: 'var(--color-accent)', color: 'var(--color-accent)' }}
-          >
-            View Documents
-          </Link>
-        </div>
       </div>
     </section>
   )
