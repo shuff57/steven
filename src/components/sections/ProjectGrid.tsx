@@ -161,9 +161,38 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
 
 function ProjectTOC() {
   const [activeId, setActiveId] = useState('section-tools')
+  const [tocTop, setTocTop] = useState<number | null>(null)
+  const ids = ['section-tools', 'section-achievements']
+  const tocHeight = ids.length * 48 + 16 // ~112px
+
+  // Scroll-aware vertical positioning: same pattern as ExperienceTOC.
+  // Align with first section on load; lock at center once scrolled there.
+  useEffect(() => {
+    const firstId = ids[0]
+
+    const updateTop = () => {
+      const el = document.getElementById(firstId)
+      if (!el) return
+
+      const sectionTop = el.getBoundingClientRect().top
+      const viewportHeight = window.innerHeight
+      const centeredTop = (viewportHeight - tocHeight) / 2
+
+      // Intentionally unclamped — may start off-screen if section is below fold
+      setTocTop(Math.max(centeredTop, sectionTop))
+    }
+
+    updateTop()
+    window.addEventListener('scroll', updateTop, { passive: true })
+    window.addEventListener('resize', updateTop)
+
+    return () => {
+      window.removeEventListener('scroll', updateTop)
+      window.removeEventListener('resize', updateTop)
+    }
+  }, [])
 
   useEffect(() => {
-    const ids = ['section-tools', 'section-achievements']
     const observer = new IntersectionObserver(
       (entries) => {
         const visible = entries.filter((e) => e.isIntersecting)
@@ -182,13 +211,15 @@ function ProjectTOC() {
     return () => observer.disconnect()
   }, [])
 
+  if (tocTop === null) return null
+
   const items = [
     { label: 'Tools & Software', id: 'section-tools' },
     { label: 'Achievements & Initiatives', id: 'section-achievements' },
   ]
 
   return (
-    <nav className="fixed left-4 xl:left-8 top-1/2 -translate-y-1/2 z-30 hidden lg:block print:hidden">
+    <nav className="fixed left-4 xl:left-8 z-30 hidden lg:block print:hidden" style={{ top: `${tocTop}px` }}>
       <div
         className="flex flex-col gap-1 p-2 rounded-xl"
         style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
