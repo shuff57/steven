@@ -3,7 +3,7 @@
 import { usePathname } from 'next/navigation'
 import { Footer } from '@/components/ui/Footer'
 
-const PDF_PAGES = ['/cv', '/thesis']
+const PDF_PAGES = ['/documents']
 
 export function ConditionalFooter() {
   const pathname = usePathname()

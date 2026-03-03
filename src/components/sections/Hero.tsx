@@ -6,7 +6,6 @@ import Link from 'next/link'
 import { Squares } from '@/components/animations'
 import RotatingText from '@/components/ui/RotatingText'
 import PixelTransition from '@/components/ui/PixelTransition'
-import { SplitButton } from '@/components/ui'
 
 const statCards = [
   {
@@ -197,7 +196,13 @@ export function Hero() {
           >
             See Projects
           </Link>
-          <SplitButton />
+          <Link
+            href="/documents"
+            className="px-8 py-3 rounded-md text-base font-semibold border transition-all hover:bg-white/5"
+            style={{ borderColor: 'var(--color-accent)', color: 'var(--color-accent)' }}
+          >
+            View Documents
+          </Link>
         </div>
       </div>
     </section>

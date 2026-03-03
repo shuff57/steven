@@ -3,5 +3,5 @@ export { Footer } from './Footer'
 
 export { PageTransition } from './PageTransition'
 
-export { SplitButton } from './SplitButton'
+export { SegmentedControl } from './SegmentedControl'
 export { PdfViewer } from './PdfViewer'
