@@ -19,7 +19,7 @@ export function SegmentedControl({ options, value, onChange }: SegmentedControlP
       role="group"
       style={{
         display: 'inline-flex',
-        borderRadius: '9999px',
+        borderRadius: 'var(--radius-lg)',
         overflow: 'hidden',
         border: '1px solid var(--color-border)',
         backgroundColor: 'var(--color-bg-primary)',
