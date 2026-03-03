@@ -3,7 +3,6 @@
 import { useState, useEffect, useMemo, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { languages, software, systems, hardware, shinyAppsUrl } from '@/data/skills'
-import { profile } from '@/data/profile'
 import { AnimatedItem } from '@/components/ui/AnimatedItem'
 
 /* ── Types ── */
@@ -14,7 +13,6 @@ type SkillItem = {
   name: string
   category: SkillCategory
   link?: string
-  icon?: string
 }
 
 /* ── Constants ── */
@@ -53,18 +51,9 @@ const TOC_ITEMS = [
   { label: 'Software',  id: 'section-software'  },
   { label: 'Systems',   id: 'section-systems'   },
   { label: 'Hardware',  id: 'section-hardware'  },
-  { label: 'Courses',   id: 'section-courses'   },
 ]
 
 /* ── Skill data assembly ── */
-
-function hardwareIcon(item: string): string {
-  if (item.includes('3D'))        return '🖨️'
-  if (item.includes('CNC'))       return '⚙️'
-  if (item.includes('Raspberry')) return '🍓'
-  if (item.includes('ESP'))       return '📡'
-  return '🔧'
-}
 
 const ALL_SKILLS: SkillItem[] = [
   ...languages.map(name => ({ name, category: 'language' as SkillCategory })),
@@ -73,20 +62,16 @@ const ALL_SKILLS: SkillItem[] = [
     category: 'software' as SkillCategory,
     link: name === 'Shiny Apps' ? shinyAppsUrl : undefined,
   })),
-  ...systems.map(name => ({ name, category: 'system' as SkillCategory })),
-  ...hardware.map(name => ({
-    name,
-    category: 'hardware' as SkillCategory,
-    icon: hardwareIcon(name),
-  })),
+  ...systems.map(name  => ({ name, category: 'system'   as SkillCategory })),
+  ...hardware.map(name => ({ name, category: 'hardware'  as SkillCategory })),
 ]
 
 /* ── TOC ── */
 
 function SkillsTOC({ visible }: { visible: boolean }) {
-  const [activeId,  setActiveId]  = useState(TOC_ITEMS[0].id)
-  const [tocWidth,  setTocWidth]  = useState('calc(50vw - 358px)')
-  const [tocTop,    setTocTop]    = useState<number | null>(null)
+  const [activeId, setActiveId] = useState(TOC_ITEMS[0].id)
+  const [tocWidth, setTocWidth] = useState('calc(50vw - 358px)')
+  const [tocTop,   setTocTop]   = useState<number | null>(null)
   const tocHeight = TOC_ITEMS.length * 48 + 16
 
   useEffect(() => {
@@ -103,9 +88,9 @@ function SkillsTOC({ visible }: { visible: boolean }) {
     const updateTop = () => {
       const el = document.getElementById(firstId)
       if (!el) return
-      const sectionTop    = el.getBoundingClientRect().top
+      const sectionTop     = el.getBoundingClientRect().top
       const viewportHeight = window.innerHeight
-      const centeredTop   = (viewportHeight - tocHeight) / 2
+      const centeredTop    = (viewportHeight - tocHeight) / 2
       setTocTop(Math.max(centeredTop, sectionTop))
     }
 
@@ -184,7 +169,7 @@ function SkillsTOC({ visible }: { visible: boolean }) {
 /* ── Skill card (used in both views) ── */
 
 function SkillCard({ skill }: { skill: SkillItem }) {
-  const colors = CATEGORY_COLORS[skill.category]
+  const colors    = CATEGORY_COLORS[skill.category]
   const textColor = CATEGORY_TEXT[skill.category]
 
   return (
@@ -198,7 +183,6 @@ function SkillCard({ skill }: { skill: SkillItem }) {
         </span>
       </div>
       <div className="flex items-center gap-2">
-        {skill.icon && <span aria-hidden="true" className="text-base">{skill.icon}</span>}
         <span className="text-sm font-medium text-[var(--color-text-primary)] leading-snug">
           {skill.name}
         </span>
@@ -223,7 +207,7 @@ function SkillCard({ skill }: { skill: SkillItem }) {
   )
 }
 
-/* ── By-category section helpers ── */
+/* ── By-category section ── */
 
 function CategorySection({
   id, title, subtitle, skills,
@@ -252,39 +236,6 @@ function CategorySection({
   )
 }
 
-/* ── Course chip ── */
-
-function CourseChip({ children }: { children: React.ReactNode }) {
-  return (
-    <span
-      className="px-3 py-1.5 text-xs font-medium rounded-full transition-colors duration-200 cursor-default"
-      style={{
-        background: 'var(--color-surface)',
-        border: '1px solid var(--color-border)',
-        color: 'var(--color-text-secondary)',
-      }}
-    >
-      {children}
-    </span>
-  )
-}
-
-function CourseGroup({ label, courses }: { label: string; courses: string[] }) {
-  return (
-    <div className="mb-6">
-      <h3
-        className="text-xs font-bold uppercase tracking-wider mb-3"
-        style={{ color: 'var(--color-text-muted)' }}
-      >
-        {label}
-      </h3>
-      <div className="flex flex-wrap gap-2">
-        {courses.map(c => <CourseChip key={c}>{c}</CourseChip>)}
-      </div>
-    </div>
-  )
-}
-
 /* ── Main inner component ── */
 
 function SkillsViewInner() {
@@ -304,26 +255,6 @@ function SkillsViewInner() {
       return true
     })
   }, [query, activeCategory])
-
-  /* Teaching course groups */
-  const mathFoundational = profile.teachingInterests.filter(i =>
-    ['Foundational Mathematics','College Algebra','Trigonometry','Pre-Calculus',
-     'Finite Mathematics','Survey of Calculus','Analytic Geometry and Calculus Series',
-     'Concepts and Structures of Mathematics Series'].includes(i)
-  )
-  const statistics = profile.teachingInterests.filter(i =>
-    ['Introductory Statistics','Conceptual and Practical Statistics'].includes(i)
-  )
-  const advancedMath = profile.teachingInterests.filter(i =>
-    ['Discrete Math','Elementary Linear Algebra','Elementary Differential Equations',
-     'Intuitive Foundations of Geometry','College Geometry','Advanced Number and Operation',
-     'Real and Complex Number Systems','Graph Theory'].includes(i)
-  )
-  const techFab = profile.teachingInterests.filter(i =>
-    ['Industrial Technology','Woodworking','CNC Machining'].includes(i)
-  )
-  const allGrouped = [...mathFoundational, ...statistics, ...advancedMath, ...techFab]
-  const ungrouped = profile.teachingInterests.filter(i => !allGrouped.includes(i))
 
   return (
     <section className="py-20 px-4 md:px-8 max-w-7xl mx-auto">
@@ -403,27 +334,6 @@ function SkillsViewInner() {
               skills={ALL_SKILLS.filter(s => s.category === 'hardware')}
             />
 
-            {/* Courses I Can Teach */}
-            <div id="section-courses">
-              <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
-                Courses
-              </h2>
-              <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
-                From foundational math to embedded systems
-              </p>
-              <AnimatedItem>
-                <div className="chalk-card rounded-xl border border-[var(--color-border)] overflow-hidden p-6 space-y-2">
-                  <CourseGroup label="Mathematics"            courses={mathFoundational} />
-                  <CourseGroup label="Statistics"            courses={statistics} />
-                  <CourseGroup label="Advanced Mathematics"  courses={advancedMath} />
-                  <CourseGroup label="Technology & Fabrication" courses={techFab} />
-                  {ungrouped.length > 0 && (
-                    <CourseGroup label="Other" courses={ungrouped} />
-                  )}
-                </div>
-              </AnimatedItem>
-            </div>
-
           </div>
         </div>
 
@@ -450,12 +360,12 @@ function SkillsViewInner() {
               aria-label="Search skills"
               className="w-full pl-11 pr-4 py-3 rounded-lg text-sm outline-none transition-colors duration-200"
               style={{
-                background:  'var(--color-surface)',
-                border:      '1px solid var(--color-border)',
-                color:       'var(--color-text-primary)',
+                background: 'var(--color-surface)',
+                border:     '1px solid var(--color-border)',
+                color:      'var(--color-text-primary)',
               }}
-              onFocus={e  => (e.currentTarget.style.borderColor = 'var(--color-accent)')}
-              onBlur={e   => (e.currentTarget.style.borderColor = 'var(--color-border)')}
+              onFocus={e => (e.currentTarget.style.borderColor = 'var(--color-accent)')}
+              onBlur={e  => (e.currentTarget.style.borderColor = 'var(--color-border)')}
             />
           </div>
 
