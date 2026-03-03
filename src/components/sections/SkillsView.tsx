@@ -295,7 +295,7 @@ function SkillsViewInner() {
               fontWeight: activeTab === 'search' ? 700 : 400,
             }}
           >
-            Search All
+            Skills Catalog
           </button>
         </div>
       </div>
@@ -341,7 +341,7 @@ function SkillsViewInner() {
         /* ── Search view ── */
         <div>
           {/* Search bar */}
-          <div className="relative mb-6 max-w-2xl mx-auto">
+          <div className="relative mb-6 max-w-5xl mx-auto">
             <svg
               className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none"
               style={{ color: 'var(--color-text-muted)' }}
@@ -370,7 +370,7 @@ function SkillsViewInner() {
           </div>
 
           {/* Category filter pills */}
-          <div className="flex flex-wrap gap-2 mb-8 max-w-2xl mx-auto">
+          <div className="flex flex-wrap gap-2 mb-8 max-w-5xl mx-auto">
             {CATEGORY_FILTERS.map(f => {
               const isActive = activeCategory === f.value
               const colors   = f.value !== 'all' ? CATEGORY_COLORS[f.value as SkillCategory] : undefined
@@ -400,7 +400,7 @@ function SkillsViewInner() {
           </div>
 
           {/* Result count */}
-          <p className="text-xs text-[var(--color-text-muted)] mb-5 font-mono max-w-2xl mx-auto">
+          <p className="text-xs text-[var(--color-text-muted)] mb-5 font-mono max-w-5xl mx-auto">
             {filtered.length === ALL_SKILLS.length
               ? `${filtered.length} skills`
               : `${filtered.length} of ${ALL_SKILLS.length} skills`}
@@ -408,12 +408,12 @@ function SkillsViewInner() {
 
           {/* Grid */}
           {filtered.length === 0 ? (
-            <div className="text-center py-20 text-[var(--color-text-muted)] max-w-2xl mx-auto">
+            <div className="text-center py-20 text-[var(--color-text-muted)] max-w-5xl mx-auto">
               <p className="text-4xl mb-4" aria-hidden="true">∅</p>
               <p>No skills match your search.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-2xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
               {filtered.map((skill, i) => (
                 <SkillCard key={`${skill.name}-${i}`} skill={skill} />
               ))}
