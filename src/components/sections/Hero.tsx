@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { Squares } from '@/components/animations'
 import RotatingText from '@/components/ui/RotatingText'
 import PixelTransition from '@/components/ui/PixelTransition'
+import { SplitButton } from '@/components/ui'
 
 const statCards = [
   {
@@ -196,14 +197,7 @@ export function Hero() {
           >
             See Projects
           </Link>
-          <a
-            href="/Curriculum%20Vitae.pdf"
-            download
-            className="mt-4 sm:mt-0 text-sm underline hover:no-underline transition-colors"
-            style={{ color: 'var(--color-text-muted)' }}
-          >
-            ↓ Download CV (PDF)
-          </a>
+          <SplitButton />
         </div>
       </div>
     </section>

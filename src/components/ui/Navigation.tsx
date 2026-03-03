@@ -3,6 +3,8 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect } from 'react'
+import { SplitButton } from '@/components/ui/SplitButton'
+import { CV_PDF_PATH, THESIS_PDF_PATH } from '@/lib/pdfConfig'
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -75,17 +77,9 @@ export function Navigation() {
 
         {/* Download CV + Mobile toggle */}
         <div className="flex items-center gap-3">
-          <a
-            href="/Curriculum%20Vitae.pdf"
-            download
-            className="hidden md:inline-flex items-center px-3 py-1.5 text-sm rounded border transition-colors duration-200 hover:opacity-80"
-            style={{
-              borderColor: 'var(--color-accent)',
-              color: 'var(--color-accent)',
-            }}
-          >
-            ↓ Download CV
-          </a>
+        <div className="hidden md:block">
+            <SplitButton />
+          </div>
 
           {/* Hamburger button */}
           <button
@@ -151,19 +145,61 @@ export function Navigation() {
               </Link>
             )
           })}
-          <a
-            href="/Curriculum%20Vitae.pdf"
-            download
-            className="mt-4 block py-2.5 px-4 text-sm text-center rounded border transition-colors duration-200"
-            style={{
-              borderColor: 'var(--color-accent)',
-              color: 'var(--color-accent)',
-            }}
-            onClick={() => setMobileOpen(false)}
-            tabIndex={mobileOpen ? 0 : -1}
-          >
-            ↓ Download CV (PDF)
-          </a>
+          <div className="mt-4 pt-4 border-t" style={{ borderColor: 'var(--color-border)' }}>
+            <p className="px-2 mb-2 text-xs font-medium uppercase tracking-wider opacity-70" style={{ color: 'var(--color-text-secondary)' }}>
+              Documents
+            </p>
+            <Link
+              href="/cv"
+              className="block py-3 px-2 text-base rounded-md transition-colors duration-200"
+              style={{
+                color: pathname === '/cv' ? 'var(--color-accent)' : 'var(--color-text-secondary)',
+                backgroundColor: pathname === '/cv' ? 'var(--color-accent-muted)' : 'transparent',
+              }}
+              onClick={() => setMobileOpen(false)}
+              tabIndex={mobileOpen ? 0 : -1}
+            >
+              View CV
+            </Link>
+            <a
+              href={CV_PDF_PATH}
+              download
+              className="block py-3 px-2 text-base rounded-md transition-colors duration-200"
+              style={{
+                color: 'var(--color-text-secondary)',
+                backgroundColor: 'transparent',
+              }}
+              onClick={() => setMobileOpen(false)}
+              tabIndex={mobileOpen ? 0 : -1}
+            >
+              Download CV
+            </a>
+            <Link
+              href="/thesis"
+              className="block py-3 px-2 text-base rounded-md transition-colors duration-200"
+              style={{
+                color: pathname === '/thesis' ? 'var(--color-accent)' : 'var(--color-text-secondary)',
+                backgroundColor: pathname === '/thesis' ? 'var(--color-accent-muted)' : 'transparent',
+              }}
+              onClick={() => setMobileOpen(false)}
+              tabIndex={mobileOpen ? 0 : -1}
+            >
+              View Thesis
+            </Link>
+            <a
+              href={THESIS_PDF_PATH}
+              download
+              className="block py-3 px-2 text-base rounded-md transition-colors duration-200"
+              style={{
+                color: 'var(--color-text-secondary)',
+                backgroundColor: 'transparent',
+              }}
+              onClick={() => setMobileOpen(false)}
+              tabIndex={mobileOpen ? 0 : -1}
+            >
+              Download Thesis
+            </a>
+          </div>
         </div>
       </div>
     </header>

@@ -3,7 +3,7 @@ import { Inter, Crimson_Pro, Caveat } from 'next/font/google'
 import './globals.css'
 import { LenisProvider } from '@/lib/lenis'
 import { Navigation } from '@/components/ui/Navigation'
-import { Footer } from '@/components/ui/Footer'
+import { ConditionalFooter } from '@/components/ui/ConditionalFooter'
 import { PageTransition } from '@/components/ui/PageTransition'
 import { NavigationLoader } from '@/components/ui/NavigationLoader'
 
@@ -56,7 +56,7 @@ export default function RootLayout({
           <main id="main-content">
             <PageTransition>{children}</PageTransition>
           </main>
-          <Footer />
+          <ConditionalFooter />
         </LenisProvider>
       </body>
     </html>

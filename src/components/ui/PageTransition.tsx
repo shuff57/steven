@@ -17,7 +17,7 @@ export function PageTransition({ children }: PageTransitionProps) {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -4 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          style={{ minHeight: '100vh' }}
+          style={{ minHeight: pathname === '/cv' || pathname === '/thesis' ? undefined : '100vh' }}
         >
           {children}
         </m.div>
