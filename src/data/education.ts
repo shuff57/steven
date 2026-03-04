@@ -14,6 +14,7 @@ export interface Education {
     title: string
     link: string
     summary: string
+    abstract: string
   }
 }
 
@@ -60,5 +61,7 @@ export const education: Education = {
     link: 'https://scholarworks.calstate.edu/concern/theses/fq978099t',
     summary:
       'Research on how undergraduate math students perceive tutoring/support services',
+    abstract:
+      'The purpose of the present qualitative study is to categorize the beliefs about the nature and function of tutoring by college students at a public university in Northern California by developing three math-specific tutoring categories. Study participants included fifty-eight undergraduate mathematics students who completed a questionnaire to report math confidence, self-perspective on the purpose and importance of tutoring, and self-perspective on the importance of mathematics in life. The questionnaire consisted of a combination of Likert scale items and free response items. Additionally, four participants were selected for a follow-up interview based on their responses to the questionnaire. This study found three math-specific tutoring perspectives that help describe what students believe is the purpose(s) and function(s) of math tutoring. The results of the study determined that not all students think about the functions of tutoring in the same way. This difference between expectation and experience may reduce the usefulness of tutoring to some students. Thus, by not knowing the students\u2019 specific reason(s) for attending tutoring they may be left with the impression that tutoring is not an effective support system for them.',
   },
 }

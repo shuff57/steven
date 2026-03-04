@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { education } from '@/data/education'
 import { profile } from '@/data/profile'
-import type { Credential } from '@/data/education'
+import type { Credential, Education } from '@/data/education'
 import { AnimatedItem } from '@/components/ui/AnimatedItem'
 
 /* ── TOC config ── */
@@ -206,6 +206,75 @@ function CredentialCard({ credential }: { credential: Credential }) {
   )
 }
 
+function ThesisCard({ thesis }: { thesis: NonNullable<Education['thesis']> }) {
+  const [isHovered, setIsHovered] = useState(false)
+  const abstractRef = useRef<HTMLDivElement>(null)
+
+  return (
+    <div
+      className="chalk-card border-l-4 border-l-[var(--color-accent)] rounded-xl overflow-hidden relative group"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {/* Decorative background icon */}
+      <div
+        className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none"
+        aria-hidden="true"
+      >
+        <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+        </svg>
+      </div>
+
+      <div className="relative z-10 p-8">
+        {/* Always visible */}
+        <div className="text-sm font-bold uppercase tracking-wider text-[var(--color-accent)] mb-3">
+          Master&apos;s Thesis
+        </div>
+        <h3 className="text-2xl font-display italic mb-4 leading-tight text-[var(--color-text-primary)]">
+          &ldquo;{thesis.title}&rdquo;
+        </h3>
+        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-4">
+          {thesis.summary}
+        </p>
+
+        {/* Hover-expand abstract */}
+        <div
+          style={{
+            height: isHovered ? `${abstractRef.current?.scrollHeight ?? 300}px` : '0px',
+            overflow: 'hidden',
+            transition: 'height 0.35s ease-in-out',
+          }}
+        >
+          <div ref={abstractRef} className="border-t border-[var(--color-border)] pt-4 mb-4">
+            <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-2">Abstract</p>
+            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+              {thesis.abstract}
+            </p>
+          </div>
+        </div>
+
+        {/* Button — always at bottom, shifts down with abstract */}
+        <a
+          href={thesis.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold rounded-lg transition-opacity hover:opacity-80"
+          style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-bg-primary)' }}
+        >
+          Read Full Thesis
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+            <polyline points="15 3 21 3 21 9" />
+            <line x1="10" y1="14" x2="21" y2="3" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  )
+}
+
 /* ── Main view ── */
 
 export function EducationView() {
@@ -253,43 +322,7 @@ export function EducationView() {
               California State University, Chico · May 2021
             </p>
             <AnimatedItem>
-              <div className="chalk-card border-l-4 border-l-[var(--color-accent)] rounded-xl overflow-hidden p-8 relative group">
-                {/* Decorative background icon */}
-                <div
-                  className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none"
-                  aria-hidden="true"
-                >
-                  <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
-                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
-                  </svg>
-                </div>
-                <div className="relative z-10">
-                  <div className="text-sm font-bold uppercase tracking-wider text-[var(--color-accent)] mb-3">
-                    Master&apos;s Thesis
-                  </div>
-                  <h3 className="text-2xl font-display italic mb-4 leading-tight text-[var(--color-text-primary)]">
-                    &ldquo;{education.thesis.title}&rdquo;
-                  </h3>
-                  <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-6">
-                    {education.thesis.summary}
-                  </p>
-                  <a
-                    href={education.thesis.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold rounded-lg transition-opacity hover:opacity-80"
-                    style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-bg-primary)' }}
-                  >
-                    Read Full Thesis
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                      <polyline points="15 3 21 3 21 9" />
-                      <line x1="10" y1="14" x2="21" y2="3" />
-                    </svg>
-                  </a>
-                </div>
-              </div>
+              <ThesisCard thesis={education.thesis} />
             </AnimatedItem>
           </div>
         )}
