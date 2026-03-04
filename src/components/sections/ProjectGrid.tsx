@@ -31,6 +31,23 @@ interface ToolCardProps {
 function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe, getStatusLabel, getStatusClass }: ToolCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const bodyRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  // Respect prefers-reduced-motion — pause autoplay video if user prefers reduced motion
+  useEffect(() => {
+    if (!videoRef.current) return
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const applyMotionPreference = () => {
+      if (mql.matches) {
+        videoRef.current?.pause()
+      } else {
+        videoRef.current?.play().catch(() => {})
+      }
+    }
+    applyMotionPreference()
+    mql.addEventListener('change', applyMotionPreference)
+    return () => mql.removeEventListener('change', applyMotionPreference)
+  }, [])
 
   return (
     <div>
@@ -101,7 +118,7 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
                   Live
                 </a>
               )}
-              {project.iframeUrl && (
+              {(project.iframeUrl || project.videoUrl) && (
                 <button
                   onClick={(e) => { e.stopPropagation(); onToggleIframe() }}
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded border transition-colors duration-200 hover:bg-white/5 ml-auto cursor-pointer"
@@ -121,8 +138,9 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
         </div>
       </div>
 
-      {/* Expandable iframe panel */}
-      {project.iframeUrl && (
+
+      {/* Expandable preview panel — video if available, iframe fallback */}
+      {(project.iframeUrl || project.videoUrl) && (
         <div
           className="overflow-hidden rounded-xl"
           style={{
@@ -141,16 +159,33 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
                 <span className="text-xs font-mono text-[var(--color-text-muted)]">{project.title} — Preview</span>
               </div>
               <div className="flex items-center gap-3">
-                <a href={project.iframeUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors duration-150">
-                  Open ↗
-                </a>
+                {project.iframeUrl && (
+                  <a href={project.iframeUrl} target="_blank" rel="noopener noreferrer" className="text-xs text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors duration-150">
+                    Open ↗
+                  </a>
+                )}
                 <button onClick={onCollapseIframe} className="text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors duration-150 text-lg leading-none cursor-pointer border-none bg-transparent">
                   ×
                 </button>
               </div>
             </div>
             {isIframeExpanded && (
-              <iframe src={project.iframeUrl} title={`${project.title} preview`} className="w-full block border-0" style={{ height: '610px' }} loading="lazy" />
+              project.videoUrl
+                ? (
+                  <video
+                    ref={videoRef}
+                    src={project.videoUrl}
+                    poster={project.posterUrl}
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full block"
+                    style={{ height: '610px', objectFit: 'cover' }}
+                  />
+                ) : (
+                  <iframe src={project.iframeUrl} title={`${project.title} preview`} className="w-full block border-0" style={{ height: '610px' }} loading="lazy" />
+                )
             )}
           </div>
         </div>

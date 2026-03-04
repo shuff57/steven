@@ -12,6 +12,8 @@ export interface Project {
   externalUrl?: string   // live app / demo URL
   repoUrl?: string       // GitHub / source code URL
   iframeUrl?: string     // embeddable preview URL
+  videoUrl?: string      // demo video path (public/)
+  posterUrl?: string     // video poster image path (public/)
   type: 'tool' | 'initiative' | 'grant' | 'curriculum'
 }
 
@@ -68,6 +70,8 @@ export const projects: Project[] = [
     status: 'active',
     featured: true,
     iframeUrl: 'https://shuff57.github.io/bookSHelf/',
+    videoUrl: '/videos/bookshelf-demo.mp4?v=5',
+    posterUrl: '/videos/bookshelf-demo-poster.jpg?v=3',
     type: 'tool',
   },
   {
