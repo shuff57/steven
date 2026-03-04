@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
+    "@remotion/transitions": "^4.0.432",
     "framer-motion": "^12.34.3",
     "gsap": "^3.14.2",
     "lenis": "^1.3.17",
@@ -19,12 +20,15 @@
     "react-dom": "19.2.3"
   },
   "devDependencies": {
+    "@remotion/bundler": "^4.0.432",
+    "@remotion/renderer": "^4.0.432",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "remotion": "^4.0.432",
     "tailwindcss": "^4",
     "typescript": "^5"
   }
