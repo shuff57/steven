@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Video pipeline — source/build artifacts (large, not committed)
+# Note: bookshelf-demo.mp4 (render output) IS committed; only source recordings are excluded
+public/videos/*-kf.mp4
+public/videos/clip*.mp4
+
+# Temporary files
+tmp/
