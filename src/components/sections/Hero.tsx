@@ -21,33 +21,36 @@ const statCards = [
     value: '20+',
     label: 'Courses Taught',
     links: [
-      { title: 'Browse Catalog', href: '/experience?view=catalog' },
+      { title: 'Intro to Statistics', href: '/experience?view=catalog' },
+      { title: 'Calculus I', href: '/experience?view=catalog' },
+      { title: 'Intro to Programming', href: '/experience?view=catalog' },
+      { title: 'Finite Math', href: '/experience?view=catalog' },
     ],
   },
   {
     value: '$300K',
     label: 'Grant Awarded',
     links: [
-      { title: 'Degrees & Credentials', href: '/education#section-degrees' },
-      { title: "Master's Thesis", href: '/education#section-thesis' },
-      { title: 'Interests', href: '/education#section-interests' },
+      { title: 'Golden State Pathways Grant', href: '/projects#section-achievements' },
     ],
   },
   {
     value: '10+',
     label: 'Tools Built',
     links: [
-      { title: 'Tools & Software', href: '/projects#section-tools' },
-      { title: 'Achievements', href: '/projects#section-achievements' },
+      { title: 'rāSHio', href: '/projects#section-tools' },
+      { title: 'O.G.R.E', href: '/projects#section-tools' },
+      { title: 'bookSHelf', href: '/projects#section-tools' },
     ],
   },
   {
     value: '35+',
     label: 'Skills',
     links: [
-      { title: 'Languages & Software', href: '/skills#section-languages' },
-      { title: 'Systems & Hardware', href: '/skills#section-lms' },
-      { title: 'Courses I Can Teach', href: '/skills#section-teaching' },
+      { title: 'Languages', href: '/skills#section-languages' },
+      { title: 'Software', href: '/skills#section-software' },
+      { title: 'Systems', href: '/skills#section-systems' },
+      { title: 'Hardware', href: '/skills#section-hardware' },
     ],
   },
 ]
@@ -164,7 +167,7 @@ export function Hero() {
                 >
                   {stat.links.map((link) => (
                     <Link
-                      key={link.href}
+                      key={link.title}
                       href={link.href}
                       className="text-sm font-medium text-center leading-tight hover:opacity-80 transition-opacity"
                       style={{ color: 'var(--color-accent)' }}
