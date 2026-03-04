@@ -70,7 +70,7 @@ export const projects: Project[] = [
     status: 'active',
     featured: true,
     iframeUrl: 'https://shuff57.github.io/bookSHelf/',
-    videoUrl: '/videos/bookshelf-demo.mp4?v=5',
+    videoUrl: '/videos/bookshelf-demo.mp4?v=6',
     posterUrl: '/videos/bookshelf-demo-poster.jpg?v=3',
     type: 'tool',
   },
