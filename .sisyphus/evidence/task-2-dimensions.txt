@@ -1,0 +1,23 @@
+# bookSHelf Embed Dimensions for Recording
+
+## Target Viewport
+- Width: 672px
+- Height: 610px
+
+## Measured Dimensions (at target viewport)
+- Viewport: 672 x 610
+- Body/content width: 672px
+- Body/content height: ~349px
+
+## Code Reference Dimensions (from ProjectGrid.tsx)
+- Grid container max-w-2xl: 672px (line 319)
+- Iframe panel max-height: 660px (line 129)
+- Iframe height: 610px (line 153)
+
+## Recording Recommendation
+- Use viewport: 672 x 610
+- The iframe embed will be 610px height when a project is loaded
+- The grid container width is 672px (max-w-2xl)
+
+## Ghost Cursor
+- Visibility: Test passed - ghost cursor overlay is visible
