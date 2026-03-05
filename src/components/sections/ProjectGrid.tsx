@@ -217,6 +217,7 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
             )}
             </div>
           </div>
+        </div>
       </div>
 
 
