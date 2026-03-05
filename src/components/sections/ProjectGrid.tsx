@@ -36,6 +36,8 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
   const bodyRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const hoverVideoRef = useRef<HTMLVideoElement>(null)
+  // Suppress synthetic mouse events fired after a touch so tap-to-close works cleanly
+  const hasTouched = useRef(false)
 
   // Respect prefers-reduced-motion — pause autoplay video if user prefers reduced motion
   useEffect(() => {
@@ -72,8 +74,9 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
       <div
         className="chalk-card rounded-xl border overflow-hidden transition-colors duration-200"
         style={{ borderColor: isExpanded ? 'var(--color-accent)' : 'var(--color-border)' }}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onTouchStart={() => { hasTouched.current = true }}
+        onMouseEnter={() => { if (!hasTouched.current) setIsHovered(true) }}
+        onMouseLeave={() => { if (!hasTouched.current) setIsHovered(false) }}
       >
         {/* Header — always visible */}
         {/* Header — always visible; tap-to-expand on touch devices */}
