@@ -7,6 +7,7 @@ import { CV_PDF_PATH, THESIS_PDF_PATH } from '@/lib/pdfConfig'
 
 const navLinks = [
   { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
   { href: '/experience', label: 'Experience' },
   { href: '/projects', label: 'Projects' },
   { href: '/education', label: 'Education' },
