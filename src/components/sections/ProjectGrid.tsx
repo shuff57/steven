@@ -121,7 +121,7 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
                   muted
                   playsInline
                   className="w-full rounded-lg mt-3 mb-3"
-                  style={{ aspectRatio: '16/9', objectFit: 'cover' }}
+                  style={{ aspectRatio: '16/9', objectFit: 'contain' }}
                 />
                 <div className="flex items-center justify-center gap-3 mt-1 mb-1">
                   {project.repoUrl && (
@@ -258,7 +258,7 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
                     muted
                     playsInline
                     className="w-full block"
-                    style={{ aspectRatio: '16/9', objectFit: 'cover', width: '100%' }}
+                    style={{ aspectRatio: '16/9', objectFit: 'contain', width: '100%' }}
                   />
                 ) : (
                   <iframe src={project.iframeUrl} title={`${project.title} preview`} className="w-full block border-0" style={{ aspectRatio: '16/9' }} loading="lazy" />
