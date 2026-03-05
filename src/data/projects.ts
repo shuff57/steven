@@ -55,8 +55,8 @@ export const projects: Project[] = [
     status: 'active',
     featured: true,
     externalUrl: 'https://rashio.pages.dev',
-    repoUrl: 'https://github.com/shuff57',
-    // iframeUrl: blocked by X-Frame-Options: DENY — swap in a video/animation later
+    videoUrl: '/videos/raSHio-demo.mp4',
+    // repoUrl removed — only live site button shown
     type: 'tool',
   },
   {
@@ -70,8 +70,9 @@ export const projects: Project[] = [
     status: 'active',
     featured: true,
     iframeUrl: 'https://shuff57.github.io/bookSHelf/',
-    videoUrl: '/videos/bookshelf-demo.mp4?v=6',
-    posterUrl: '/videos/bookshelf-demo-poster.jpg?v=3',
+    videoUrl: '/videos/bookSHelf-demo.mp4',
+    repoUrl: 'https://github.com/shuff57/bookSHelf',
+    // posterUrl removed — file does not exist in public/videos
     type: 'tool',
   },
   {

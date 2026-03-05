@@ -32,6 +32,7 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
   const [isHovered, setIsHovered] = useState(false)
   const bodyRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const hoverVideoRef = useRef<HTMLVideoElement>(null)
 
   // Respect prefers-reduced-motion — pause autoplay video if user prefers reduced motion
   useEffect(() => {
@@ -48,6 +49,19 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
     mql.addEventListener('change', applyMotionPreference)
     return () => mql.removeEventListener('change', applyMotionPreference)
   }, [])
+
+  // Play/pause the inline hover video based on hover state
+  useEffect(() => {
+    const video = hoverVideoRef.current
+    if (!video) return
+    const mql = window.matchMedia('(prefers-reduced-motion: reduce)')
+    if (isHovered && !mql.matches) {
+      video.play().catch(() => {})
+    } else {
+      video.pause()
+      if (!isHovered) video.currentTime = 0
+    }
+  }, [isHovered])
 
   return (
     <div>
@@ -84,56 +98,107 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
           }}
         >
           <div ref={bodyRef} className="px-5 pb-5 border-t border-[var(--color-border)]">
-            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-3 mb-4">
-              {project.description}
-            </p>
-            <div className="flex items-center gap-2">
-              {project.repoUrl && (
-                <a
-                  href={project.repoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded border transition-colors duration-200 hover:bg-white/5"
-                  style={{ borderColor: 'var(--color-border)', color: 'var(--color-text-secondary)' }}
-                >
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
-                  </svg>
-                  Code
-                </a>
-              )}
-              {project.externalUrl && (
-                <a
-                  href={project.externalUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded transition-colors duration-200 hover:opacity-80"
-                  style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-bg-primary)' }}
-                >
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-                    <polyline points="15 3 21 3 21 9" />
-                    <line x1="10" y1="14" x2="21" y2="3" />
-                  </svg>
-                  Live
-                </a>
-              )}
-              {(project.iframeUrl || project.videoUrl) && (
-                <button
-                  onClick={(e) => { e.stopPropagation(); onToggleIframe() }}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded border transition-colors duration-200 hover:bg-white/5 ml-auto cursor-pointer"
-                  style={{ borderColor: isIframeExpanded ? 'var(--color-accent)' : 'var(--color-border)', color: isIframeExpanded ? 'var(--color-accent)' : 'var(--color-text-secondary)' }}
-                >
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    {isIframeExpanded
-                      ? <><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="10" y1="14" x2="21" y2="3"/><line x1="3" y1="21" x2="14" y2="10"/></>
-                      : <><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></>
-                    }
-                  </svg>
-                  {isIframeExpanded ? 'Collapse' : 'Preview'}
-                </button>
-              )}
-            </div>
+            {project.videoUrl ? (
+              <>
+                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-3 mb-3">                  {project.description}                </p>
+                <video
+                  ref={hoverVideoRef}
+                  src={project.videoUrl}
+                  poster={project.posterUrl}
+                  loop
+                  muted
+                  playsInline
+                  className="w-full rounded-lg mt-3 mb-3"
+                  style={{ height: '360px', objectFit: 'cover' }}
+                />
+                <div className="flex items-center justify-center gap-3 mt-1 mb-1">
+                  {project.repoUrl && (
+                    <a
+                      href={project.repoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold rounded transition-colors duration-200 hover:opacity-80"
+                      style={{ backgroundColor: '#e6edf3', color: '#24292f' }}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                      </svg>
+                      GitHub
+                    </a>
+                  )}
+                  {(project.externalUrl || project.iframeUrl) && (
+                    <a
+                      href={project.externalUrl ?? project.iframeUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold rounded transition-colors duration-200 hover:opacity-80"
+                      style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-bg-primary)' }}
+                    >
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                        <polyline points="15 3 21 3 21 9" />
+                        <line x1="10" y1="14" x2="21" y2="3" />
+                      </svg>
+                      {project.title}
+                    </a>
+                  )}
+                </div>
+
+              </>
+            ) : (
+              <>
+                <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-3 mb-4">
+                  {project.description}
+                </p>
+                <div className="flex items-center gap-2">
+                  {project.repoUrl && (
+                    <a
+                      href={project.repoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded border transition-colors duration-200 hover:bg-white/5"
+                      style={{ borderColor: 'var(--color-border)', color: 'var(--color-text-secondary)' }}
+                    >
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
+                      </svg>
+                      Code
+                    </a>
+                  )}
+                  {project.externalUrl && (
+                    <a
+                      href={project.externalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded transition-colors duration-200 hover:opacity-80"
+                      style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-bg-primary)' }}
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                        <polyline points="15 3 21 3 21 9" />
+                        <line x1="10" y1="14" x2="21" y2="3" />
+                      </svg>
+                      Live
+                    </a>
+                  )}
+                  {(project.iframeUrl || project.videoUrl) && (
+                    <button
+                      onClick={(e) => { e.stopPropagation(); onToggleIframe() }}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded border transition-colors duration-200 hover:bg-white/5 ml-auto cursor-pointer"
+                      style={{ borderColor: isIframeExpanded ? 'var(--color-accent)' : 'var(--color-border)', color: isIframeExpanded ? 'var(--color-accent)' : 'var(--color-text-secondary)' }}
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        {isIframeExpanded
+                          ? <><polyline points="4 14 10 14 10 20"/><polyline points="20 10 14 10 14 4"/><line x1="10" y1="14" x2="21" y2="3"/><line x1="3" y1="21" x2="14" y2="10"/></>
+                          : <><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></>
+                        }
+                      </svg>
+                      {isIframeExpanded ? 'Collapse' : 'Preview'}
+                    </button>
+                  )}
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
