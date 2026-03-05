@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   output: 'export',
   basePath: isProd ? '/steven' : '',
   assetPrefix: isProd ? '/steven/' : '',
+  env: {
+    NEXT_PUBLIC_BASE_PATH: isProd ? '/steven' : '',
+  },
   images: { unoptimized: true },
   turbopack: {
     root: path.resolve(__dirname),
