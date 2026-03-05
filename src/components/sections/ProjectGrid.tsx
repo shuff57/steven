@@ -30,6 +30,9 @@ interface ToolCardProps {
 
 function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe, getStatusLabel, getStatusClass }: ToolCardProps) {
   const [isHovered, setIsHovered] = useState(false)
+  // Touch devices have no hover — track tap-to-expand separately
+  const [isTouchExpanded, setIsTouchExpanded] = useState(false)
+  const isExpanded = isHovered || isTouchExpanded
   const bodyRef = useRef<HTMLDivElement>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const hoverVideoRef = useRef<HTMLVideoElement>(null)
@@ -55,25 +58,35 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
     const video = hoverVideoRef.current
     if (!video) return
     const mql = window.matchMedia('(prefers-reduced-motion: reduce)')
-    if (isHovered && !mql.matches) {
+    if (isExpanded && !mql.matches) {
       video.play().catch(() => {})
     } else {
       video.pause()
-      if (!isHovered) video.currentTime = 0
+      if (!isExpanded) video.currentTime = 0
     }
-  }, [isHovered])
+  }, [isExpanded])
 
   return (
     <div>
       {/* Slim hover-expand card */}
       <div
         className="chalk-card rounded-xl border overflow-hidden transition-colors duration-200"
-        style={{ borderColor: isHovered ? 'var(--color-accent)' : 'var(--color-border)' }}
+        style={{ borderColor: isExpanded ? 'var(--color-accent)' : 'var(--color-border)' }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
         {/* Header — always visible */}
-        <div className="px-5 py-4 flex justify-between items-start">
+        {/* Header — always visible; tap-to-expand on touch devices */}
+        <div
+          className="px-5 py-4 flex justify-between items-start"
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            if (window.matchMedia('(hover: none)').matches) {
+              setIsTouchExpanded((prev) => !prev)
+            }
+          }}
+          aria-expanded={isExpanded}
+        >
           <div className="flex-1 min-w-0 pr-3">
             <h3 className="text-xl font-bold font-display text-[var(--color-text-primary)] truncate">
               {project.title}
@@ -92,7 +105,7 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
         {/* Expandable body */}
         <div
           style={{
-            height: isHovered ? `${bodyRef.current?.scrollHeight ?? 200}px` : '0px',
+            height: isExpanded ? `${bodyRef.current?.scrollHeight ?? 200}px` : '0px',
             overflow: 'hidden',
             transition: 'height 0.3s ease-in-out',
           }}
