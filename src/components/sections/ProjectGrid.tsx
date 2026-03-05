@@ -119,16 +119,18 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
               {project.videoUrl ? (
               <>
                 <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-3 mb-3">                  {project.description}                </p>
-                <video
-                  ref={hoverVideoRef}
-                  src={project.videoUrl ? `${BASE_PATH}${project.videoUrl}` : undefined}
-                  poster={project.posterUrl ? `${BASE_PATH}${project.posterUrl}` : undefined}
-                  loop
-                  muted
-                  playsInline
-                  className="w-full rounded-xl mt-3 mb-3"
-                  style={{ aspectRatio: '16/9', objectFit: 'contain' }}
-                />
+                <div className="rounded-xl overflow-hidden mt-3 mb-3">
+                  <video
+                    ref={hoverVideoRef}
+                    src={project.videoUrl ? `${BASE_PATH}${project.videoUrl}` : undefined}
+                    poster={project.posterUrl ? `${BASE_PATH}${project.posterUrl}` : undefined}
+                    loop
+                    muted
+                    playsInline
+                    className="w-full block"
+                    style={{ aspectRatio: '16/9', objectFit: 'contain' }}
+                  />
+                </div>
                 <div className="flex items-center justify-center gap-3 mt-1 mb-1">
                   {project.repoUrl && (
                     <a
@@ -256,19 +258,21 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
             {isIframeExpanded && (
               project.videoUrl
                 ? (
-                  <video
-                    ref={videoRef}
-                    src={project.videoUrl ? `${BASE_PATH}${project.videoUrl}` : undefined}
-                    poster={project.posterUrl ? `${BASE_PATH}${project.posterUrl}` : undefined}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full block rounded-b-xl"
-                    style={{ aspectRatio: '16/9', objectFit: 'contain', width: '100%' }}
-                  />
+                  <div className="overflow-hidden rounded-b-xl">
+                    <video
+                      ref={videoRef}
+                      src={project.videoUrl ? `${BASE_PATH}${project.videoUrl}` : undefined}
+                      poster={project.posterUrl ? `${BASE_PATH}${project.posterUrl}` : undefined}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className="w-full block"
+                      style={{ aspectRatio: '16/9', objectFit: 'contain', width: '100%' }}
+                    />
+                  </div>
                 ) : (
-                  <iframe src={project.iframeUrl} title={`${project.title} preview`} className="w-full block border-0" style={{ aspectRatio: '16/9' }} loading="lazy" />
+                  <iframe src={project.iframeUrl} title={`${project.title} preview`} className="w-full block border-0 rounded-b-xl" style={{ aspectRatio: '16/9' }} loading="lazy" />
                 )
             )}
           </div>
