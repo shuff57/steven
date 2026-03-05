@@ -80,11 +80,7 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
         <div
           className="px-5 py-4 flex justify-between items-start"
           style={{ cursor: 'pointer' }}
-          onClick={() => {
-            if (window.matchMedia('(hover: none)').matches) {
-              setIsTouchExpanded((prev) => !prev)
-            }
-          }}
+          onClick={() => setIsTouchExpanded((prev) => !prev)}
           aria-expanded={isExpanded}
         >
           <div className="flex-1 min-w-0 pr-3">
@@ -122,7 +118,7 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
                   muted
                   playsInline
                   className="w-full rounded-lg mt-3 mb-3"
-                  style={{ height: '360px', objectFit: 'cover' }}
+                  style={{ aspectRatio: '16/9', objectFit: 'cover' }}
                 />
                 <div className="flex items-center justify-center gap-3 mt-1 mb-1">
                   {project.repoUrl && (
@@ -259,10 +255,10 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
                     muted
                     playsInline
                     className="w-full block"
-                    style={{ height: '610px', objectFit: 'cover' }}
+                    style={{ aspectRatio: '16/9', objectFit: 'cover', width: '100%' }}
                   />
                 ) : (
-                  <iframe src={project.iframeUrl} title={`${project.title} preview`} className="w-full block border-0" style={{ height: '610px' }} loading="lazy" />
+                  <iframe src={project.iframeUrl} title={`${project.title} preview`} className="w-full block border-0" style={{ aspectRatio: '16/9' }} loading="lazy" />
                 )
             )}
           </div>
