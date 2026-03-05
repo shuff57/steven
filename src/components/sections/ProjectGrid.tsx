@@ -28,6 +28,8 @@ interface ToolCardProps {
   getStatusClass: (s: Project['status']) => string
 }
 
+const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
+
 function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe, getStatusLabel, getStatusClass }: ToolCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   // Touch devices have no hover — track tap-to-expand separately
@@ -119,8 +121,8 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
                 <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-3 mb-3">                  {project.description}                </p>
                 <video
                   ref={hoverVideoRef}
-                  src={project.videoUrl}
-                  poster={project.posterUrl}
+                  src={project.videoUrl ? `${BASE_PATH}${project.videoUrl}` : undefined}
+                  poster={project.posterUrl ? `${BASE_PATH}${project.posterUrl}` : undefined}
                   loop
                   muted
                   playsInline
@@ -256,8 +258,8 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
                 ? (
                   <video
                     ref={videoRef}
-                    src={project.videoUrl}
-                    poster={project.posterUrl}
+                    src={project.videoUrl ? `${BASE_PATH}${project.videoUrl}` : undefined}
+                    poster={project.posterUrl ? `${BASE_PATH}${project.posterUrl}` : undefined}
                     autoPlay
                     loop
                     muted
