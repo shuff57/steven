@@ -33,7 +33,7 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
   // Touch devices have no hover — track tap-to-expand separately
   const [isTouchExpanded, setIsTouchExpanded] = useState(false)
   const isExpanded = isHovered || isTouchExpanded
-  const bodyRef = useRef<HTMLDivElement>(null)
+
   const videoRef = useRef<HTMLVideoElement>(null)
   const hoverVideoRef = useRef<HTMLVideoElement>(null)
   // Suppress synthetic mouse events fired after a touch so tap-to-close works cleanly
@@ -78,12 +78,15 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
         onMouseEnter={() => { if (!hasTouched.current) setIsHovered(true) }}
         onMouseLeave={() => { if (!hasTouched.current) setIsHovered(false) }}
       >
-        {/* Header — always visible */}
+
         {/* Header — always visible; tap-to-expand on touch devices */}
         <div
           className="px-5 py-4 flex justify-between items-start"
           style={{ cursor: 'pointer' }}
+          role="button"
+          tabIndex={0}
           onClick={() => setIsTouchExpanded((prev) => !prev)}
+          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setIsTouchExpanded((prev) => !prev) }}
           aria-expanded={isExpanded}
         >
           <div className="flex-1 min-w-0 pr-3">
@@ -101,16 +104,17 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
           </span>
         </div>
 
-        {/* Expandable body */}
+        {/* Expandable body — grid-template-rows avoids iOS scrollHeight + zero-height video bugs */}
         <div
           style={{
-            height: isExpanded ? `${bodyRef.current?.scrollHeight ?? 200}px` : '0px',
-            overflow: 'hidden',
-            transition: 'height 0.3s ease-in-out',
+            display: 'grid',
+            gridTemplateRows: isExpanded ? '1fr' : '0fr',
+            transition: 'grid-template-rows 0.3s ease-in-out',
           }}
         >
-          <div ref={bodyRef} className="px-5 pb-5 border-t border-[var(--color-border)]">
-            {project.videoUrl ? (
+          <div style={{ overflow: 'hidden', minHeight: 0 }}>
+            <div className="px-5 pb-5 border-t border-[var(--color-border)]">
+              {project.videoUrl ? (
               <>
                 <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-3 mb-3">                  {project.description}                </p>
                 <video
@@ -120,7 +124,7 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
                   loop
                   muted
                   playsInline
-                  className="w-full rounded-lg mt-3 mb-3"
+                  className="w-full rounded-xl mt-3 mb-3"
                   style={{ aspectRatio: '16/9', objectFit: 'contain' }}
                 />
                 <div className="flex items-center justify-center gap-3 mt-1 mb-1">
@@ -211,8 +215,8 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
                 </div>
               </>
             )}
+            </div>
           </div>
-        </div>
       </div>
 
 
@@ -257,7 +261,7 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
                     loop
                     muted
                     playsInline
-                    className="w-full block"
+                    className="w-full block rounded-b-xl"
                     style={{ aspectRatio: '16/9', objectFit: 'contain', width: '100%' }}
                   />
                 ) : (
