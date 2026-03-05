@@ -64,7 +64,7 @@ export const projects: Project[] = [
     title: 'bookSHelf',
     subtitle: 'Book Merge and Remastering Tool',
     description:
-      'A custom book merge and remastering tool used to create and adopt introductory concepts of mechatronics engineering curricula for Chico Unified School District. No app yet.',
+      'An AI-powered textbook enhancement pipeline that transforms raw textbook content into interactive Student Enhanced Edition HTML pages — complete with plain-English explanations, worked examples, step-by-step solutions, verified math, and a navigable web interface.',
     dateStart: '2025',
     dateEnd: '2026',
     status: 'active',
