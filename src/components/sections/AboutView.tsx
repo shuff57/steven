@@ -193,8 +193,8 @@ export function AboutView() {
             style={{ color: 'var(--color-text-secondary)', opacity: 0 }}
           >
             I&apos;m a mathematics and computer science educator based in Chico, California. For
-            over a decade I&apos;ve taught at every level — middle school through community
-            college — bringing the same curiosity to an AP Computer Science course as to a
+            <span style={{ color: 'var(--color-accent)' }}>over a decade</span> I&apos;ve taught at every level — middle school through community
+            college — bringing the same curiosity to an <span style={{ color: 'var(--color-accent)' }}>AP Computer Science</span> course as to a
             first-year statistics lecture. Right now I split my time between Pleasant Valley High
             School, where I teach Integrated Math, CS, and dual-enrollment statistics, and Butte
             College, where I teach as an adjunct across statistics, calculus, and finite
@@ -206,9 +206,9 @@ export function AboutView() {
             style={{ color: 'var(--color-text-secondary)', opacity: 0 }}
           >
             I build tools. When a problem shows up in my classroom and the existing solutions
-            don&apos;t fit, I write code. rāSHio is a clean, student-focused statistics
-            calculator. bookSHelf automates textbook remastering into modern, accessible formats.
-            O.G.R.E. is a Chrome extension that brings AI-powered rubric evaluation to teacher
+            don&apos;t fit, I write code. <span style={{ color: 'var(--color-accent)' }}>rāSHio</span> is a clean, student-focused statistics
+            calculator. <span style={{ color: 'var(--color-accent)' }}>bookSHelf</span> automates textbook remastering into modern, accessible formats.
+            <span style={{ color: 'var(--color-accent)' }}>O.G.R.E.</span> is a Chrome extension that brings AI-powered rubric evaluation to teacher
             workflows. Each project starts with a frustration felt at the whiteboard and ends with
             working software.
           </p>
@@ -218,8 +218,8 @@ export function AboutView() {
             style={{ color: 'var(--color-text-secondary)', opacity: 0 }}
           >
             My research examines how students perceive and use tutoring and support services —
-            and what gets in the way of them asking for help. That same curiosity drives a $300K
-            robotics grant, a CNC machining certification earned alongside my students, and a
+            and what gets in the way of them asking for help. That same curiosity drives a <span style={{ color: 'var(--color-accent)' }}>$300K</span>
+            robotics grant, a <span style={{ color: 'var(--color-accent)' }}>CNC machining certification</span> earned alongside my students, and a
             career shaped by one persistent question:{' '}
             <em
               style={{
@@ -232,6 +232,22 @@ export function AboutView() {
             </em>
           </p>
         </div>
+
+        {/* ── Pull Quote ── */}
+        <AnimatedItem>
+          <div className="pull-quote text-center my-16 max-w-2xl mx-auto">
+            <p
+              style={{
+                fontFamily: 'var(--font-handwritten)',
+                fontSize: 'clamp(1.5rem, 3vw, 2.25rem)',
+                color: 'var(--color-text-primary)',
+                lineHeight: 1.3,
+              }}
+            >
+              &ldquo;What would actually help?&rdquo;
+            </p>
+          </div>
+        </AnimatedItem>
 
         {/* ── What I Do ── */}
         <div className="mb-20">
