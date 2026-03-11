@@ -115,18 +115,25 @@ export function AboutView() {
   const watermarkRef = useRef<HTMLSpanElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
   const subtitleRef = useRef<HTMLParagraphElement>(null)
-  const bioRef = useRef<HTMLDivElement>(null)
+  const bioP1Ref = useRef<HTMLParagraphElement>(null)
+  const bioP2Ref = useRef<HTMLParagraphElement>(null)
+  const bioP3Ref = useRef<HTMLParagraphElement>(null)
 
   useGSAP(
     () => {
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      if (prefersReducedMotion) return
+      if (prefersReducedMotion) {
+        gsap.set([watermarkRef.current, headingRef.current, subtitleRef.current, bioP1Ref.current, bioP2Ref.current, bioP3Ref.current], { opacity: 1, y: 0 })
+        return
+      }
 
       const tl = gsap.timeline({ delay: 0.2 })
       tl.fromTo(watermarkRef.current, { opacity: 0 }, { opacity: 0.05, duration: 1.2, ease: 'power2.out' }, 0)
       tl.fromTo(headingRef.current, { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out' }, 0.1)
       tl.fromTo(subtitleRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.3)
-      tl.fromTo(bioRef.current, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.45)
+      tl.fromTo(bioP1Ref.current, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.45)
+      tl.fromTo(bioP2Ref.current, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.57)
+      tl.fromTo(bioP3Ref.current, { opacity: 0, y: 15 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' }, 0.69)
     },
     { scope: containerRef },
   )
@@ -179,14 +186,11 @@ export function AboutView() {
         </div>
 
         {/* ── Bio ── */}
-        <div
-          ref={bioRef}
-          className="space-y-5 mb-20 max-w-2xl mx-auto"
-          style={{ opacity: 0 }}
-        >
+        <div className="space-y-5 mb-20 max-w-2xl mx-auto">
           <p
+            ref={bioP1Ref}
             className="text-base md:text-lg leading-relaxed"
-            style={{ color: 'var(--color-text-secondary)' }}
+            style={{ color: 'var(--color-text-secondary)', opacity: 0 }}
           >
             I&apos;m a mathematics and computer science educator based in Chico, California. For
             over a decade I&apos;ve taught at every level — middle school through community
@@ -197,8 +201,9 @@ export function AboutView() {
             mathematics.
           </p>
           <p
+            ref={bioP2Ref}
             className="text-base md:text-lg leading-relaxed"
-            style={{ color: 'var(--color-text-secondary)' }}
+            style={{ color: 'var(--color-text-secondary)', opacity: 0 }}
           >
             I build tools. When a problem shows up in my classroom and the existing solutions
             don&apos;t fit, I write code. rāSHio is a clean, student-focused statistics
@@ -208,8 +213,9 @@ export function AboutView() {
             working software.
           </p>
           <p
+            ref={bioP3Ref}
             className="text-base md:text-lg leading-relaxed"
-            style={{ color: 'var(--color-text-secondary)' }}
+            style={{ color: 'var(--color-text-secondary)', opacity: 0 }}
           >
             My research examines how students perceive and use tutoring and support services —
             and what gets in the way of them asking for help. That same curiosity drives a $300K
