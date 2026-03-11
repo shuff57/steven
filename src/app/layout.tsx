@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { Inter, Crimson_Pro, Caveat } from 'next/font/google'
+import { Inter, Crimson_Pro, Caveat, Fira_Code } from 'next/font/google'
 import './globals.css'
 import { LenisProvider } from '@/lib/lenis'
 import { Navigation } from '@/components/ui/Navigation'
@@ -29,6 +29,13 @@ const caveat = Caveat({
   weight: ['400', '500', '600', '700'],
 })
 
+const firaCode = Fira_Code({
+  variable: '--font-mono',
+  subsets: ['latin'],
+  display: 'swap',
+  weight: ['400', '500', '700'],
+})
+
 export const metadata: Metadata = {
   title: 'Steven Huff | Math Educator & Developer',
   description:
@@ -42,7 +49,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${inter.variable} ${crimsonPro.variable} ${caveat.variable} antialiased`}>
+      <body className={`${inter.variable} ${crimsonPro.variable} ${caveat.variable} ${firaCode.variable} antialiased`}>
         {/* Skip to main content — keyboard accessibility */}
         <a
           href="#main-content"

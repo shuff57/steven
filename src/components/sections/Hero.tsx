@@ -4,7 +4,7 @@ import { gsap } from '@/lib/gsapConfig'
 import { useGSAP } from '@gsap/react'
 import Link from 'next/link'
 import { Squares } from '@/components/animations'
-import MatrixText from '@/components/ui/MatrixText'
+import Typewriter from '@/components/ui/Typewriter'
 import PixelTransition from '@/components/ui/PixelTransition'
 
 const statCards = [
@@ -119,15 +119,24 @@ export function Hero() {
           <div
             ref={subtitleRef}
             className="text-lg md:text-2xl font-medium tracking-wide max-w-3xl mx-auto flex items-center justify-center"
-            style={{ color: 'var(--color-text-primary)', opacity: 0, fontFamily: 'var(--font-handwritten)', fontSize: '1.35em' }}
+            style={{ opacity: 0 }}
           >
-            <MatrixText
-              texts={MATRIX_TEXTS}
-              initialDelay={1000}
-              letterInterval={80}
-              letterAnimationDuration={400}
-              pauseDuration={2500}
-            />
+            <div
+              className="font-mono px-6 py-3"
+              style={{
+                backgroundColor: 'var(--color-accent)',
+                color: '#000000',
+                width: '26ch',
+              }}
+            >
+              <Typewriter
+                text={MATRIX_TEXTS}
+                speed={80}
+                deleteSpeed={40}
+                delay={2000}
+                loop
+              />
+            </div>
           </div>
 
           <p

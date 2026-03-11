@@ -29,7 +29,7 @@
   --font-sans: var(--font-sans);
   --font-display: var(--font-display);
   --font-handwritten: var(--font-handwritten);
-  --font-mono: 'Courier New', monospace;
+  --font-mono: var(--font-mono), 'Courier New', monospace;
 
   --text-xs: 0.75rem;
   --text-sm: 0.875rem;
@@ -295,4 +295,9 @@ a:hover {
   height: auto !important;
   max-height: none !important;
   overflow: visible !important;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }

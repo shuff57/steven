@@ -64,53 +64,43 @@ export default function MatrixText({
       setLetters(
         chars.map((char) => ({
           id: `matrix-letter-${idCounterRef.current++}`,
-          char,
-          isMatrix: false,
+          char: char === ' ' ? char : getRandomChar(),
+          isMatrix: char !== ' ',
           isSpace: char === ' ',
         }))
       )
 
       chars.forEach((char, i) => {
-        const revealStart = setTimeout(() => {
-          if (char !== ' ') {
-            setLetter(i, { char: getRandomChar(), isMatrix: true, isSpace: false })
-          }
-
-          const revealResolve = setTimeout(() => {
-            setLetter(i, { char, isMatrix: false, isSpace: char === ' ' })
-          }, letterAnimationDuration)
-
-          timeoutsRef.current.push(revealResolve)
+        if (char === ' ') return
+        const revealTimeout = setTimeout(() => {
+          setLetter(i, { char, isMatrix: false, isSpace: false })
         }, initialDelay + i * letterInterval)
-
-        timeoutsRef.current.push(revealStart)
+        timeoutsRef.current.push(revealTimeout)
       })
 
-      const totalRevealTime = initialDelay + chars.length * letterInterval + letterAnimationDuration
+      const totalRevealTime = initialDelay + chars.length * letterInterval
 
       const waitTimeout = setTimeout(() => {
         chars.forEach((char, i) => {
-          const scrambleStart = setTimeout(() => {
-            if (char !== ' ') {
-              setLetter(i, { char: getRandomChar(), isMatrix: true, isSpace: false })
-            }
+          if (char === ' ') return
+          const scrambleTimeout = setTimeout(() => {
+            setLetter(i, { char: getRandomChar(), isMatrix: true, isSpace: false })
           }, i * letterInterval)
-
-          timeoutsRef.current.push(scrambleStart)
+          timeoutsRef.current.push(scrambleTimeout)
         })
 
-        const scrambleTotal = chars.length * letterInterval + letterAnimationDuration
+        const scrambleTotal = chars.length * letterInterval
 
         const nextTextTimeout = setTimeout(() => {
           setCurrentTextIndex((prev) => (prev + 1) % texts.length)
-        }, scrambleTotal)
+        }, scrambleTotal + 200)
 
         timeoutsRef.current.push(nextTextTimeout)
       }, totalRevealTime + pauseDuration)
 
       timeoutsRef.current.push(waitTimeout)
     },
-    [clearAllTimeouts, getRandomChar, initialDelay, letterAnimationDuration, letterInterval, pauseDuration, setLetter, texts]
+    [clearAllTimeouts, getRandomChar, initialDelay, letterInterval, pauseDuration, setLetter, texts]
   )
 
   const runCycleRef = useRef(runCycle)
@@ -145,12 +135,12 @@ export default function MatrixText({
       {letters.map((letter) => (
         <div
           key={letter.id}
-          className={cn('w-[1ch] overflow-hidden text-center', letter.isMatrix && 'font-mono')}
+          className="w-[1ch] overflow-hidden text-center"
           style={{
             display: 'inline-block',
             fontVariantNumeric: 'tabular-nums',
-            color: letter.isMatrix ? '#00ff00' : undefined,
-            textShadow: letter.isMatrix ? '0 2px 4px rgba(0, 255, 0, 0.5)' : 'none',
+            color: letter.isMatrix ? '#f0c060' : undefined,
+            textShadow: letter.isMatrix ? '0 2px 4px rgba(240, 192, 96, 0.5)' : 'none',
             transition: 'color 0.1s ease-in-out',
           }}
         >
