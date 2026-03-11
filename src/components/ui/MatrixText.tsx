@@ -1,5 +1,4 @@
 'use client'
-import { motion } from 'framer-motion'
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 function cn(...classes: (string | undefined | null | boolean)[]): string {
@@ -20,17 +19,6 @@ interface LetterState {
   char: string
   isMatrix: boolean
   isSpace: boolean
-}
-
-const motionVariants = {
-  matrix: {
-    color: '#00ff00',
-    textShadow: '0 2px 4px rgba(0, 255, 0, 0.5)',
-  },
-  normal: {
-    color: 'inherit',
-    textShadow: 'none',
-  },
 }
 
 export default function MatrixText({
@@ -125,18 +113,24 @@ export default function MatrixText({
     [clearAllTimeouts, getRandomChar, initialDelay, letterAnimationDuration, letterInterval, pauseDuration, setLetter, texts]
   )
 
+  const runCycleRef = useRef(runCycle)
+  useEffect(() => {
+    runCycleRef.current = runCycle
+  })
+
   useEffect(() => {
     if (texts.length === 0) {
       setLetters([])
       return
     }
 
-    runCycle(currentTextIndex)
+    runCycleRef.current(currentTextIndex)
 
     return () => {
       clearAllTimeouts()
     }
-  }, [clearAllTimeouts, currentTextIndex, runCycle, texts.length])
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentTextIndex, texts.length, clearAllTimeouts])
 
   if (texts.length === 0) {
     return null
@@ -149,17 +143,19 @@ export default function MatrixText({
       className={cn('flex flex-wrap items-center justify-center', className)}
     >
       {letters.map((letter) => (
-        <motion.div
+        <div
           key={letter.id}
-          animate={letter.isMatrix ? 'matrix' : 'normal'}
           className={cn('w-[1ch] overflow-hidden text-center', letter.isMatrix && 'font-mono')}
-          initial="normal"
-          style={{ display: 'inline-block', fontVariantNumeric: 'tabular-nums' }}
-          transition={{ duration: 0.1, ease: 'easeInOut' }}
-          variants={motionVariants}
+          style={{
+            display: 'inline-block',
+            fontVariantNumeric: 'tabular-nums',
+            color: letter.isMatrix ? '#00ff00' : undefined,
+            textShadow: letter.isMatrix ? '0 2px 4px rgba(0, 255, 0, 0.5)' : 'none',
+            transition: 'color 0.1s ease-in-out',
+          }}
         >
           {letter.isSpace ? '\u00A0' : letter.char}
-        </motion.div>
+        </div>
       ))}
     </div>
   )
