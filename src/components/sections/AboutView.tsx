@@ -192,7 +192,7 @@ export function AboutView() {
             className="text-base md:text-lg leading-relaxed"
             style={{ color: 'var(--color-text-secondary)', opacity: 0 }}
           >
-            I&apos;m a mathematics and computer science educator based in Chico, California. For
+            I&apos;m a mathematics and computer science educator based in Chico, California. For{' '}
             <span style={{ color: 'var(--color-accent)' }}>over a decade</span> I&apos;ve taught at every level — middle school through community
             college — bringing the same curiosity to an <span style={{ color: 'var(--color-accent)' }}>AP Computer Science</span> course as to a
             first-year statistics lecture. Right now I split my time between Pleasant Valley High
@@ -207,7 +207,7 @@ export function AboutView() {
           >
             I build tools. When a problem shows up in my classroom and the existing solutions
             don&apos;t fit, I write code. <span style={{ color: 'var(--color-accent)' }}>rāSHio</span> is a clean, student-focused statistics
-            calculator. <span style={{ color: 'var(--color-accent)' }}>bookSHelf</span> automates textbook remastering into modern, accessible formats.
+            calculator. <span style={{ color: 'var(--color-accent)' }}>bookSHelf</span> automates textbook remastering into modern, accessible formats.{' '}
             <span style={{ color: 'var(--color-accent)' }}>O.G.R.E.</span> is a Chrome extension that brings AI-powered rubric evaluation to teacher
             workflows. Each project starts with a frustration felt at the whiteboard and ends with
             working software.
