@@ -4,7 +4,7 @@ import { gsap } from '@/lib/gsapConfig'
 import { useGSAP } from '@gsap/react'
 import Link from 'next/link'
 import { Squares } from '@/components/animations'
-import RotatingText from '@/components/ui/RotatingText'
+import MatrixText from '@/components/ui/MatrixText'
 import PixelTransition from '@/components/ui/PixelTransition'
 
 const statCards = [
@@ -59,7 +59,7 @@ export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null)
   const watermarkRef = useRef<HTMLSpanElement>(null)
   const headingRef = useRef<HTMLHeadingElement>(null)
-  const subtitleRef = useRef<HTMLParagraphElement>(null)
+  const subtitleRef = useRef<HTMLDivElement>(null)
   const taglineRef = useRef<HTMLParagraphElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
 
@@ -105,26 +105,20 @@ export function Hero() {
             Steven Huff
           </h1>
 
-          <p
+          <div
             ref={subtitleRef}
             className="text-lg md:text-2xl font-medium tracking-wide max-w-3xl mx-auto flex items-center justify-center"
-            style={{ color: 'var(--color-bg-primary)', opacity: 0 }}
-            aria-label="Roles: Math Educator, CS Teacher, Curriculum Developer, Tool Builder"
+            style={{ color: 'var(--color-text-primary)', opacity: 0, fontFamily: 'var(--font-handwritten)', fontSize: '1.35em' }}
+            aria-label="Roles: Math Educator, Innovator, CS Teacher, Trailblazer, Curriculum Developer, Problem Solver, Tool Builder, Change Maker"
           >
-            <RotatingText
+            <MatrixText
               texts={['Math Educator', 'Innovator', 'CS Teacher', 'Trailblazer', 'Curriculum Developer', 'Problem Solver', 'Tool Builder', 'Change Maker']}
-              mainClassName="px-5 sm:px-6 md:px-7 py-2 sm:py-2.5 md:py-3 justify-center overflow-hidden bg-[#f0c060]"
-              style={{ borderRadius: '1.5rem', fontFamily: 'var(--font-handwritten)', fontSize: '1.35em' }}
-              elementLevelClassName="origin-bottom"
-              staggerFrom="last"
-              staggerDuration={0.025}
-              initial={{ y: '80%', opacity: 0, rotateZ: -8 }}
-              animate={{ y: 0, opacity: 1, rotateZ: 0 }}
-              exit={{ y: '-80%', opacity: 0, rotateZ: 8 }}
-              transition={{ type: 'spring', damping: 22, stiffness: 280 }}
-              rotationInterval={3000}
+              initialDelay={1000}
+              letterInterval={80}
+              letterAnimationDuration={400}
+              pauseDuration={2500}
             />
-          </p>
+          </div>
 
           <p
             ref={taglineRef}
