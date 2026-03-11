@@ -55,6 +55,17 @@ const statCards = [
   },
 ]
 
+const MATRIX_TEXTS = [
+  'Math Educator',
+  'Innovator',
+  'CS Teacher',
+  'Trailblazer',
+  'Curriculum Developer',
+  'Problem Solver',
+  'Tool Builder',
+  'Change Maker',
+]
+
 export function Hero() {
   const containerRef = useRef<HTMLDivElement>(null)
   const watermarkRef = useRef<HTMLSpanElement>(null)
@@ -109,10 +120,9 @@ export function Hero() {
             ref={subtitleRef}
             className="text-lg md:text-2xl font-medium tracking-wide max-w-3xl mx-auto flex items-center justify-center"
             style={{ color: 'var(--color-text-primary)', opacity: 0, fontFamily: 'var(--font-handwritten)', fontSize: '1.35em' }}
-            aria-label="Roles: Math Educator, Innovator, CS Teacher, Trailblazer, Curriculum Developer, Problem Solver, Tool Builder, Change Maker"
           >
             <MatrixText
-              texts={['Math Educator', 'Innovator', 'CS Teacher', 'Trailblazer', 'Curriculum Developer', 'Problem Solver', 'Tool Builder', 'Change Maker']}
+              texts={MATRIX_TEXTS}
               initialDelay={1000}
               letterInterval={80}
               letterAnimationDuration={400}
