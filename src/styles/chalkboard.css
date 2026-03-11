@@ -59,3 +59,24 @@
 .status-progress { background-color: rgba(245, 158, 11, 0.15); color: #f59e0b; }
 .status-concept { background-color: rgba(107, 114, 128, 0.15); color: #9ca3af; }
 .status-completed { background-color: rgba(16, 185, 129, 0.15); color: #10b981; }
+
+/* Pull-quote callout */
+.pull-quote {
+  position: relative;
+  padding: 2rem 0;
+}
+
+.pull-quote::before,
+.pull-quote::after {
+  content: '';
+  display: block;
+  width: 3rem;
+  height: 1px;
+  background: var(--color-accent);
+  margin: 0 auto 1.5rem;
+  opacity: 0.4;
+}
+
+.pull-quote::after {
+  margin: 1.5rem auto 0;
+}
