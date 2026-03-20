@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
-import { CV_PDF_PATH, THESIS_PDF_PATH } from '@/lib/pdfConfig'
+import { CV_PDF_PATH, THESIS_PDF_PATH, DOCUMENTS_PATH } from '@/lib/pdfConfig'
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -146,7 +146,7 @@ export function Navigation() {
                 }}
               >
                 {([
-                  { label: 'View CV', href: '/documents', download: false },
+                  { label: 'View CV', href: DOCUMENTS_PATH, download: false },
                   { label: 'Download CV', href: CV_PDF_PATH, download: true },
                 ] as const).map((item) => (
                   <a
@@ -176,7 +176,7 @@ export function Navigation() {
                 ))}
                 <div style={{ borderTop: '1px solid var(--color-border)', margin: '2px 0' }} />
                 {([
-                  { label: 'View Thesis', href: '/documents?doc=thesis', download: false },
+                  { label: 'View Thesis', href: DOCUMENTS_PATH + '?doc=thesis', download: false },
                   { label: 'Download Thesis', href: THESIS_PDF_PATH, download: true },
                 ] as const).map((item) => (
                   <a
@@ -275,9 +275,9 @@ export function Navigation() {
           {/* Documents section in mobile drawer */}
           <div style={{ borderTop: '1px solid var(--color-border)', marginTop: '8px', paddingTop: '8px' }}>
             {([
-              { label: 'View CV', href: '/documents', download: false },
+              { label: 'View CV', href: DOCUMENTS_PATH, download: false },
               { label: 'Download CV', href: CV_PDF_PATH, download: true },
-              { label: 'View Thesis', href: '/documents?doc=thesis', download: false },
+              { label: 'View Thesis', href: DOCUMENTS_PATH + '?doc=thesis', download: false },
               { label: 'Download Thesis', href: THESIS_PDF_PATH, download: true },
             ] as const).map((item) => (
               <a

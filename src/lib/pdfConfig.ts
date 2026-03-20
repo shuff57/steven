@@ -11,3 +11,5 @@ export function getBasePath(): string {
 
 export const CV_PDF_PATH = getBasePath() + '/Curriculum%20Vitae.pdf'
 export const THESIS_PDF_PATH = getBasePath() + '/MS%20Thesis.pdf'
+
+export const DOCUMENTS_PATH = getBasePath() + '/documents'
