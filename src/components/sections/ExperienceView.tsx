@@ -279,11 +279,48 @@ function ExperienceTOC({ visible }: { visible: boolean }) {
   )
 }
 
+/* ── Chronological view helpers ── */
+
+type ChronologicalEntry = {
+  year: string
+  institution: string
+  institutionId: string
+  positionTitle: string
+  isCurrent: boolean
+  courses: FlatCourse[]
+}
+
+function buildChronologicalEntries(): ChronologicalEntry[] {
+  const entries: ChronologicalEntry[] = []
+  for (const inst of sortedExperiences) {
+    for (const position of inst.positions) {
+      const courses = (position.courses ?? []).map(course => ({
+        code: course.code,
+        name: course.name,
+        description: course.description,
+        positionTitle: position.title,
+        isCurrent: inst.status === 'current',
+      }))
+      entries.push({
+        year: inst.dateStart,
+        institution: inst.name,
+        institutionId: getInstitutionId(inst.name),
+        positionTitle: position.title,
+        isCurrent: inst.status === 'current',
+        courses,
+      })
+    }
+  }
+  return entries.sort((a, b) => parseInt(b.year) - parseInt(a.year))
+}
+
+const CHRONOLOGICAL_ENTRIES = buildChronologicalEntries()
+
 /* ── Main view (inner — uses useSearchParams) ── */
 
 function ExperienceViewInner() {
   const searchParams = useSearchParams()
-  const [activeTab, setActiveTab] = useState<'institution' | 'catalog'>(
+  const [activeTab, setActiveTab] = useState<'institution' | 'catalog' | 'chronological'>(
     searchParams.get('view') === 'catalog' ? 'catalog' : 'institution'
   )
   const sectionRef = useRef<HTMLElement>(null)
@@ -305,6 +342,18 @@ function ExperienceViewInner() {
       return true
     })
   }, [query, activeSubject, activeLevel])
+
+  /* Scroll to anchor hash on initial load */
+  useEffect(() => {
+    const hash = window.location.hash.slice(1)
+    if (!hash) return
+    // Small delay to let the DOM render the institution sections
+    const timer = setTimeout(() => {
+      const el = document.getElementById(hash)
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [])
 
   /* Scroll to top on tab switch */
   const isFirstRender = useRef(true)
@@ -357,6 +406,17 @@ function ExperienceViewInner() {
           >
             Course Catalog
           </button>
+          <button
+            onClick={() => setActiveTab('chronological')}
+            className="px-6 py-2.5 text-sm transition-colors duration-200 cursor-pointer border-none"
+            style={{
+              background: activeTab === 'chronological' ? 'var(--color-accent)' : 'transparent',
+              color: activeTab === 'chronological' ? 'var(--color-bg-primary)' : 'var(--color-text-muted)',
+              fontWeight: activeTab === 'chronological' ? 700 : 400,
+            }}
+          >
+            Chronological
+          </button>
         </div>
       </div>
 
@@ -365,32 +425,129 @@ function ExperienceViewInner() {
         <div>
           <ExperienceTOC visible={true} />
           <div className="max-w-2xl mx-auto space-y-20">
-          {sortedExperiences.map(institution => {
-            const sectionId = getInstitutionId(institution.name)
-            const courses = flattenCourses(institution)
-            const dateRange = `${institution.dateStart} – ${institution.dateEnd ?? 'Present'}`
 
-            return (
-              <div key={institution.name} id={sectionId}>
-                <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
-                  {institution.name}
-                </h2>
-                <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
-                  {institution.location} · {dateRange}
-                </p>
+            {/* Post-secondary group */}
+            <div id="section-post-secondary">
+              {sortedExperiences.filter(inst => inst.level === 'post-secondary').map(institution => {
+                const sectionId = getInstitutionId(institution.name)
+                const courses = flattenCourses(institution)
+                const dateRange = `${institution.dateStart} – ${institution.dateEnd ?? 'Present'}`
+                return (
+                  <div key={institution.name} id={sectionId} className="mb-20 last:mb-0">
+                    <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
+                      {institution.name}
+                    </h2>
+                    <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
+                      {institution.location} · {dateRange}
+                    </p>
+                    <div className="grid grid-cols-1 gap-3 w-full">
+                      {courses.map((course, idx) => (
+                        <AnimatedItem key={`${institution.name}-${course.code}-${idx}`}>
+                          <CourseCard course={course} />
+                        </AnimatedItem>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
 
-                <div className="grid grid-cols-1 gap-3 w-full">
-                  {courses.map((course, idx) => (
-                    <AnimatedItem key={`${institution.name}-${course.code}-${idx}`}>
-                      <CourseCard course={course} />
-                    </AnimatedItem>
-                  ))}
-                </div>
-              </div>
-            )
-          })}
+            {/* Secondary group */}
+            <div id="section-secondary">
+              {sortedExperiences.filter(inst => inst.level === 'secondary').map(institution => {
+                const sectionId = getInstitutionId(institution.name)
+                const courses = flattenCourses(institution)
+                const dateRange = `${institution.dateStart} – ${institution.dateEnd ?? 'Present'}`
+                return (
+                  <div key={institution.name} id={sectionId} className="mb-20 last:mb-0">
+                    <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
+                      {institution.name}
+                    </h2>
+                    <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
+                      {institution.location} · {dateRange}
+                    </p>
+                    <div className="grid grid-cols-1 gap-3 w-full">
+                      {courses.map((course, idx) => (
+                        <AnimatedItem key={`${institution.name}-${course.code}-${idx}`}>
+                          <CourseCard course={course} />
+                        </AnimatedItem>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* Elementary / primary group */}
+            <div id="section-elementary">
+              {sortedExperiences.filter(inst => inst.level === 'primary').map(institution => {
+                const sectionId = getInstitutionId(institution.name)
+                const courses = flattenCourses(institution)
+                const dateRange = `${institution.dateStart} – ${institution.dateEnd ?? 'Present'}`
+                return (
+                  <div key={institution.name} id={sectionId} className="mb-20 last:mb-0">
+                    <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
+                      {institution.name}
+                    </h2>
+                    <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
+                      {institution.location} · {dateRange}
+                    </p>
+                    <div className="grid grid-cols-1 gap-3 w-full">
+                      {courses.map((course, idx) => (
+                        <AnimatedItem key={`${institution.name}-${course.code}-${idx}`}>
+                          <CourseCard course={course} />
+                        </AnimatedItem>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+
           </div>
-
+        </div>
+      ) : activeTab === 'chronological' ? (
+        <div className="max-w-2xl mx-auto">
+          <div className="relative border-l-2 border-[var(--color-border)] ml-4 pl-8 space-y-12">
+            {CHRONOLOGICAL_ENTRIES.map((entry, idx) => (
+              <AnimatedItem key={`${entry.institution}-${entry.positionTitle}-${idx}`}>
+                <div className="relative">
+                  {/* Timeline dot */}
+                  <div
+                    className="absolute -left-[2.65rem] top-1.5 w-3 h-3 rounded-full border-2"
+                    style={{
+                      background: entry.isCurrent ? 'var(--color-accent)' : 'var(--color-surface)',
+                      borderColor: entry.isCurrent ? 'var(--color-accent)' : 'var(--color-border)',
+                    }}
+                  />
+                  {/* Year label */}
+                  <span className="text-xs font-mono text-[var(--color-text-muted)] mb-1 block">
+                    {entry.year}
+                  </span>
+                  {/* Institution + title */}
+                  <h3 className="text-lg font-bold font-display text-[var(--color-text-primary)] leading-snug">
+                    {entry.positionTitle}
+                  </h3>
+                  <p className="text-sm text-[var(--color-accent)] font-medium mb-4">
+                    {entry.institution}
+                    {entry.isCurrent && (
+                      <span className="ml-2 text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide status-active">
+                        Current
+                      </span>
+                    )}
+                  </p>
+                  {/* Courses */}
+                  {entry.courses.length > 0 && (
+                    <div className="grid grid-cols-1 gap-2">
+                      {entry.courses.map((course, cIdx) => (
+                        <CourseCard key={`${course.code}-${cIdx}`} course={course} />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </AnimatedItem>
+            ))}
+          </div>
         </div>
       ) : (
         <div>
