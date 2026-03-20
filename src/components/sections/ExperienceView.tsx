@@ -27,9 +27,9 @@ const sortedExperiences = [...experiences].sort(
   (a, b) => parseInt(b.dateStart) - parseInt(a.dateStart)
 )
 
-// Oldest first (Chronological order)
+// Newest first (Chronological order — most recent at top)
 const chronologicalExperiences = [...experiences].sort(
-  (a, b) => parseInt(a.dateStart) - parseInt(b.dateStart)
+  (a, b) => parseInt(b.dateStart) - parseInt(a.dateStart)
 )
 
 const LEVEL_GROUP_IDS: Record<string, string> = {
