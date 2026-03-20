@@ -22,9 +22,30 @@ type FlatCourse = {
   isCurrent: boolean
 }
 
+// Newest first (default "By Institution" order)
 const sortedExperiences = [...experiences].sort(
   (a, b) => parseInt(b.dateStart) - parseInt(a.dateStart)
 )
+
+// Oldest first (Chronological order)
+const chronologicalExperiences = [...experiences].sort(
+  (a, b) => parseInt(a.dateStart) - parseInt(b.dateStart)
+)
+
+const LEVEL_GROUP_IDS: Record<string, string> = {
+  'post-secondary': 'section-post-secondary',
+  'secondary': 'section-secondary',
+  'primary': 'section-elementary',
+}
+
+const LEVEL_GROUP_LABELS: Record<string, string> = {
+  'post-secondary': 'Post-Secondary',
+  'secondary': 'Secondary',
+  'primary': 'Elementary',
+}
+
+// Ordered level groups for TOC and rendering
+const LEVEL_ORDER = ['post-secondary', 'secondary', 'primary'] as const
 
 const INSTITUTION_IDS: Record<string, string> = {
   'Butte College': 'section-butte-college',
@@ -167,10 +188,13 @@ function CatalogCourseCard({ course }: { course: CatalogCourse }) {
   )
 }
 
-function ExperienceTOC({ visible }: { visible: boolean }) {
-  const teachingIds = sortedExperiences.map(inst => getInstitutionId(inst.name))
-  const allIds = [...teachingIds]
-  const [activeId, setActiveId] = useState(allIds[0])
+function ExperienceTOC({ visible, sortedList }: { visible: boolean; sortedList: Institution[] }) {
+  // Observe both group anchors and individual institution anchors
+  const groupIds = LEVEL_ORDER.map(l => LEVEL_GROUP_IDS[l])
+  const institutionIds = sortedList.map(inst => getInstitutionId(inst.name))
+  const allObservedIds = [...groupIds, ...institutionIds]
+
+  const [activeId, setActiveId] = useState(institutionIds[0] ?? groupIds[0])
   const [tocWidth, setTocWidth] = useState('calc(50vw - 358px)')
   const [tocTop, setTocTop] = useState<number | null>(null)
 
@@ -181,31 +205,19 @@ function ExperienceTOC({ visible }: { visible: boolean }) {
     return () => window.removeEventListener('resize', update)
   }, [])
 
-  // Scroll-aware vertical positioning:
-  // On page load, align TOC top with the first section heading.
-  // As the user scrolls and the section moves up, follow it until the TOC
-  // reaches its centered position — then lock there.
   useEffect(() => {
     if (!visible) return
 
-    const firstId = allIds[0]
-    // Approximate TOC height: 6 items × ~48px + 16px container padding
-    const tocHeight = sortedExperiences.length * 48 + 16
+    const firstId = institutionIds[0] ?? groupIds[0]
+    // Group label rows (~32px) + institution rows (~40px) + padding
+    const tocHeight = LEVEL_ORDER.length * 32 + sortedList.length * 40 + 16
 
     const updateTop = () => {
       const el = document.getElementById(firstId)
       if (!el) return
-
       const sectionTop = el.getBoundingClientRect().top
       const viewportHeight = window.innerHeight
-
-      // The top offset that would vertically center the TOC in the viewport
       const centeredTop = (viewportHeight - tocHeight) / 2
-
-      // Start at section level (below center); move toward center as section
-      // scrolls up; lock once the TOC would be centered.
-      // Intentionally unclamped — TOC may start off-screen if the section is
-      // below the fold, which is fine.
       setTocTop(Math.max(centeredTop, sectionTop))
     }
 
@@ -217,7 +229,7 @@ function ExperienceTOC({ visible }: { visible: boolean }) {
       window.removeEventListener('scroll', updateTop)
       window.removeEventListener('resize', updateTop)
     }
-  }, [visible])
+  }, [visible, sortedList])
 
   useEffect(() => {
     if (!visible) return
@@ -232,89 +244,76 @@ function ExperienceTOC({ visible }: { visible: boolean }) {
       },
       { rootMargin: '-15% 0px -55% 0px', threshold: 0 }
     )
-    allIds.forEach(id => {
+    allObservedIds.forEach(id => {
       const el = document.getElementById(id)
       if (el) observer.observe(el)
     })
     return () => observer.disconnect()
-  }, [visible])
+  }, [visible, sortedList])
 
   if (!visible || tocTop === null) return null
-
-  const items = sortedExperiences.map(inst => ({
-    label: inst.name,
-    id: getInstitutionId(inst.name),
-  }))
 
   return (
     <nav className="hidden lg:block fixed left-0 z-40 print:hidden" style={{ width: tocWidth, top: `${tocTop}px` }}>
       <div
-        className="flex flex-col gap-1 p-2 rounded-r-xl"
+        className="flex flex-col p-2 rounded-r-xl"
         style={{ background: 'var(--color-surface)', borderTop: '1px solid var(--color-border)', borderRight: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}
       >
-        {items.map(item => {
-          const isActive = activeId === item.id
+        {LEVEL_ORDER.map(level => {
+          const groupId = LEVEL_GROUP_IDS[level]
+          const label = LEVEL_GROUP_LABELS[level]
+          const institutions = sortedList.filter(inst => inst.level === level)
+          if (institutions.length === 0) return null
+
           return (
-            <button
-              key={item.id}
-              onClick={() => {
-                document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                setActiveId(item.id)
-              }}
-              className="flex items-center px-4 py-3 rounded-lg text-left transition-all duration-200 cursor-pointer w-full border-none"
-              title={item.label}
-              style={{ background: isActive ? 'rgba(240,192,96,0.15)' : 'transparent' }}
-            >
-              <span
-                className="text-sm font-medium leading-snug break-words transition-colors duration-200"
-                style={{ color: isActive ? 'var(--color-accent)' : 'var(--color-text-secondary)' }}
+            <div key={level}>
+              {/* Group heading — clickable, scrolls to group anchor */}
+              <button
+                onClick={() => {
+                  document.getElementById(groupId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                  setActiveId(groupId)
+                }}
+                className="flex items-center px-3 py-1.5 w-full text-left border-none cursor-pointer transition-colors duration-200 rounded-md mt-1"
+                style={{ background: 'transparent' }}
               >
-                {item.label}
-              </span>
-            </button>
+                <span
+                  className="text-xs font-bold uppercase tracking-widest"
+                  style={{ color: 'var(--color-text-muted)' }}
+                >
+                  {label}
+                </span>
+              </button>
+              {/* Institution sub-items */}
+              {institutions.map(inst => {
+                const id = getInstitutionId(inst.name)
+                const isActive = activeId === id
+                return (
+                  <button
+                    key={id}
+                    onClick={() => {
+                      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+                      setActiveId(id)
+                    }}
+                    className="flex items-center pl-5 pr-3 py-2.5 rounded-lg text-left transition-all duration-200 cursor-pointer w-full border-none"
+                    title={inst.name}
+                    style={{ background: isActive ? 'rgba(240,192,96,0.15)' : 'transparent' }}
+                  >
+                    <span
+                      className="text-sm font-medium leading-snug break-words transition-colors duration-200"
+                      style={{ color: isActive ? 'var(--color-accent)' : 'var(--color-text-secondary)' }}
+                    >
+                      {inst.name}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
           )
         })}
       </div>
     </nav>
   )
 }
-
-/* ── Chronological view helpers ── */
-
-type ChronologicalEntry = {
-  year: string
-  institution: string
-  institutionId: string
-  positionTitle: string
-  isCurrent: boolean
-  courses: FlatCourse[]
-}
-
-function buildChronologicalEntries(): ChronologicalEntry[] {
-  const entries: ChronologicalEntry[] = []
-  for (const inst of sortedExperiences) {
-    for (const position of inst.positions) {
-      const courses = (position.courses ?? []).map(course => ({
-        code: course.code,
-        name: course.name,
-        description: course.description,
-        positionTitle: position.title,
-        isCurrent: inst.status === 'current',
-      }))
-      entries.push({
-        year: inst.dateStart,
-        institution: inst.name,
-        institutionId: getInstitutionId(inst.name),
-        positionTitle: position.title,
-        isCurrent: inst.status === 'current',
-        courses,
-      })
-    }
-  }
-  return entries.sort((a, b) => parseInt(b.year) - parseInt(a.year))
-}
-
-const CHRONOLOGICAL_ENTRIES = buildChronologicalEntries()
 
 /* ── Main view (inner — uses useSearchParams) ── */
 
@@ -423,7 +422,7 @@ function ExperienceViewInner() {
       {/* Content */}
       {activeTab === 'institution' ? (
         <div>
-          <ExperienceTOC visible={true} />
+          <ExperienceTOC visible={true} sortedList={sortedExperiences} />
           <div className="max-w-2xl mx-auto space-y-20">
 
             {/* Post-secondary group */}
@@ -507,46 +506,88 @@ function ExperienceViewInner() {
           </div>
         </div>
       ) : activeTab === 'chronological' ? (
-        <div className="max-w-2xl mx-auto">
-          <div className="relative border-l-2 border-[var(--color-border)] ml-4 pl-8 space-y-12">
-            {CHRONOLOGICAL_ENTRIES.map((entry, idx) => (
-              <AnimatedItem key={`${entry.institution}-${entry.positionTitle}-${idx}`}>
-                <div className="relative">
-                  {/* Timeline dot */}
-                  <div
-                    className="absolute -left-[2.65rem] top-1.5 w-3 h-3 rounded-full border-2"
-                    style={{
-                      background: entry.isCurrent ? 'var(--color-accent)' : 'var(--color-surface)',
-                      borderColor: entry.isCurrent ? 'var(--color-accent)' : 'var(--color-border)',
-                    }}
-                  />
-                  {/* Year label */}
-                  <span className="text-xs font-mono text-[var(--color-text-muted)] mb-1 block">
-                    {entry.year}
-                  </span>
-                  {/* Institution + title */}
-                  <h3 className="text-lg font-bold font-display text-[var(--color-text-primary)] leading-snug">
-                    {entry.positionTitle}
-                  </h3>
-                  <p className="text-sm text-[var(--color-accent)] font-medium mb-4">
-                    {entry.institution}
-                    {entry.isCurrent && (
-                      <span className="ml-2 text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide status-active">
-                        Current
-                      </span>
-                    )}
-                  </p>
-                  {/* Courses */}
-                  {entry.courses.length > 0 && (
-                    <div className="grid grid-cols-1 gap-2">
-                      {entry.courses.map((course, cIdx) => (
-                        <CourseCard key={`${course.code}-${cIdx}`} course={course} />
+        <div>
+          <ExperienceTOC visible={true} sortedList={chronologicalExperiences} />
+          <div className="max-w-2xl mx-auto space-y-20">
+
+            {/* Post-secondary group */}
+            <div id="section-post-secondary">
+              {chronologicalExperiences.filter(inst => inst.level === 'post-secondary').map(institution => {
+                const sectionId = getInstitutionId(institution.name)
+                const courses = flattenCourses(institution)
+                const dateRange = `${institution.dateStart} – ${institution.dateEnd ?? 'Present'}`
+                return (
+                  <div key={institution.name} id={sectionId} className="mb-20 last:mb-0">
+                    <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
+                      {institution.name}
+                    </h2>
+                    <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
+                      {institution.location} · {dateRange}
+                    </p>
+                    <div className="grid grid-cols-1 gap-3 w-full">
+                      {courses.map((course, idx) => (
+                        <AnimatedItem key={`${institution.name}-${course.code}-${idx}`}>
+                          <CourseCard course={course} />
+                        </AnimatedItem>
                       ))}
                     </div>
-                  )}
-                </div>
-              </AnimatedItem>
-            ))}
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* Secondary group */}
+            <div id="section-secondary">
+              {chronologicalExperiences.filter(inst => inst.level === 'secondary').map(institution => {
+                const sectionId = getInstitutionId(institution.name)
+                const courses = flattenCourses(institution)
+                const dateRange = `${institution.dateStart} – ${institution.dateEnd ?? 'Present'}`
+                return (
+                  <div key={institution.name} id={sectionId} className="mb-20 last:mb-0">
+                    <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
+                      {institution.name}
+                    </h2>
+                    <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
+                      {institution.location} · {dateRange}
+                    </p>
+                    <div className="grid grid-cols-1 gap-3 w-full">
+                      {courses.map((course, idx) => (
+                        <AnimatedItem key={`${institution.name}-${course.code}-${idx}`}>
+                          <CourseCard course={course} />
+                        </AnimatedItem>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* Elementary / primary group */}
+            <div id="section-elementary">
+              {chronologicalExperiences.filter(inst => inst.level === 'primary').map(institution => {
+                const sectionId = getInstitutionId(institution.name)
+                const courses = flattenCourses(institution)
+                const dateRange = `${institution.dateStart} – ${institution.dateEnd ?? 'Present'}`
+                return (
+                  <div key={institution.name} id={sectionId} className="mb-20 last:mb-0">
+                    <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
+                      {institution.name}
+                    </h2>
+                    <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
+                      {institution.location} · {dateRange}
+                    </p>
+                    <div className="grid grid-cols-1 gap-3 w-full">
+                      {courses.map((course, idx) => (
+                        <AnimatedItem key={`${institution.name}-${course.code}-${idx}`}>
+                          <CourseCard course={course} />
+                        </AnimatedItem>
+                      ))}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+
           </div>
         </div>
       ) : (
