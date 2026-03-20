@@ -282,39 +282,180 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe,
   )
 }
 
-function ProjectTOC() {
-  const [activeId, setActiveId] = useState('section-tools')
+interface ProjectTOCProps {
+  tools: Project[]
+  achievements: Project[]
+}
+
+interface AchievementCardProps {
+  project: Project
+  getStatusLabel: (s: Project['status']) => string
+  getStatusClass: (s: Project['status']) => string
+  getTypeLabel: (t: Project['type']) => string
+}
+
+function AchievementCard({ project, getStatusLabel, getStatusClass, getTypeLabel }: AchievementCardProps) {
+  const [isHovered, setIsHovered] = useState(false)
+  const [isTouchExpanded, setIsTouchExpanded] = useState(false)
+  const hasTouched = useRef(false)
+  const isExpanded = isHovered || isTouchExpanded
+  const isGrant = project.id === 'golden-state-pathways-grant'
+
+  return (
+    <div
+      className="chalk-card rounded-xl border overflow-hidden transition-colors duration-200"
+      style={{ borderColor: isExpanded ? 'var(--color-accent)' : 'var(--color-border)' }}
+      onTouchStart={() => { hasTouched.current = true }}
+      onMouseEnter={() => { if (!hasTouched.current) setIsHovered(true) }}
+      onMouseLeave={() => { if (!hasTouched.current) setIsHovered(false) }}
+    >
+      {/* Header — always visible */}
+      <div
+        className="px-5 py-4 flex justify-between items-start"
+        style={{ cursor: 'pointer' }}
+        role="button"
+        tabIndex={0}
+        onClick={() => setIsTouchExpanded((prev) => !prev)}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setIsTouchExpanded((prev) => !prev) }}
+        aria-expanded={isExpanded}
+      >
+        <div className="flex-1 min-w-0 pr-3">
+          <span className="text-xs font-bold px-2 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] uppercase tracking-wider mb-2 inline-block">
+            {getTypeLabel(project.type)}
+          </span>
+          <h3 className={`text-base font-bold font-display leading-snug ${isGrant ? 'text-[var(--color-accent)]' : 'text-[var(--color-text-primary)]'}`}>
+            {project.title}
+          </h3>
+          {project.subtitle && (
+            <p className="text-sm text-[var(--color-accent)] mt-0.5 font-medium">
+              {project.subtitle}
+            </p>
+          )}
+        </div>
+        <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getStatusClass(project.status)}`}>
+          {getStatusLabel(project.status)}
+        </span>
+      </div>
+
+      {/* Expandable body */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateRows: isExpanded ? '1fr' : '0fr',
+          transition: 'grid-template-rows 0.3s ease-in-out',
+        }}
+      >
+        <div style={{ overflow: 'hidden', minHeight: 0 }}>
+          <div className="px-5 pb-5 border-t border-[var(--color-border)]">
+            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-3 mb-3">
+              {project.description}
+            </p>
+            <div className="text-xs font-mono text-[var(--color-text-muted)] pt-3 border-t border-[var(--color-border)] border-dashed">
+              {project.dateStart}
+              {project.dateEnd ? ` – ${project.dateEnd}` : ' – Present'}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const ACHIEVEMENT_TOC_LABELS: Record<string, string> = {
+  'golden-state-pathways-grant':   'Golden State Pathways Grant',
+  'embedded-systems-robotics':     'Embedded Systems & Robotics',
+  'cs-pathway-update':             'CS Pathway (Update)',
+  'cs-pathway-original':           'CS Pathway Developer',
+  'cs-curriculum-developer':       'CS Curriculum Developer',
+  'csc2-lead-mentor':              'CSC² Lead Mentor',
+  'csc2-stemcat':                  'CSC² STEMCAT Mentor',
+  'reach-faculty-mentor':          'REACH Faculty Mentor',
+  'project-math-placement':        'Project MATH Placement',
+  'project-math-mentor':           'Project MATH Mentor',
+  'eap-research-assistant':        'EAP Math Research Asst.',
+  'early-start-curriculum':        'Early Start Curriculum',
+  'avhs-steam7':                   'AVHS STEAM7',
+  'si-mentor':                     'SI Student Leader Mentor',
+  'qrat-tqr':                      'QRAT & TQR Instructor',
+}
+
+function ProjectTOC({ tools, achievements }: ProjectTOCProps) {
+  const toolIds = tools.map((t) => `section-tool-${t.id}`)
+  const achievementIds = achievements.map((a) => `section-achievement-${a.id}`)
+  const allObservedIds = [...toolIds, ...achievementIds]
+
+  const [activeId, setActiveId] = useState(toolIds[0] ?? achievementIds[0] ?? '')
   const [tocTop, setTocTop] = useState<number | null>(null)
-  const ids = ['section-tools', 'section-achievements']
-  const tocHeight = ids.length * 48 + 16 // ~112px
+  const [tocMaxHeight, setTocMaxHeight] = useState('85vh')
+  const scrollRef = useRef<HTMLDivElement>(null)
+  // Stable fixed top offset (only recalculated on resize, not on scroll)
+  const stableTocTop = useRef<number>(0)
 
-  // Scroll-aware vertical positioning: same pattern as ExperienceTOC.
-  // Align with first section on load; lock at center once scrolled there.
   useEffect(() => {
-    const firstId = ids[0]
-
-    const updateTop = () => {
-      const el = document.getElementById(firstId)
-      if (!el) return
-
-      const sectionTop = el.getBoundingClientRect().top
-      const viewportHeight = window.innerHeight
-      const centeredTop = (viewportHeight - tocHeight) / 2
-
-      // Intentionally unclamped — may start off-screen if section is below fold
-      setTocTop(Math.max(centeredTop, sectionTop))
+    const setStableTop = () => {
+      stableTocTop.current = window.innerHeight * 0.08
+      setTocTop(stableTocTop.current)
     }
 
-    updateTop()
-    window.addEventListener('scroll', updateTop, { passive: true })
-    window.addEventListener('resize', updateTop)
+    const updateMaxHeight = () => {
+      const sectionEl = document.getElementById('projects-section')
+      if (!sectionEl) return
+      const sectionBottom = sectionEl.getBoundingClientRect().bottom
+      const bottomMargin = 32
+      const available = Math.min(
+        sectionBottom - stableTocTop.current - bottomMargin,
+        window.innerHeight * 0.85
+      )
+      setTocMaxHeight(`${Math.max(available, 120)}px`)
+    }
 
+    setStableTop()
+    updateMaxHeight()
+
+    window.addEventListener('scroll', updateMaxHeight, { passive: true })
+    window.addEventListener('resize', () => { setStableTop(); updateMaxHeight() })
     return () => {
-      window.removeEventListener('scroll', updateTop)
-      window.removeEventListener('resize', updateTop)
+      window.removeEventListener('scroll', updateMaxHeight)
+      window.removeEventListener('resize', setStableTop)
     }
   }, [])
 
+  // Keep the active TOC item scrolled into view inside the TOC panel.
+  // Also scrolls to bottom when near the end of the page, so the last few
+  // entries (which the IntersectionObserver never marks active due to its
+  // bottom rootMargin) are still visible.
+  useEffect(() => {
+    const container = scrollRef.current
+    if (!container) return
+
+    const syncPanelScroll = () => {
+      // If we're near the bottom of the page, scroll the panel all the way down
+      const distFromBottom = document.body.scrollHeight - window.scrollY - window.innerHeight
+      if (distFromBottom < 120) {
+        container.scrollTop = container.scrollHeight
+        return
+      }
+
+      // Otherwise scroll to keep active item visible
+      const activeBtn = container.querySelector<HTMLElement>(`[data-toc-id="${activeId}"]`)
+      if (!activeBtn) return
+      const btnTop = activeBtn.offsetTop
+      const btnBottom = btnTop + activeBtn.offsetHeight
+      const containerTop = container.scrollTop
+      const containerBottom = containerTop + container.clientHeight
+      if (btnTop < containerTop) {
+        container.scrollTop = btnTop - 8
+      } else if (btnBottom > containerBottom) {
+        container.scrollTop = btnBottom - container.clientHeight + 8
+      }
+    }
+
+    syncPanelScroll()
+    window.addEventListener('scroll', syncPanelScroll, { passive: true })
+    return () => window.removeEventListener('scroll', syncPanelScroll)
+  }, [activeId])
+
+  const allObservedIdsKey = allObservedIds.join(',')
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
@@ -327,57 +468,136 @@ function ProjectTOC() {
       },
       { rootMargin: '-15% 0px -55% 0px', threshold: 0 }
     )
-    ids.forEach((id) => {
-      const el = document.getElementById(id)
-      if (el) observer.observe(el)
-    })
-    return () => observer.disconnect()
-  }, [])
+
+    const attach = () => {
+      allObservedIds.forEach((id) => {
+        const el = document.getElementById(id)
+        if (el) observer.observe(el)
+      })
+    }
+
+    // Attach immediately, then retry after a tick in case AnimatedItem wrappers
+    // haven't rendered their DOM nodes yet on first mount
+    attach()
+    const timer = setTimeout(attach, 100)
+
+    return () => {
+      clearTimeout(timer)
+      observer.disconnect()
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [allObservedIdsKey])
 
   if (tocTop === null) return null
-
-  const items = [
-    { label: 'Tools & Software', id: 'section-tools' },
-    { label: 'Achievements & Initiatives', id: 'section-achievements' },
-  ]
 
   return (
     <nav className="fixed left-4 xl:left-8 z-30 hidden lg:block print:hidden" style={{ top: `${tocTop}px` }}>
       <div
-        className="flex flex-col gap-1 p-2 rounded-xl"
-        style={{ background: 'var(--color-surface)', border: '1px solid var(--color-border)' }}
+        ref={scrollRef}
+        className="flex flex-col p-2 rounded-xl"
+        style={{
+          background: 'var(--color-surface)',
+          border: '1px solid var(--color-border)',
+          maxHeight: tocMaxHeight,
+          overflowY: 'auto',
+          scrollbarWidth: 'none',
+        }}
       >
-        {items.map((item) => {
-          const isActive = activeId === item.id
-          return (
-            <button
-              key={item.id}
-              onClick={() => {
-                document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
-                setActiveId(item.id)
-              }}
-              className="flex items-center gap-3 px-4 py-3 rounded-lg text-left transition-all duration-200 cursor-pointer w-full border-none"
-              style={{ background: isActive ? 'rgba(240,192,96,0.15)' : 'transparent' }}
+        {/* Tools & Software group heading */}
+        <div>
+          <button
+            onClick={() => {
+              const firstToolId = toolIds[0]
+              if (firstToolId) {
+                document.getElementById(firstToolId)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                setActiveId(firstToolId)
+              }
+            }}
+            className="flex items-center px-3 py-1.5 w-full text-left border-none cursor-pointer transition-colors duration-200 rounded-md mt-1"
+            style={{ background: 'transparent' }}
+          >
+            <span
+              className="text-xs font-bold uppercase tracking-widest"
+              style={{ color: 'var(--color-text-muted)' }}
             >
-              <span
-                className="block rounded-full flex-shrink-0 transition-all duration-300"
-                style={{
-                  width: isActive ? '10px' : '7px',
-                  height: isActive ? '10px' : '7px',
-                  background: isActive ? 'var(--color-accent)' : 'var(--color-text-muted)',
-                  boxShadow: isActive ? '0 0 8px var(--color-accent)' : 'none',
-                  opacity: isActive ? 1 : 0.5,
+              Tools &amp; Software
+            </span>
+          </button>
+
+          {/* Individual tool sub-items */}
+          {tools.map((tool) => {
+            const id = `section-tool-${tool.id}`
+            const isActive = activeId === id
+            return (
+              <button
+                key={id}
+                data-toc-id={id}
+                onClick={() => {
+                  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                  setActiveId(id)
                 }}
-              />
-              <span
-                className="text-sm font-medium whitespace-nowrap transition-colors duration-200"
-                style={{ color: isActive ? 'var(--color-accent)' : 'var(--color-text-secondary)' }}
+                className="flex items-center pl-5 pr-3 py-2.5 rounded-lg text-left transition-all duration-200 cursor-pointer w-full border-none"
+                title={tool.title}
+                style={{ background: isActive ? 'rgba(240,192,96,0.15)' : 'transparent' }}
               >
-                {item.label}
-              </span>
-            </button>
-          )
-        })}
+                <span
+                  className="text-sm font-medium leading-snug break-words transition-colors duration-200"
+                  style={{ color: isActive ? 'var(--color-accent)' : 'var(--color-text-secondary)' }}
+                >
+                  {tool.title}
+                </span>
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Achievements & Initiatives group heading */}
+        <div className="mt-1">
+          <button
+            onClick={() => {
+              const firstId = achievementIds[0]
+              if (firstId) {
+                document.getElementById(firstId)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                setActiveId(firstId)
+              }
+            }}
+            className="flex items-center px-3 py-1.5 w-full text-left border-none cursor-pointer transition-colors duration-200 rounded-md"
+            style={{ background: 'transparent' }}
+          >
+            <span
+              className="text-xs font-bold uppercase tracking-widest"
+              style={{ color: 'var(--color-text-muted)' }}
+            >
+              Achievements &amp; Initiatives
+            </span>
+          </button>
+
+          {/* Individual achievement sub-items */}
+          {achievements.map((achievement) => {
+            const id = `section-achievement-${achievement.id}`
+            const isActive = activeId === id
+            return (
+              <button
+                key={id}
+                data-toc-id={id}
+                onClick={() => {
+                  document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+                  setActiveId(id)
+                }}
+                className="flex items-center pl-5 pr-3 py-2.5 rounded-lg text-left transition-all duration-200 cursor-pointer w-full border-none"
+                title={achievement.title}
+                style={{ background: isActive ? 'rgba(240,192,96,0.15)' : 'transparent' }}
+              >
+                <span
+                  className="text-sm font-medium leading-snug transition-colors duration-200"
+                  style={{ color: isActive ? 'var(--color-accent)' : 'var(--color-text-secondary)' }}
+                >
+                  {ACHIEVEMENT_TOC_LABELS[achievement.id] ?? achievement.title}
+                </span>
+              </button>
+            )
+          })}
+        </div>
       </div>
     </nav>
   )
@@ -422,8 +642,8 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
   }
 
   return (
-    <section className="py-20 px-4 md:px-8 max-w-7xl mx-auto">
-      <ProjectTOC />
+    <section id="projects-section" className="py-20 px-4 md:px-8 max-w-7xl mx-auto">
+      <ProjectTOC tools={tools} achievements={achievements} />
       <div className="mb-16 text-center">
         <h1 className="text-4xl md:text-5xl font-bold mb-4 font-display">
           Projects & Initiatives
@@ -443,16 +663,18 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
             {tools.map((project) => {
               const isIframeExpanded = expandedId === project.id
               return (
-                <AnimatedItem key={project.id}>
-                  <ToolCard
-                    project={project}
-                    isIframeExpanded={isIframeExpanded}
-                    onToggleIframe={() => setExpandedId(isIframeExpanded ? null : project.id)}
-                    onCollapseIframe={() => setExpandedId(null)}
-                    getStatusLabel={getStatusLabel}
-                    getStatusClass={getStatusClass}
-                  />
-                </AnimatedItem>
+                <div id={`section-tool-${project.id}`} key={project.id}>
+                  <AnimatedItem>
+                    <ToolCard
+                      project={project}
+                      isIframeExpanded={isIframeExpanded}
+                      onToggleIframe={() => setExpandedId(isIframeExpanded ? null : project.id)}
+                      onCollapseIframe={() => setExpandedId(null)}
+                      getStatusLabel={getStatusLabel}
+                      getStatusClass={getStatusClass}
+                    />
+                  </AnimatedItem>
+                </div>
               )
             })}
           </div>
@@ -466,38 +688,17 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
 
         <div className="grid grid-cols-1 max-w-2xl mx-auto gap-6 w-full">
           {achievements.map((project) => {
-            const isGrant = project.id === 'golden-state-pathways-grant'
-
             return (
-              <AnimatedItem key={project.id}>
-                <div
-                  className={`chalk-card flex flex-col h-full ${
-                    isGrant ? 'border-[var(--color-accent)] border-opacity-50 shadow-[var(--shadow-glow)]' : ''
-                  }`}
-                >
-                  <div className="flex justify-between items-start mb-3">
-                    <span className="text-xs font-bold px-2 py-1 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] uppercase tracking-wider">
-                      {getTypeLabel(project.type)}
-                    </span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full ${getStatusClass(project.status)}`}>
-                      {getStatusLabel(project.status)}
-                    </span>
-                  </div>
-
-                  <h3 className={`text-xl font-bold font-display mb-2 ${isGrant ? 'text-[var(--color-accent)]' : 'text-[var(--color-text-primary)]'}`}>
-                    {project.title}
-                  </h3>
-
-                  <p className="text-[var(--color-text-secondary)] text-sm mb-4 flex-grow">
-                    {project.description}
-                  </p>
-
-                  <div className="text-xs font-mono text-[var(--color-text-muted)] mt-auto pt-3 border-t border-[var(--color-border)] border-dashed">
-                    {project.dateStart}
-                    {project.dateEnd ? ` – ${project.dateEnd}` : ' – Present'}
-                  </div>
-                </div>
-              </AnimatedItem>
+              <div id={`section-achievement-${project.id}`} key={project.id}>
+                <AnimatedItem>
+                  <AchievementCard
+                    project={project}
+                    getStatusLabel={getStatusLabel}
+                    getStatusClass={getStatusClass}
+                    getTypeLabel={getTypeLabel}
+                  />
+                </AnimatedItem>
+              </div>
             )
           })}
         </div>
