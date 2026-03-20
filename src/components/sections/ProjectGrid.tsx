@@ -395,6 +395,8 @@ function ProjectTOC({ tools, achievements }: ProjectTOCProps) {
   const scrollRef = useRef<HTMLDivElement>(null)
   // Stable fixed top offset (only recalculated on resize, not on scroll)
   const stableTocTop = useRef<number>(0)
+  // Suppress IntersectionObserver updates while a programmatic scroll is in flight
+  const scrollLockRef = useRef(false)
 
   useEffect(() => {
     const setStableTop = () => {
@@ -464,6 +466,8 @@ function ProjectTOC({ tools, achievements }: ProjectTOCProps) {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
+        // Don't override activeId while a click-initiated scroll is in flight
+        if (scrollLockRef.current) return
         const visible = entries.filter((e) => e.isIntersecting)
         if (!visible.length) return
         const topmost = visible.reduce((best, e) =>
@@ -514,8 +518,10 @@ function ProjectTOC({ tools, achievements }: ProjectTOCProps) {
             onClick={() => {
               const firstToolId = toolIds[0]
               if (firstToolId) {
+                scrollLockRef.current = true
                 document.getElementById(firstToolId)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
                 setActiveId(firstToolId)
+                setTimeout(() => { scrollLockRef.current = false }, 900)
               }
             }}
             className="flex items-center px-3 py-1.5 w-full text-left border-none cursor-pointer transition-colors duration-200 rounded-md mt-1"
@@ -538,8 +544,10 @@ function ProjectTOC({ tools, achievements }: ProjectTOCProps) {
                 key={id}
                 data-toc-id={id}
                 onClick={() => {
+                  scrollLockRef.current = true
                   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
                   setActiveId(id)
+                  setTimeout(() => { scrollLockRef.current = false }, 900)
                 }}
                 className="flex items-center pl-5 pr-3 py-2.5 rounded-lg text-left transition-all duration-200 cursor-pointer w-full border-none"
                 title={tool.title}
@@ -562,8 +570,10 @@ function ProjectTOC({ tools, achievements }: ProjectTOCProps) {
             onClick={() => {
               const firstId = achievementIds[0]
               if (firstId) {
+                scrollLockRef.current = true
                 document.getElementById(firstId)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
                 setActiveId(firstId)
+                setTimeout(() => { scrollLockRef.current = false }, 900)
               }
             }}
             className="flex items-center px-3 py-1.5 w-full text-left border-none cursor-pointer transition-colors duration-200 rounded-md"
@@ -586,8 +596,10 @@ function ProjectTOC({ tools, achievements }: ProjectTOCProps) {
                 key={id}
                 data-toc-id={id}
                 onClick={() => {
+                  scrollLockRef.current = true
                   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'center' })
                   setActiveId(id)
+                  setTimeout(() => { scrollLockRef.current = false }, 900)
                 }}
                 className="flex items-center pl-5 pr-3 py-2.5 rounded-lg text-left transition-all duration-200 cursor-pointer w-full border-none"
                 title={achievement.title}
