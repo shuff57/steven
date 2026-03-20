@@ -1,0 +1,14 @@
+
+> interactive-cv@0.1.0 dev
+> next dev
+
+⚠ Specified "redirects" will not automatically work with "output: export". See more info here: https://nextjs.org/docs/messages/export-no-custom-routes
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://169.254.83.107:3000
+
+✓ Starting...
+✓ Ready in 1107ms
+ GET / 200 in 3.1s (compile: 3.0s, render: 168ms)
+ GET /documents 200 in 415ms (compile: 375ms, render: 40ms)
+ GET /documents 200 in 33ms (compile: 3ms, render: 29ms)

@@ -40,10 +40,8 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Video pipeline — source/build artifacts (large, not committed)
-# Note: bookshelf-demo.mp4 (render output) IS committed; only source recordings are excluded
-public/videos/*-kf.mp4
-public/videos/clip*.mp4
+# Videos — too large for GitHub (>100MB)
+public/videos/
 
 # Temporary files
 tmp/
