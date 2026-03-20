@@ -195,7 +195,10 @@ function ExperienceTOC({ visible, sortedList, flat = false }: { visible: boolean
   const institutionIds = sortedList.map(inst => getInstitutionId(inst.name))
   const allObservedIds = [...groupIds, ...institutionIds]
 
-  const [activeId, setActiveId] = useState(institutionIds[0] ?? groupIds[0])
+  const defaultId = flat
+    ? institutionIds[0]
+    : (INSTITUTION_IDS['Butte College'] ?? institutionIds[0])
+  const [activeId, setActiveId] = useState(defaultId ?? groupIds[0])
   const [tocWidth, setTocWidth] = useState('calc(50vw - 358px)')
   const [tocTop, setTocTop] = useState<number | null>(null)
 
@@ -244,7 +247,14 @@ function ExperienceTOC({ visible, sortedList, flat = false }: { visible: boolean
         const topmost = vis.reduce((best, e) =>
           Math.abs(e.boundingClientRect.top) < Math.abs(best.boundingClientRect.top) ? e : best
         )
-        setActiveId(topmost.target.id)
+        let resolvedId = topmost.target.id
+        // If the topmost intersecting element is a group anchor, resolve to its first institution
+        if (groupIds.includes(resolvedId)) {
+          const level = LEVEL_ORDER.find(l => LEVEL_GROUP_IDS[l] === resolvedId)
+          const firstInst = level ? sortedList.find(inst => inst.level === level) : undefined
+          if (firstInst) resolvedId = getInstitutionId(firstInst.name)
+        }
+        setActiveId(resolvedId)
       },
       { rootMargin: '-15% 0px -55% 0px', threshold: 0 }
     )
@@ -356,10 +366,18 @@ function ExperienceViewInner() {
   )
   const sectionRef = useRef<HTMLElement>(null)
 
-  /* Catalog filter state */
+  /* Catalog filter state — seed from URL params if present */
   const [query, setQuery] = useState('')
-  const [activeSubject, setActiveSubject] = useState<CourseSubject | 'all'>('all')
-  const [activeLevel, setActiveLevel] = useState<CourseLevel | 'all'>('all')
+  const [activeSubject, setActiveSubject] = useState<CourseSubject | 'all'>(() => {
+    const s = searchParams.get('subject')
+    const valid: Array<CourseSubject | 'all'> = ['all', 'math', 'statistics', 'computer-science', 'technology', 'career']
+    return valid.includes(s as CourseSubject) ? (s as CourseSubject) : 'all'
+  })
+  const [activeLevel, setActiveLevel] = useState<CourseLevel | 'all'>(() => {
+    const l = searchParams.get('level')
+    const valid: Array<CourseLevel | 'all'> = ['all', 'community-college', 'university', 'high-school', 'middle-school']
+    return valid.includes(l as CourseLevel) ? (l as CourseLevel) : 'all'
+  })
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim()

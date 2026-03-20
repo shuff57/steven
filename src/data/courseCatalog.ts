@@ -42,6 +42,14 @@ function inferSubject(code: string, name: string): CourseSubject {
   const c = code.toLowerCase()
   if (n.includes('statistic') || n.includes(' stat') || c.includes('stat')) return 'statistics'
   if (
+    n.includes('technolog') ||
+    n.includes('robotics') ||
+    n.includes('machining') ||
+    n.includes('modeling') ||
+    n.includes('fabrication')
+  )
+    return 'technology'
+  if (
     n.includes('computer') ||
     n.includes('programming') ||
     n.includes('coding') ||
@@ -52,14 +60,6 @@ function inferSubject(code: string, name: string): CourseSubject {
   )
     return 'computer-science'
   if (n.includes('career') || n.includes('planning')) return 'career'
-  if (
-    n.includes('technolog') ||
-    n.includes('robotics') ||
-    n.includes('machining') ||
-    n.includes('modeling') ||
-    n.includes('fabrication')
-  )
-    return 'technology'
   return 'math'
 }
 

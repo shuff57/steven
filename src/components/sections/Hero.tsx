@@ -12,19 +12,19 @@ const statCards = [
     value: '10+',
     label: 'Years Teaching',
     links: [
-      { title: 'Post-Secondary', href: '/experience#section-post-secondary' },
-      { title: 'Secondary', href: '/experience#section-secondary' },
-      { title: 'Elementary', href: '/experience#section-elementary' },
+      { title: 'Post-Secondary', href: '/experience#section-butte-college' },
+      { title: 'Secondary', href: '/experience#section-pleasant-valley' },
+      { title: 'Elementary', href: '/experience#section-clifford' },
     ],
   },
   {
     value: '20+',
     label: 'Courses Taught',
     links: [
-      { title: 'Intro to Statistics', href: '/experience?view=catalog' },
-      { title: 'Calculus I', href: '/experience?view=catalog' },
-      { title: 'Intro to Programming', href: '/experience?view=catalog' },
-      { title: 'Finite Math', href: '/experience?view=catalog' },
+      { title: 'Intro to Statistics', href: '/experience?view=catalog&subject=statistics&level=community-college' },
+      { title: 'Calculus I', href: '/experience?view=catalog&subject=math&level=community-college' },
+      { title: 'Intro to Programming', href: '/experience?view=catalog&subject=computer-science&level=high-school' },
+      { title: 'Finite Math', href: '/experience?view=catalog&subject=math&level=community-college' },
     ],
   },
   {
@@ -38,9 +38,9 @@ const statCards = [
     value: '10+',
     label: 'Tools Built',
     links: [
-      { title: 'rāSHio', href: '/projects#section-tools' },
-      { title: 'O.G.R.E', href: '/projects#section-tools' },
-      { title: 'bookSHelf', href: '/projects#section-tools' },
+      { title: 'rāSHio', href: '/projects#section-tool-rashio' },
+      { title: 'O.G.R.E', href: '/projects#section-tool-ogre' },
+      { title: 'bookSHelf', href: '/projects#section-tool-bookshelf' },
     ],
   },
   {

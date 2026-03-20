@@ -4,9 +4,14 @@ import { useState, useEffect, useRef, type ReactNode } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Project } from '@/data/projects'
 
-function AnimatedItem({ children }: { children: ReactNode }) {
+function AnimatedItem({ children, skip }: { children: ReactNode; skip?: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { amount: 0.3, once: true })
+  // When navigating via hash anchor, skip the animation so cards above the
+  // target (which were never scrolled into view) aren't left invisible.
+  if (skip) {
+    return <div ref={ref}>{children}</div>
+  }
   return (
     <motion.div
       ref={ref}
@@ -609,8 +614,27 @@ interface ProjectGridProps {
 
 export function ProjectGrid({ projects }: ProjectGridProps) {
   const [expandedId, setExpandedId] = useState<string | null>(null)
+  // Start false to match SSR (no window on server), then flip to true after
+  // mount if there's a hash — avoids hydration mismatch from typeof window.
+  const [skipAnimation, setSkipAnimation] = useState(false)
   const tools = projects.filter((p) => p.type === 'tool')
   const achievements = projects.filter((p) => p.type !== 'tool')
+
+  // Scroll to hash anchor on mount (Next.js App Router doesn't do this automatically).
+  // Also skip card entrance animations when deep-linking so cards above the
+  // target (never scrolled into view) aren't left invisible.
+  useEffect(() => {
+    const hash = window.location.hash
+    if (!hash) return
+    // Disable animations for all cards so none are stuck invisible
+    setSkipAnimation(true)
+    // Wait for renders to settle before scrolling
+    const timer = setTimeout(() => {
+      const el = document.getElementById(hash.slice(1))
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }, 300)
+    return () => clearTimeout(timer)
+  }, [])
 
   const getStatusLabel = (status: Project['status']) => {
     switch (status) {
@@ -664,7 +688,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
               const isIframeExpanded = expandedId === project.id
               return (
                 <div id={`section-tool-${project.id}`} key={project.id}>
-                  <AnimatedItem>
+                  <AnimatedItem skip={skipAnimation}>
                     <ToolCard
                       project={project}
                       isIframeExpanded={isIframeExpanded}
@@ -690,7 +714,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
           {achievements.map((project) => {
             return (
               <div id={`section-achievement-${project.id}`} key={project.id}>
-                <AnimatedItem>
+                <AnimatedItem skip={skipAnimation}>
                   <AchievementCard
                     project={project}
                     getStatusLabel={getStatusLabel}
