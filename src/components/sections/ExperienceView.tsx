@@ -13,6 +13,7 @@ import {
   type CatalogCourse,
 } from '@/data/courseCatalog'
 import { AnimatedItem } from '@/components/ui/AnimatedItem'
+import { getUniversalStatusLabel, getUniversalStatusClass } from '@/lib/statusHelpers'
 
 type FlatCourse = {
   code: string
@@ -20,6 +21,9 @@ type FlatCourse = {
   description: string
   positionTitle: string
   isCurrent: boolean
+  status: string
+  dateStart: string
+  dateEnd: string | null
 }
 
 // Newest first (default "By Institution" order)
@@ -68,6 +72,9 @@ function flattenCourses(institution: Institution): FlatCourse[] {
       description: course.description,
       positionTitle: position.title,
       isCurrent: institution.status === 'current',
+      status: institution.status,
+      dateStart: institution.dateStart,
+      dateEnd: institution.dateEnd,
     }))
   )
 }
@@ -131,11 +138,14 @@ function CourseCard({ course }: { course: FlatCourse }) {
             {course.name}
           </p>
         </div>
-        {course.isCurrent && (
-          <span className="text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 status-active">
-            Current
+        <div className="flex flex-col items-end gap-1 shrink-0">
+          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(course.status)}`}>
+            {getUniversalStatusLabel(course.status)}
           </span>
-        )}
+          <span className="text-xs font-mono text-[var(--color-text-secondary)]">
+            {course.dateStart} – {course.dateEnd ?? 'Present'}
+          </span>
+        </div>
       </div>
 
       {/* Expandable body */}
