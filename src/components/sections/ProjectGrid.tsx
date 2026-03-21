@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useMemo, Suspense, type ReactNode } from '
 import { useSearchParams } from 'next/navigation'
 import { motion, useInView } from 'framer-motion'
 import { Project } from '@/data/projects'
+import { getUniversalStatusLabel, getUniversalStatusClass } from '@/lib/statusHelpers'
 
 /* ── Types ── */
 
@@ -43,26 +44,6 @@ const TYPE_FILTERS: Array<{ value: ProjectType | 'all'; label: string }> = [
 const BASE_PATH = process.env.NEXT_PUBLIC_BASE_PATH ?? ''
 
 /* ── Shared helpers ── */
-
-function getStatusLabel(status: Project['status']) {
-  switch (status) {
-    case 'active':      return 'Active'
-    case 'in-progress': return 'In Progress'
-    case 'concept':     return 'Concept'
-    case 'completed':   return 'Completed'
-    default:            return status
-  }
-}
-
-function getStatusClass(status: Project['status']) {
-  switch (status) {
-    case 'active':      return 'status-active'
-    case 'in-progress': return 'status-progress'
-    case 'concept':     return 'status-concept'
-    case 'completed':   return 'status-completed'
-    default:            return 'bg-gray-800 text-gray-400'
-  }
-}
 
 function getTypeLabel(type: Project['type']) {
   switch (type) {
@@ -166,8 +147,8 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe 
               </p>
             )}
           </div>
-          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getStatusClass(project.status)}`}>
-            {getStatusLabel(project.status)}
+          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(project.status)}`}>
+            {getUniversalStatusLabel(project.status)}
           </span>
         </div>
 
@@ -389,8 +370,8 @@ function AchievementCard({ project }: AchievementCardProps) {
             </p>
           )}
         </div>
-        <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getStatusClass(project.status)}`}>
-          {getStatusLabel(project.status)}
+        <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(project.status)}`}>
+          {getUniversalStatusLabel(project.status)}
         </span>
       </div>
 
@@ -432,8 +413,8 @@ function CatalogProjectCard({ project }: { project: Project }) {
         >
           {TYPE_LABELS[project.type]}
         </span>
-        <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getStatusClass(project.status)}`}>
-          {getStatusLabel(project.status)}
+        <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(project.status)}`}>
+          {getUniversalStatusLabel(project.status)}
         </span>
       </div>
       <p className="text-sm font-bold text-[var(--color-text-primary)] leading-snug mb-1">

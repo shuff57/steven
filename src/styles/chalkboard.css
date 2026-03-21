@@ -59,6 +59,13 @@
 .status-progress { background-color: rgba(245, 158, 11, 0.15); color: #f59e0b; }
 .status-concept { background-color: rgba(107, 114, 128, 0.15); color: #9ca3af; }
 .status-completed { background-color: rgba(16, 185, 129, 0.15); color: #10b981; }
+.status-earned { background-color: rgba(16, 185, 129, 0.15); color: #10b981; }
+.status-current { background-color: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+.status-past { background-color: rgba(107, 114, 128, 0.15); color: #9ca3af; }
+.status-training { background-color: rgba(139, 92, 246, 0.15); color: #8b5cf6; }
+.status-facilitated { background-color: rgba(236, 72, 153, 0.15); color: #ec4899; }
+.status-presented { background-color: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+.status-attended { background-color: rgba(6, 182, 212, 0.15); color: #06b6d4; }
 
 /* Pull-quote callout */
 .pull-quote {

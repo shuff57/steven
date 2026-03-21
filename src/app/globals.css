@@ -18,12 +18,19 @@
   --color-accent-muted: rgba(240, 192, 96, 0.15);
   --color-accent-warm: #f0d060;
   
-  --color-status-active: #f0c060;
-  --color-status-progress: #f59e0b;
-  --color-status-concept: #6b7280;
-  --color-status-completed: #10b981;
-  
-  --color-border: rgba(240, 237, 232, 0.1);
+   --color-status-active: #f0c060;
+   --color-status-progress: #f59e0b;
+   --color-status-concept: #6b7280;
+   --color-status-completed: #10b981;
+   --color-status-earned: #10b981;
+   --color-status-current: #3b82f6;
+   --color-status-past: #6b7280;
+   --color-status-training: #8b5cf6;
+   --color-status-facilitated: #ec4899;
+   --color-status-presented: #f59e0b;
+   --color-status-attended: #06b6d4;
+   
+   --color-border: rgba(240, 237, 232, 0.1);
 
   /* Typography */
   --font-sans: var(--font-sans);
