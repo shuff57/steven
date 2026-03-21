@@ -3,6 +3,7 @@ export interface Credential {
   field: string
   institution: string
   date: string
+  status: 'earned' | 'in-progress'
   notes?: string
   link?: string
 }
@@ -25,6 +26,7 @@ export const education: Education = {
       field: 'Mathematics Education',
       institution: 'California State University, Chico',
       date: 'May 2021',
+      status: 'earned',
       notes: 'Department of Mathematics and Statistics',
     },
     {
@@ -32,6 +34,7 @@ export const education: Education = {
       field: 'Mathematics (Mathematics Education: Credential Pathway)',
       institution: 'California State University, Chico',
       date: 'May 2015',
+      status: 'earned',
       notes: 'Department of Mathematics and Statistics',
     },
   ],
@@ -41,18 +44,21 @@ export const education: Education = {
       field: 'Single Subject Mathematics',
       institution: 'California State University, Chico',
       date: 'May 2015',
+      status: 'earned',
     },
     {
       degree: 'Supplementary Authorization Credential',
       field: 'Computer Science',
       institution: 'California State University, Chico',
       date: 'Summer 2023',
+      status: 'earned',
     },
     {
       degree: 'Supplementary Authorization Credential',
       field: 'Career Technical Education: Information and Communication Technologies',
       institution: 'California State University, Chico',
       date: 'Spring 2026',
+      status: 'in-progress',
     },
   ],
   thesis: {

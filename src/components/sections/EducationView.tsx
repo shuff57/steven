@@ -6,6 +6,7 @@ import { education } from '@/data/education'
 import { profile } from '@/data/profile'
 import type { Credential, Education } from '@/data/education'
 import { AnimatedItem } from '@/components/ui/AnimatedItem'
+import { getUniversalStatusLabel, getUniversalStatusClass } from '@/lib/statusHelpers'
 
 /* ── TOC config ── */
 
@@ -115,9 +116,14 @@ function DegreeCard({ degree }: { degree: Credential }) {
             {degree.field}
           </p>
         </div>
-        <span className="text-xs font-mono text-[var(--color-text-muted)] shrink-0 mt-1">
-          {degree.date}
-        </span>
+        <div className="flex flex-col items-end gap-1 shrink-0">
+          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(degree.status)}`}>
+            {getUniversalStatusLabel(degree.status)}
+          </span>
+          <span className="text-xs font-mono text-[var(--color-text-secondary)]">
+            {degree.date}
+          </span>
+        </div>
       </div>
 
       {/* Expandable body */}
@@ -163,9 +169,14 @@ function CredentialCard({ credential }: { credential: Credential }) {
             {credential.field}
           </p>
         </div>
-        <span className="text-xs font-mono text-[var(--color-text-muted)] shrink-0 mt-1">
-          {credential.date}
-        </span>
+        <div className="flex flex-col items-end gap-1 shrink-0">
+          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(credential.status)}`}>
+            {getUniversalStatusLabel(credential.status)}
+          </span>
+          <span className="text-xs font-mono text-[var(--color-text-secondary)]">
+            {credential.date}
+          </span>
+        </div>
       </div>
 
       {/* Expandable body */}
