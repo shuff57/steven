@@ -70,38 +70,19 @@ const ALL_SKILLS: SkillItem[] = [
 
 function SkillsTOC({ visible }: { visible: boolean }) {
   const [activeId, setActiveId] = useState(TOC_ITEMS[0].id)
-  const [tocWidth, setTocWidth] = useState('calc(50vw - 358px)')
-  const [tocTop,   setTocTop]   = useState<number | null>(null)
-  const tocHeight = TOC_ITEMS.length * 48 + 16
+  const [tocWidth, setTocWidth] = useState('calc((50vw - 336px) / 2)')
+  const [tocLeft, setTocLeft] = useState('calc((50vw - 336px) / 4)')
 
   useEffect(() => {
-    const update = () => setTocWidth(`${Math.max(0, window.innerWidth / 2 - 358)}px`)
+    const update = () => {
+      const gap = Math.max(0, window.innerWidth / 2 - 336)
+      setTocWidth(`${gap / 2}px`)
+      setTocLeft(`${gap / 4}px`)
+    }
     update()
     window.addEventListener('resize', update)
     return () => window.removeEventListener('resize', update)
   }, [])
-
-  useEffect(() => {
-    if (!visible) return
-    const firstId = TOC_ITEMS[0].id
-
-    const updateTop = () => {
-      const el = document.getElementById(firstId)
-      if (!el) return
-      const sectionTop     = el.getBoundingClientRect().top
-      const viewportHeight = window.innerHeight
-      const centeredTop    = (viewportHeight - tocHeight) / 2
-      setTocTop(Math.max(centeredTop, sectionTop))
-    }
-
-    updateTop()
-    window.addEventListener('scroll', updateTop, { passive: true })
-    window.addEventListener('resize', updateTop)
-    return () => {
-      window.removeEventListener('scroll', updateTop)
-      window.removeEventListener('resize', updateTop)
-    }
-  }, [visible])
 
   useEffect(() => {
     if (!visible) return
@@ -123,17 +104,18 @@ function SkillsTOC({ visible }: { visible: boolean }) {
     return () => observer.disconnect()
   }, [visible])
 
-  if (!visible || tocTop === null) return null
+  if (!visible) return null
 
   return (
     <nav
-      className="hidden lg:block fixed left-0 z-40 print:hidden"
-      style={{ width: tocWidth, top: `${tocTop}px` }}
+      className="hidden lg:block fixed z-40 print:hidden flex items-center"
+      style={{ left: 0, width: tocWidth, top: '64px', height: 'calc(100vh - 64px)', display: 'flex', alignItems: 'center' }}
     >
       <div
         className="flex flex-col gap-1 p-2 rounded-r-xl"
         style={{
-          background:   'var(--color-surface)',
+          width: '100%',
+          background: 'var(--color-surface)',
           borderTop:    '1px solid var(--color-border)',
           borderRight:  '1px solid var(--color-border)',
           borderBottom: '1px solid var(--color-border)',

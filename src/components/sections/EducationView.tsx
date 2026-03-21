@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 import { education } from '@/data/education'
 import { profile } from '@/data/profile'
 import type { Credential, Education } from '@/data/education'
@@ -19,36 +20,16 @@ const TOC_ITEMS = [
 
 function EducationTOC() {
   const [activeId, setActiveId] = useState(TOC_ITEMS[0].id)
-  const [tocWidth, setTocWidth] = useState('calc(50vw - 358px)')
-  const [tocTop, setTocTop]   = useState<number | null>(null)
-  const tocHeight = TOC_ITEMS.length * 48 + 16
+  const [tocWidth, setTocWidth] = useState('calc((50vw - 336px) / 2)')
 
   useEffect(() => {
-    const update = () => setTocWidth(`${Math.max(0, window.innerWidth / 2 - 358)}px`)
+    const update = () => {
+      const gap = Math.max(0, window.innerWidth / 2 - 336)
+      setTocWidth(`${gap / 2}px`)
+    }
     update()
     window.addEventListener('resize', update)
     return () => window.removeEventListener('resize', update)
-  }, [])
-
-  useEffect(() => {
-    const firstId = TOC_ITEMS[0].id
-
-    const updateTop = () => {
-      const el = document.getElementById(firstId)
-      if (!el) return
-      const sectionTop   = el.getBoundingClientRect().top
-      const viewportHeight = window.innerHeight
-      const centeredTop  = (viewportHeight - tocHeight) / 2
-      setTocTop(Math.max(centeredTop, sectionTop))
-    }
-
-    updateTop()
-    window.addEventListener('scroll', updateTop, { passive: true })
-    window.addEventListener('resize', updateTop)
-    return () => {
-      window.removeEventListener('scroll', updateTop)
-      window.removeEventListener('resize', updateTop)
-    }
   }, [])
 
   useEffect(() => {
@@ -70,16 +51,15 @@ function EducationTOC() {
     return () => observer.disconnect()
   }, [])
 
-  if (tocTop === null) return null
-
   return (
     <nav
-      className="hidden lg:block fixed left-0 z-40 print:hidden"
-      style={{ width: tocWidth, top: `${tocTop}px` }}
+      className="hidden lg:block fixed z-40 print:hidden"
+      style={{ left: 0, width: tocWidth, top: '64px', height: 'calc(100vh - 64px)', display: 'flex', alignItems: 'center' }}
     >
       <div
         className="flex flex-col gap-1 p-2 rounded-r-xl"
         style={{
+          width: '100%',
           background:   'var(--color-surface)',
           borderTop:    '1px solid var(--color-border)',
           borderRight:  '1px solid var(--color-border)',
@@ -113,7 +93,7 @@ function EducationTOC() {
   )
 }
 
-/* ── Cards ── */
+/* ── By-Category Cards ── */
 
 function DegreeCard({ degree }: { degree: Credential }) {
   const [isExpanded, setIsExpanded] = useState(false)
@@ -208,13 +188,17 @@ function CredentialCard({ credential }: { credential: Credential }) {
 
 function ThesisCard({ thesis }: { thesis: NonNullable<Education['thesis']> }) {
   const [isHovered, setIsHovered] = useState(false)
-  const abstractRef = useRef<HTMLDivElement>(null)
+  const [isTouchExpanded, setIsTouchExpanded] = useState(false)
+  const hasTouched = useRef(false)
+  const isExpanded = isHovered || isTouchExpanded
 
   return (
     <div
-      className="chalk-card border-l-4 border-l-[var(--color-accent)] rounded-xl overflow-hidden relative group"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      className="chalk-card border-l-4 border-l-[var(--color-accent)] rounded-xl overflow-hidden relative group transition-colors duration-200"
+      style={{ borderTop: `1px solid ${isExpanded ? 'var(--color-accent)' : 'var(--color-border)'}`, borderRight: `1px solid ${isExpanded ? 'var(--color-accent)' : 'var(--color-border)'}`, borderBottom: `1px solid ${isExpanded ? 'var(--color-accent)' : 'var(--color-border)'}`, borderLeft: '4px solid var(--color-accent)' }}
+      onTouchStart={() => { hasTouched.current = true }}
+      onMouseEnter={() => { if (!hasTouched.current) setIsHovered(true) }}
+      onMouseLeave={() => { if (!hasTouched.current) setIsHovered(false) }}
     >
       {/* Decorative background icon */}
       <div
@@ -227,57 +211,242 @@ function ThesisCard({ thesis }: { thesis: NonNullable<Education['thesis']> }) {
         </svg>
       </div>
 
-      <div className="relative z-10 p-8">
-        {/* Always visible */}
+      {/* Always-visible header — tap to expand on touch */}
+      <div
+        className="relative z-10 px-8 pt-8 pb-5"
+        style={{ cursor: 'pointer' }}
+        role="button"
+        tabIndex={0}
+        onClick={() => setIsTouchExpanded((prev) => !prev)}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setIsTouchExpanded((prev) => !prev) }}
+        aria-expanded={isExpanded}
+      >
         <div className="text-sm font-bold uppercase tracking-wider text-[var(--color-accent)] mb-3">
           Master&apos;s Thesis
         </div>
         <h3 className="text-2xl font-display italic mb-4 leading-tight text-[var(--color-text-primary)]">
           &ldquo;{thesis.title}&rdquo;
         </h3>
-        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-4">
+        <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
           {thesis.summary}
         </p>
+      </div>
 
-        {/* Hover-expand abstract */}
-        <div
-          style={{
-            height: isHovered ? `${abstractRef.current?.scrollHeight ?? 300}px` : '0px',
-            overflow: 'hidden',
-            transition: 'height 0.35s ease-in-out',
-          }}
-        >
-          <div ref={abstractRef} className="border-t border-[var(--color-border)] pt-4 mb-4">
-            <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-2">Abstract</p>
-            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-              {thesis.abstract}
-            </p>
+      {/* Expandable body — abstract + button */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateRows: isExpanded ? '1fr' : '0fr',
+          transition: 'grid-template-rows 0.3s ease-in-out',
+        }}
+      >
+        <div style={{ overflow: 'hidden', minHeight: 0 }}>
+          <div className="relative z-10 px-8 pb-6 border-t border-[var(--color-border)]">
+            <div className="pt-4 mb-4">
+              <p className="text-xs font-bold uppercase tracking-wider text-[var(--color-text-muted)] mb-2">Abstract</p>
+              <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                {thesis.abstract}
+              </p>
+            </div>
+            <div className="flex items-center justify-center gap-3 mt-1 mb-1">
+              <a
+                href="/documents?doc=thesis"
+                className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold rounded transition-colors duration-200 hover:opacity-80"
+                style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-bg-primary)' }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                  <polyline points="14 2 14 8 20 8" />
+                  <line x1="16" y1="13" x2="8" y2="13" />
+                  <line x1="16" y1="17" x2="8" y2="17" />
+                  <polyline points="10 9 9 9 8 9" />
+                </svg>
+                Read Full Thesis
+              </a>
+            </div>
           </div>
         </div>
-
-        {/* Button — always at bottom, shifts down with abstract */}
-        <a
-          href={thesis.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-bold rounded-lg transition-opacity hover:opacity-80"
-          style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-bg-primary)' }}
-        >
-          Read Full Thesis
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-            <polyline points="15 3 21 3 21 9" />
-            <line x1="10" y1="14" x2="21" y2="3" />
-          </svg>
-        </a>
       </div>
     </div>
   )
 }
 
-/* ── Main view ── */
+/* ── Catalog types & helpers ── */
 
-export function EducationView() {
+type CatalogItemType = 'degree' | 'credential' | 'thesis' | 'research' | 'teaching'
+
+interface CatalogItem {
+  type: CatalogItemType
+  title: string
+  subtitle: string
+  meta: string
+  detail?: string
+  link?: string
+}
+
+const TYPE_LABELS: Record<CatalogItemType, string> = {
+  degree:     'Degree',
+  credential: 'Credential',
+  thesis:     'Thesis',
+  research:   'Research Interest',
+  teaching:   'Teaching Interest',
+}
+
+const TYPE_BG: Record<CatalogItemType, string> = {
+  degree:     'rgba(240,192,96,0.15)',
+  credential: 'rgba(99,179,237,0.15)',
+  thesis:     'rgba(154,117,255,0.15)',
+  research:   'rgba(72,187,120,0.15)',
+  teaching:   'rgba(236,110,75,0.15)',
+}
+
+const TYPE_TEXT: Record<CatalogItemType, string> = {
+  degree:     '#f0c060',
+  credential: '#63b3ed',
+  thesis:     '#9a75ff',
+  research:   '#48bb78',
+  teaching:   '#ec6e4b',
+}
+
+function buildCatalogItems(): CatalogItem[] {
+  const items: CatalogItem[] = []
+
+  for (const d of education.degrees) {
+    items.push({
+      type:     'degree',
+      title:    d.degree,
+      subtitle: d.field,
+      meta:     d.date,
+      detail:   d.institution + (d.notes ? ` · ${d.notes}` : ''),
+    })
+  }
+
+  if (education.thesis) {
+    items.push({
+      type:     'thesis',
+      title:    education.thesis.title,
+      subtitle: 'Master\'s Thesis',
+      meta:     'May 2021',
+      detail:   education.thesis.summary,
+      link:     '/documents?doc=thesis',
+    })
+  }
+
+  for (const c of education.credentials) {
+    items.push({
+      type:     'credential',
+      title:    c.degree,
+      subtitle: c.field,
+      meta:     c.date,
+      detail:   c.institution,
+    })
+  }
+
+  for (const r of profile.researchInterests) {
+    items.push({
+      type:     'research',
+      title:    r,
+      subtitle: 'Research Interest',
+      meta:     '',
+    })
+  }
+
+  for (const t of profile.teachingInterests) {
+    items.push({
+      type:     'teaching',
+      title:    t,
+      subtitle: 'Teaching Interest',
+      meta:     '',
+    })
+  }
+
+  return items
+}
+
+const ALL_CATALOG_ITEMS = buildCatalogItems()
+
+const FILTER_OPTIONS: { label: string; value: CatalogItemType | 'all' }[] = [
+  { label: 'All',                value: 'all'        },
+  { label: 'Degrees',            value: 'degree'     },
+  { label: 'Credentials',        value: 'credential' },
+  { label: 'Thesis',             value: 'thesis'     },
+  { label: 'Research Interests', value: 'research'   },
+  { label: 'Teaching Interests', value: 'teaching'   },
+]
+
+/* ── Catalog Card ── */
+
+function CatalogEducationCard({ item }: { item: CatalogItem }) {
+  return (
+    <div
+      className="chalk-card rounded-xl border border-[var(--color-border)] p-4 flex flex-col gap-2 transition-colors duration-200 hover:border-[var(--color-accent)]"
+      style={{ minHeight: '100px' }}
+    >
+      {/* Type badge + meta */}
+      <div className="flex items-center justify-between gap-2 flex-wrap">
+        <span
+          className="text-xs font-semibold px-2 py-0.5 rounded-full"
+          style={{ background: TYPE_BG[item.type], color: TYPE_TEXT[item.type] }}
+        >
+          {TYPE_LABELS[item.type]}
+        </span>
+        {item.meta && (
+          <span className="text-xs font-mono text-[var(--color-text-muted)]">
+            {item.meta}
+          </span>
+        )}
+      </div>
+
+      {/* Title */}
+      <p className="text-sm font-semibold text-[var(--color-text-primary)] leading-snug line-clamp-3">
+        {item.title}
+      </p>
+
+      {/* Detail */}
+      {item.detail && item.detail !== item.subtitle && (
+        <p className="text-xs text-[var(--color-text-muted)] leading-relaxed line-clamp-2">
+          {item.detail}
+        </p>
+      )}
+
+      {/* Link */}
+      {item.link && (
+        <a
+          href={item.link}
+          className="mt-auto text-xs font-medium flex items-center gap-1 hover:opacity-80 transition-opacity"
+          style={{ color: TYPE_TEXT[item.type] }}
+        >
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <polyline points="14 2 14 8 20 8" />
+          </svg>
+          Read Thesis
+        </a>
+      )}
+    </div>
+  )
+}
+
+/* ── Inner component (needs useSearchParams) ── */
+
+function EducationViewInner() {
+  const searchParams = useSearchParams()
+  const [activeTab, setActiveTab] = useState<'category' | 'catalog'>(
+    searchParams.get('view') === 'catalog' ? 'catalog' : 'category'
+  )
+
+  // Catalog state
+  const [search, setSearch] = useState('')
+  const [activeFilter, setActiveFilter] = useState<CatalogItemType | 'all'>('all')
+
+  const filteredItems = ALL_CATALOG_ITEMS.filter(item => {
+    const matchesFilter = activeFilter === 'all' || item.type === activeFilter
+    const q = search.toLowerCase()
+    const matchesSearch = !q || item.title.toLowerCase().includes(q) || item.subtitle.toLowerCase().includes(q) || (item.detail ?? '').toLowerCase().includes(q)
+    return matchesFilter && matchesSearch
+  })
+
   return (
     <section className="py-20 px-4 md:px-8 max-w-7xl mx-auto">
 
@@ -291,112 +460,219 @@ export function EducationView() {
         </p>
       </div>
 
-      <EducationTOC />
-
-      <div className="max-w-2xl mx-auto space-y-20">
-
-        {/* Degrees */}
-        <div id="section-degrees">
-          <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
-            Degrees
-          </h2>
-          <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
-            California State University, Chico · Department of Mathematics and Statistics
-          </p>
-          <div className="grid grid-cols-1 gap-3 w-full">
-            {education.degrees.map((degree, i) => (
-              <AnimatedItem key={i}>
-                <DegreeCard degree={degree} />
-              </AnimatedItem>
-            ))}
-          </div>
+      {/* Toggle bar */}
+      <div className="flex justify-center mb-12">
+        <div
+          className="inline-flex rounded-lg overflow-hidden"
+          style={{ border: '1px solid var(--color-border)' }}
+        >
+          <button
+            onClick={() => setActiveTab('category')}
+            className="px-6 py-2.5 text-sm transition-colors duration-200 cursor-pointer border-none"
+            style={{
+              background: activeTab === 'category' ? 'var(--color-accent)' : 'transparent',
+              color:      activeTab === 'category' ? 'var(--color-bg-primary)' : 'var(--color-text-muted)',
+              fontWeight: activeTab === 'category' ? 700 : 400,
+            }}
+          >
+            By Category
+          </button>
+          <button
+            onClick={() => setActiveTab('catalog')}
+            className="px-6 py-2.5 text-sm transition-colors duration-200 cursor-pointer border-none"
+            style={{
+              background: activeTab === 'catalog' ? 'var(--color-accent)' : 'transparent',
+              color:      activeTab === 'catalog' ? 'var(--color-bg-primary)' : 'var(--color-text-muted)',
+              fontWeight: activeTab === 'catalog' ? 700 : 400,
+              borderLeft: '1px solid var(--color-border)',
+            }}
+          >
+            Education Catalog
+          </button>
         </div>
+      </div>
 
-        {/* Thesis */}
-        {education.thesis && (
-          <div id="section-thesis">
-            <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
-              Master&apos;s Thesis
-            </h2>
-            <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
-              California State University, Chico · May 2021
-            </p>
-            <AnimatedItem>
-              <ThesisCard thesis={education.thesis} />
-            </AnimatedItem>
-          </div>
-        )}
+      {/* ── BY CATEGORY TAB ── */}
+      {activeTab === 'category' && (
+        <>
+          <EducationTOC />
 
-        {/* Credentials */}
-        <div id="section-credentials">
-          <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
-            Credentials
-          </h2>
-          <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
-            California State University, Chico
-          </p>
-          <div className="grid grid-cols-1 gap-3 w-full">
-            {education.credentials.map((cred, i) => (
-              <AnimatedItem key={i}>
-                <CredentialCard credential={cred} />
-              </AnimatedItem>
-            ))}
-          </div>
-        </div>
+          <div className="max-w-2xl mx-auto space-y-20">
 
-        {/* Interests */}
-        <div id="section-interests">
-          <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
-            Interests
-          </h2>
-          <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
-            Research &amp; teaching focus areas
-          </p>
-
-          <div className="space-y-10">
-            {/* Research interests */}
-            <div>
-              <h3 className="text-lg font-semibold font-display text-[var(--color-text-primary)] mb-4">
-                Research
-              </h3>
+            {/* Degrees */}
+            <div id="section-degrees">
+              <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
+                Degrees
+              </h2>
+              <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
+                California State University, Chico · Department of Mathematics and Statistics
+              </p>
               <div className="grid grid-cols-1 gap-3 w-full">
-                {profile.researchInterests.map((interest, i) => (
+                {education.degrees.map((degree, i) => (
                   <AnimatedItem key={i}>
-                    <div className="chalk-card rounded-xl border border-[var(--color-border)] px-5 py-3">
-                      <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                        {interest}
-                      </p>
-                    </div>
+                    <DegreeCard degree={degree} />
                   </AnimatedItem>
                 ))}
               </div>
             </div>
 
-            {/* Teaching interests */}
-            <div>
-              <h3 className="text-lg font-semibold font-display text-[var(--color-text-primary)] mb-4">
-                Teaching
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {profile.teachingInterests.map((interest, i) => (
-                  <span
-                    key={i}
-                    className="px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200 cursor-default"
-                    style={{
-                      background: 'var(--color-surface)',
-                      border: '1px solid var(--color-border)',
-                      color: 'var(--color-text-secondary)',
-                    }}
-                  >
-                    {interest}
-                  </span>
+            {/* Thesis */}
+            {education.thesis && (
+              <div id="section-thesis">
+                <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
+                  Master&apos;s Thesis
+                </h2>
+                <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
+                  California State University, Chico · May 2021
+                </p>
+                <AnimatedItem>
+                  <ThesisCard thesis={education.thesis} />
+                </AnimatedItem>
+              </div>
+            )}
+
+            {/* Credentials */}
+            <div id="section-credentials">
+              <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
+                Credentials
+              </h2>
+              <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
+                California State University, Chico
+              </p>
+              <div className="grid grid-cols-1 gap-3 w-full">
+                {education.credentials.map((cred, i) => (
+                  <AnimatedItem key={i}>
+                    <CredentialCard credential={cred} />
+                  </AnimatedItem>
                 ))}
               </div>
             </div>
-          </div>
-        </div>
 
-      </div>
+            {/* Interests */}
+            <div id="section-interests">
+              <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
+                Interests
+              </h2>
+              <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
+                Research &amp; teaching focus areas
+              </p>
+
+              <div className="space-y-10">
+                {/* Research interests */}
+                <div>
+                  <h3 className="text-lg font-semibold font-display text-[var(--color-text-primary)] mb-4">
+                    Research
+                  </h3>
+                  <div className="grid grid-cols-1 gap-3 w-full">
+                    {profile.researchInterests.map((interest, i) => (
+                      <AnimatedItem key={i}>
+                        <div className="chalk-card rounded-xl border border-[var(--color-border)] px-5 py-3">
+                          <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
+                            {interest}
+                          </p>
+                        </div>
+                      </AnimatedItem>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Teaching interests */}
+                <div>
+                  <h3 className="text-lg font-semibold font-display text-[var(--color-text-primary)] mb-4">
+                    Teaching
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {profile.teachingInterests.map((interest, i) => (
+                      <span
+                        key={i}
+                        className="px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200 cursor-default"
+                        style={{
+                          background: 'var(--color-surface)',
+                          border: '1px solid var(--color-border)',
+                          color: 'var(--color-text-secondary)',
+                        }}
+                      >
+                        {interest}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </>
+      )}
+
+      {/* ── CATALOG TAB ── */}
+      {activeTab === 'catalog' && (
+        <div className="max-w-5xl mx-auto">
+
+          {/* Search + filters */}
+          <div className="mb-8 space-y-4">
+            <input
+              type="text"
+              placeholder="Search education…"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              className="w-full px-4 py-2.5 rounded-lg text-sm border outline-none transition-colors duration-200"
+              style={{
+                background:  'var(--color-surface)',
+                border:      '1px solid var(--color-border)',
+                color:       'var(--color-text-primary)',
+              }}
+            />
+            <div className="flex flex-wrap gap-2">
+              {FILTER_OPTIONS.map(opt => {
+                const isActive = activeFilter === opt.value
+                const colorKey = opt.value === 'all' ? null : opt.value as CatalogItemType
+                return (
+                  <button
+                    key={opt.value}
+                    onClick={() => setActiveFilter(opt.value)}
+                    className="px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 cursor-pointer border"
+                    style={{
+                      background:  isActive ? (colorKey ? TYPE_BG[colorKey] : 'var(--color-accent)') : 'transparent',
+                      borderColor: isActive ? (colorKey ? TYPE_TEXT[colorKey] : 'var(--color-accent)') : 'var(--color-border)',
+                      color:       isActive ? (colorKey ? TYPE_TEXT[colorKey] : 'var(--color-bg-primary)') : 'var(--color-text-muted)',
+                      fontWeight:  isActive ? 600 : 400,
+                    }}
+                  >
+                    {opt.label}
+                  </button>
+                )
+              })}
+            </div>
+            <p className="text-xs text-[var(--color-text-muted)]">
+              {filteredItems.length} item{filteredItems.length !== 1 ? 's' : ''}
+            </p>
+          </div>
+
+          {/* Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {filteredItems.map((item, i) => (
+              <CatalogEducationCard key={i} item={item} />
+            ))}
+          </div>
+
+          {filteredItems.length === 0 && (
+            <div className="text-center py-20 text-[var(--color-text-muted)]">
+              No items match your search.
+            </div>
+          )}
+        </div>
+      )}
+
     </section>
+  )
+}
+
+/* ── Public export (Suspense boundary for useSearchParams) ── */
+
+export function EducationView() {
+  return (
+    <Suspense>
+      <EducationViewInner />
+    </Suspense>
   )
 }
