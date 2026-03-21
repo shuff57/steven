@@ -2,6 +2,7 @@
 
 import { useState, useRef } from 'react'
 import type { ConferenceItem } from '@/data/conferences'
+import { getUniversalStatusLabel, getUniversalStatusClass } from '@/lib/statusHelpers'
 
 export function ConferenceCard({ item }: { item: ConferenceItem }) {
   const [isExpanded, setIsExpanded] = useState(false)
@@ -22,11 +23,16 @@ export function ConferenceCard({ item }: { item: ConferenceItem }) {
             <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{item.location}</p>
           )}
         </div>
-        {item.date && (
-          <span className="text-xs font-mono text-[var(--color-text-muted)] shrink-0 mt-0.5 whitespace-nowrap">
-            {item.date}
+        <div className="flex flex-col items-end gap-1 shrink-0">
+          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(item.status)}`}>
+            {getUniversalStatusLabel(item.status)}
           </span>
-        )}
+          {item.date && (
+            <span className="text-xs font-mono text-[var(--color-text-secondary)]">
+              {item.date}
+            </span>
+          )}
+        </div>
       </div>
 
       <div
