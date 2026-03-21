@@ -147,9 +147,14 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe 
               </p>
             )}
           </div>
-          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(project.status)}`}>
-            {getUniversalStatusLabel(project.status)}
-          </span>
+          <div className="flex flex-col items-end gap-1 shrink-0">
+            <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(project.status)}`}>
+              {getUniversalStatusLabel(project.status)}
+            </span>
+            <span className="text-xs font-mono text-[var(--color-text-secondary)]">
+              {project.dateStart}{project.dateEnd ? ` – ${project.dateEnd}` : ' – Present'}
+            </span>
+          </div>
         </div>
 
         <div
@@ -370,9 +375,14 @@ function AchievementCard({ project }: AchievementCardProps) {
             </p>
           )}
         </div>
-        <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(project.status)}`}>
-          {getUniversalStatusLabel(project.status)}
-        </span>
+        <div className="flex flex-col items-end gap-1 shrink-0">
+          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(project.status)}`}>
+            {getUniversalStatusLabel(project.status)}
+          </span>
+          <span className="text-xs font-mono text-[var(--color-text-secondary)]">
+            {project.dateStart}{project.dateEnd ? ` – ${project.dateEnd}` : ' – Present'}
+          </span>
+        </div>
       </div>
 
       <div
