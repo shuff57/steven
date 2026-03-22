@@ -20,7 +20,7 @@ export default function ContactPage() {
         <ScrollReveal animation="fade-in" delay={0.2}>
           <div className="chalk-card p-8 mb-20 max-w-xl mx-auto">
             <div className="flex flex-col gap-6">
-              <div className="flex items-center gap-4">
+              <div className="flex items-center justify-center gap-4">
                 <span className="text-2xl" aria-hidden="true">✉</span>
                 <a 
                   href={`mailto:${profile.email}`} 
