@@ -40,8 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# Video pipeline — source/build artifacts (large, not committed)
-# Note: bookshelf-demo.mp4 and rashio-demo.mp4 (final outputs) are allowed to be committed
+# Video pipeline — raw sources are large, never committed
+# Only compressed outputs in public/videos/ are committed
+public/videos/raw/
 public/videos/*-kf.mp4
 public/videos/clip*.mp4
 
