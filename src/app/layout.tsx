@@ -40,9 +40,6 @@ export const metadata: Metadata = {
   title: 'Steven Huff | Math Educator & Developer',
   description:
     'Interactive CV for Steven Huff — math educator, CS teacher, curriculum developer, and tool builder at Pleasant Valley High School and Butte College.',
-  icons: {
-    icon: '/sigma.ico',
-  },
 }
 
 export default function RootLayout({
