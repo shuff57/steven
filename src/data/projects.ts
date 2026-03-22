@@ -34,14 +34,15 @@ export const projects: Project[] = [
   {
     id: 'ogre',
     title: 'O.G.R.E',
-    subtitle: 'Ollama Grading and Rubric Evaluator',
+    subtitle: 'AI-powered grading tools for educators',
     description:
-      'OGRE is a chrome browser extension (OGRE Desktop App in progress) to help support educators in more objective and faster feedback to students. Designed to be highly optimized for consistency across multiple sessions OGRE helps educators create, design, and edit rubrics while also helps educators sift through student response for the actual conceptual responses.',
+      'A collection of AI-powered grading tools including a Chrome Extension for manual AI-assisted grading in the browser with custom rubrics, and an autonomous /grade skill for automated batch grading of 30+ students. Processes both text and images (math problems, diagrams) using vision-capable models, with rubric import via text or screenshot and progress tracking with resume capability for large classes.',
     dateStart: 'Spring 2026',
     dateEnd: null,
     status: 'active',
     featured: true,
     repoUrl: 'https://github.com/shuff57/O.G.R.E-OllamaGradingRubricEvaluator',
+    videoUrl: '/videos/OGRE-demo.mp4',
     type: 'tool',
   },
   {
@@ -62,9 +63,9 @@ export const projects: Project[] = [
   {
     id: 'bookshelf',
     title: 'bookSHelf',
-    subtitle: 'Book Merge and Remastering Tool',
+    subtitle: 'AI-powered textbook enhancement pipeline',
     description:
-      'An AI-powered textbook enhancement pipeline that transforms raw textbook content into interactive Student Enhanced Edition HTML pages — complete with plain-English explanations, worked examples, step-by-step solutions, verified math, and a navigable web interface.',
+      'An 11-step automated pipeline that transforms raw textbook content into interactive Student Enhanced Edition HTML pages — complete with plain-English explanations, worked examples, step-by-step solutions, verified math, embedded videos, and a navigable web interface. Features AI-driven rewriting for student accessibility, independent math verification by subagents, and generates standalone pages with MathJax and collapsible solutions.',
     dateStart: '2025',
     dateEnd: '2026',
     status: 'active',
@@ -83,6 +84,7 @@ export const projects: Project[] = [
     dateEnd: null,
     status: 'concept',
     featured: false,
+    videoUrl: '/videos/wiSHlist-demo.mp4',
     type: 'tool',
   },
   {
@@ -130,6 +132,7 @@ export const projects: Project[] = [
   {
     id: 'golden-state-pathways-grant',
     title: 'Awarded Golden State Pathways Grant for approximately $300,000',
+    subtitle: 'Robotics pathway development at Pleasant Valley High School',
     description:
       'Create/Develop a robotics pathway at Pleasant Valley High School.',
     dateStart: 'Spring 2024',
@@ -141,6 +144,7 @@ export const projects: Project[] = [
   {
     id: 'embedded-systems-robotics',
     title: 'Embedded Systems and Robotics Course and Curriculum Developer',
+    subtitle: 'Mechatronics engineering curriculum for Chico Unified School District',
     description:
       'Created and adopted introductory concepts of mechatronics engineering curricula (Arduino Programming and core electrical concepts, introduction to 3D design (FreeCAD) and 3D printing, introduction to different types machining and milling) for Chico Unified School District using a custom book merge and remastering tool (bookSHelf) I developed.',
     dateStart: '2025',
@@ -152,6 +156,7 @@ export const projects: Project[] = [
   {
     id: 'cs-pathway-update',
     title: 'Computer Science Pathway Developer (Update)',
+    subtitle: 'CTE Information & Communication Technologies Pathway concentrator',
     description:
       'Introduction to Computer Science is a hybrid block-based programming/JavaScript semester elective course. AP Computer Science is dual enrolled and is now called Advanced Computer Science (Advanced CS). Advanced CS is now the concentrator course for the Career Technical Education: Information and Communication Technologies Pathway with the new Embedded Systems and Robotics as the Capstone course.',
     dateStart: 'Spring 2026',
@@ -163,6 +168,7 @@ export const projects: Project[] = [
   {
     id: 'cs-pathway-original',
     title: 'Computer Science Pathway Developer',
+    subtitle: 'Intro CS and AP CSP pathway at Pleasant Valley High School',
     description:
       'Created computer science pathway (Introduction to Computer Science in JavaScript, AP Computer Science Principles in Python/JavaScript) for Pleasant Valley High School.',
     dateStart: 'Fall 2022',
@@ -174,6 +180,7 @@ export const projects: Project[] = [
   {
     id: 'cs-curriculum-developer',
     title: 'Computer Science Curriculum Developer',
+    subtitle: 'District-adopted CS curricula for Chico Unified School District',
     description:
       'Created and adopted computer science curricula (Introduction to Computer Science in JavaScript, AP Computer Science Principles in Python/JavaScript) for Chico Unified School District.',
     dateStart: 'Fall 2022',
@@ -184,7 +191,8 @@ export const projects: Project[] = [
   },
   {
     id: 'csc2-lead-mentor',
-    title: 'Chico STEM Connections Collaborative (CSC\u00B2) - Lead Mentor NSC Coordinator',
+    title: 'Chico STEM Connections Collaborative (CSC²) - Lead Mentor NSC Coordinator',
+    subtitle: 'NSC payroll, study center management, and program coordination',
     description:
       'Assist with College of Natural Sciences (NSC) payroll, manage the NSC study center, assist with NSC program management.',
     dateStart: '2021',
@@ -195,7 +203,8 @@ export const projects: Project[] = [
   },
   {
     id: 'csc2-stemcat',
-    title: 'CSC\u00B2 STEMCAT Mentor Coordinator',
+    title: 'CSC² STEMCAT Mentor Coordinator',
+    subtitle: 'First-year student mentorship and institutional knowledge programming',
     description:
       'Coordinate student mentors with student mentees, plan activities and learning opportunities around first year institutional knowledge.',
     dateStart: '2021',
@@ -207,6 +216,7 @@ export const projects: Project[] = [
   {
     id: 'reach-faculty-mentor',
     title: 'REACH Faculty Mentor',
+    subtitle: 'Guiding first-year students in university life, skills, and resources',
     description:
       'A role guiding first-year students toward understanding university life, skills and resources.',
     dateStart: '2021',
@@ -218,6 +228,7 @@ export const projects: Project[] = [
   {
     id: 'project-math-placement',
     title: '"Project MATH" Community Placement Teacher',
+    subtitle: 'Hosting Chico State student teachers in high school classroom',
     description:
       'Host Project MATH students from Chico State in my high school classroom.',
     dateStart: 'Fall 2022',
@@ -229,6 +240,7 @@ export const projects: Project[] = [
   {
     id: 'project-math-mentor',
     title: '"Project MATH" Mentor Teacher',
+    subtitle: 'Developing pedagogy for Mathematics Education majors',
     description:
       'Work with Mathematics Education majors in fostering and developing an understanding of core pedagogical ideas.',
     dateStart: '2020',
@@ -240,6 +252,7 @@ export const projects: Project[] = [
   {
     id: 'eap-research-assistant',
     title: 'Early Assessment Program Mathematics and Research Assistant',
+    subtitle: 'CAASPP data collection and 11th grade outreach across service area high schools',
     description:
       'Responsibilities include but are not limited to CAASPP Data collection, organization and updating high school data. Visit service area high schools to present to 11th grade students.',
     dateStart: '2018',
@@ -251,6 +264,7 @@ export const projects: Project[] = [
   {
     id: 'early-start-curriculum',
     title: 'Early Start Program Curriculum Developer',
+    subtitle: 'Number sense, algebraic thinking, and university orientation curriculum',
     description:
       'Developed and implemented curriculum centered around number sense, graphical reasoning, algebraic thinking, and university processes and campus information.',
     dateStart: 'Summer 2019',
@@ -275,6 +289,7 @@ export const projects: Project[] = [
   {
     id: 'si-mentor',
     title: 'Supplemental Instruction (SI) "Student Leader" Mentor',
+    subtitle: 'Coordinating concept support with SI student leaders',
     description:
       'Work with SI student leader to determine which concepts will be further supported.',
     dateStart: 'Fall 2019',
@@ -286,6 +301,7 @@ export const projects: Project[] = [
   {
     id: 'qrat-tqr',
     title: 'Trained QRAT and TQR Curriculum Instructor',
+    subtitle: 'CSU Sacramento high school mathematics curriculum',
     description:
       'QRAT and TQR is a CSU Sacramento developed highschool mathematics curriculum.',
     dateStart: 'June 2020',
