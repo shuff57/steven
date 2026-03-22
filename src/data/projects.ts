@@ -34,9 +34,9 @@ export const projects: Project[] = [
   {
     id: 'ogre',
     title: 'O.G.R.E',
-    subtitle: 'AI-powered grading tools for educators',
+    subtitle: 'AI-powered grading desktop app for educators',
     description:
-      'A collection of AI-powered grading tools including a Chrome Extension for manual AI-assisted grading in the browser with custom rubrics, and an autonomous /grade skill for automated batch grading of 30+ students. Processes both text and images (math problems, diagrams) using vision-capable models, with rubric import via text or screenshot and progress tracking with resume capability for large classes.',
+      'O.G.R.E is a native desktop app (Electron + Svelte 5) that grades 30+ student written responses in minutes. Load any grading page in the embedded browser, attach a saved rubric, and run a batch grade — all students are scored in a single AI pass for consistent, calibrated results. Scores and feedback are written back to the page for your review before anything is submitted. Supports Ollama (local, no student data leaves your machine), OpenAI, Anthropic, Gemini, and more. Rubrics are stored in SQLite and reused across sessions. Supports any grading platform via configurable Site Profiles — MyOpenMath included out of the box.',
     dateStart: 'Spring 2026',
     dateEnd: null,
     status: 'active',
