@@ -56,7 +56,7 @@ export const projects: Project[] = [
     status: 'active',
     featured: true,
     externalUrl: 'https://rashio.pages.dev',
-    videoUrl: '/videos/raSHio-demo.mp4',
+    videoUrl: '/videos/rashio-demo.mp4',
     // repoUrl removed — only live site button shown
     type: 'tool',
   },
