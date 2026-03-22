@@ -109,10 +109,10 @@ function DegreeCard({ degree }: { degree: Credential }) {
       {/* Always-visible header */}
       <div className="px-5 py-4 flex justify-between items-start">
         <div className="flex-1 min-w-0 pr-3">
-          <h3 className="text-xl font-bold font-display text-[var(--color-text-primary)]">
+          <h3 className="text-xl font-bold font-display text-[var(--color-accent)]">
             {degree.degree}
           </h3>
-          <p className="text-sm text-[var(--color-accent)] mt-0.5 font-medium">
+          <p className="text-sm text-[var(--color-text-primary)] mt-0.5 font-medium">
             {degree.field}
           </p>
         </div>
@@ -162,10 +162,10 @@ function CredentialCard({ credential }: { credential: Credential }) {
       {/* Always-visible header */}
       <div className="px-5 py-4 flex justify-between items-start">
         <div className="flex-1 min-w-0 pr-3">
-          <h3 className="text-xl font-bold font-display text-[var(--color-text-primary)] leading-snug">
+          <h3 className="text-xl font-bold font-display text-[var(--color-accent)] leading-snug">
             {credential.degree}
           </h3>
-          <p className="text-sm text-[var(--color-accent)] mt-0.5 font-medium">
+          <p className="text-sm text-[var(--color-text-primary)] mt-0.5 font-medium">
             {credential.field}
           </p>
         </div>
@@ -285,7 +285,7 @@ function ThesisCard({ thesis }: { thesis: NonNullable<Education['thesis']> }) {
 
 /* ── Catalog types & helpers ── */
 
-type CatalogItemType = 'degree' | 'credential' | 'thesis' | 'research' | 'teaching'
+type CatalogItemType = 'degree' | 'credential' | 'thesis' | 'research'
 
 interface CatalogItem {
   type: CatalogItemType
@@ -301,7 +301,6 @@ const TYPE_LABELS: Record<CatalogItemType, string> = {
   credential: 'Credential',
   thesis:     'Thesis',
   research:   'Research Interest',
-  teaching:   'Teaching Interest',
 }
 
 const TYPE_BG: Record<CatalogItemType, string> = {
@@ -309,7 +308,6 @@ const TYPE_BG: Record<CatalogItemType, string> = {
   credential: 'rgba(99,179,237,0.15)',
   thesis:     'rgba(154,117,255,0.15)',
   research:   'rgba(72,187,120,0.15)',
-  teaching:   'rgba(236,110,75,0.15)',
 }
 
 const TYPE_TEXT: Record<CatalogItemType, string> = {
@@ -317,7 +315,6 @@ const TYPE_TEXT: Record<CatalogItemType, string> = {
   credential: '#63b3ed',
   thesis:     '#9a75ff',
   research:   '#48bb78',
-  teaching:   '#ec6e4b',
 }
 
 function buildCatalogItems(): CatalogItem[] {
@@ -363,15 +360,6 @@ function buildCatalogItems(): CatalogItem[] {
     })
   }
 
-  for (const t of profile.teachingInterests) {
-    items.push({
-      type:     'teaching',
-      title:    t,
-      subtitle: 'Teaching Interest',
-      meta:     '',
-    })
-  }
-
   return items
 }
 
@@ -383,7 +371,6 @@ const FILTER_OPTIONS: { label: string; value: CatalogItemType | 'all' }[] = [
   { label: 'Credentials',        value: 'credential' },
   { label: 'Thesis',             value: 'thesis'     },
   { label: 'Research Interests', value: 'research'   },
-  { label: 'Teaching Interests', value: 'teaching'   },
 ]
 
 /* ── Catalog Card ── */
@@ -394,25 +381,23 @@ function CatalogEducationCard({ item }: { item: CatalogItem }) {
       className="chalk-card rounded-xl border border-[var(--color-border)] p-4 flex flex-col gap-2 transition-colors duration-200 hover:border-[var(--color-accent)]"
       style={{ minHeight: '100px' }}
     >
-      {/* Type badge + meta */}
-      <div className="flex items-center justify-between gap-2 flex-wrap">
+      <div className="flex items-start justify-between gap-2">
+        <p className="text-sm font-semibold text-[var(--color-text-primary)] leading-snug line-clamp-3 flex-1 min-w-0">
+          {item.title}
+        </p>
         <span
-          className="text-xs font-semibold px-2 py-0.5 rounded-full"
+          className="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0"
           style={{ background: TYPE_BG[item.type], color: TYPE_TEXT[item.type] }}
         >
           {TYPE_LABELS[item.type]}
         </span>
-        {item.meta && (
-          <span className="text-xs font-mono text-[var(--color-text-muted)]">
-            {item.meta}
-          </span>
-        )}
       </div>
 
-      {/* Title */}
-      <p className="text-sm font-semibold text-[var(--color-text-primary)] leading-snug line-clamp-3">
-        {item.title}
-      </p>
+      {item.meta && (
+        <span className="text-xs font-mono text-[var(--color-text-muted)]">
+          {item.meta}
+        </span>
+      )}
 
       {/* Detail */}
       {item.detail && item.detail !== item.subtitle && (
@@ -565,49 +550,19 @@ function EducationViewInner() {
                 Interests
               </h2>
               <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
-                Research &amp; teaching focus areas
+                Research focus areas
               </p>
 
-              <div className="space-y-10">
-                {/* Research interests */}
-                <div>
-                  <h3 className="text-lg font-semibold font-display text-[var(--color-text-primary)] mb-4">
-                    Research
-                  </h3>
-                  <div className="grid grid-cols-1 gap-3 w-full">
-                    {profile.researchInterests.map((interest, i) => (
-                      <AnimatedItem key={i}>
-                        <div className="chalk-card rounded-xl border border-[var(--color-border)] px-5 py-3">
-                          <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
-                            {interest}
-                          </p>
-                        </div>
-                      </AnimatedItem>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Teaching interests */}
-                <div>
-                  <h3 className="text-lg font-semibold font-display text-[var(--color-text-primary)] mb-4">
-                    Teaching
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {profile.teachingInterests.map((interest, i) => (
-                      <span
-                        key={i}
-                        className="px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200 cursor-default"
-                        style={{
-                          background: 'var(--color-surface)',
-                          border: '1px solid var(--color-border)',
-                          color: 'var(--color-text-secondary)',
-                        }}
-                      >
+              <div className="grid grid-cols-1 gap-3 w-full">
+                {profile.researchInterests.map((interest, i) => (
+                  <AnimatedItem key={i}>
+                    <div className="chalk-card rounded-xl border border-[var(--color-border)] px-5 py-3">
+                      <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
                         {interest}
-                      </span>
-                    ))}
-                  </div>
-                </div>
+                      </p>
+                    </div>
+                  </AnimatedItem>
+                ))}
               </div>
             </div>
 
