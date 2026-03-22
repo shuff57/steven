@@ -15,26 +15,27 @@ export function ConferenceCard({ item }: { item: ConferenceItem }) {
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
     >
-      <div className="px-5 py-4 flex justify-between items-start">
-        <div className="flex-1 min-w-0 pr-3">
-          <h3 className="text-lg font-bold font-display text-[var(--color-accent)] leading-snug">
-            {item.title}
-          </h3>
-          {item.location && (
-            <p className="text-xs text-[var(--color-text-primary)] mt-0.5">{item.location}</p>
-          )}
-        </div>
-        <div className="flex flex-col items-end gap-1 shrink-0">
-          {item.date && (
-            <span className="text-xs font-mono text-[var(--color-text-secondary)]">
-              {item.date}
+        <div className="px-5 py-4 flex justify-between items-start">
+          <div className="flex-1 min-w-0 pr-3">
+            <h3 className="text-lg font-bold font-display text-[var(--color-accent)] leading-snug">
+              {item.title}
+            </h3>
+            <p className="text-xs text-[var(--color-text-secondary)] mt-0.5">{item.subtitle}</p>
+          </div>
+          <div className="flex flex-col items-end gap-1 shrink-0">
+            {item.date && (
+              <span className="text-xs font-mono text-[var(--color-text-secondary)]">
+                {item.date}
+              </span>
+            )}
+            {item.location && (
+              <span className="text-xs text-[var(--color-text-muted)] font-mono">{item.location}</span>
+            )}
+            <span className={`text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wide shrink-0 ${getUniversalStatusClass(item.status)}`}>
+              {getUniversalStatusLabel(item.status)}
             </span>
-          )}
-          <span className={`text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wide shrink-0 ${getUniversalStatusClass(item.status)}`}>
-            {getUniversalStatusLabel(item.status)}
-          </span>
+          </div>
         </div>
-      </div>
 
       <div
         style={{
