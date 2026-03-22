@@ -192,9 +192,9 @@ export function AboutView() {
             className="text-base md:text-lg leading-relaxed"
             style={{ color: 'var(--color-text-secondary)', opacity: 0 }}
           >
-            I&apos;m a mathematics and computer science educator based in Chico, California. For{' '}
-            <span style={{ color: 'var(--color-accent)' }}>over a decade</span> I&apos;ve taught at every level — middle school through community
-            college — bringing the same curiosity to an <span style={{ color: 'var(--color-accent)' }}>AP Computer Science</span> course as to a
+            I&apos;m a mathematics and computer science educator based in Chico, California. Over{' '}
+            <span style={{ color: 'var(--color-accent)' }}>ten years</span> of teaching at every level, middle school through community
+            college, I&apos;ve brought the same curiosity to an <span style={{ color: 'var(--color-accent)' }}>AP Computer Science</span> course as to a
             first-year statistics lecture. Right now I split my time between Pleasant Valley High
             School, where I teach Integrated Math, CS, and dual-enrollment statistics, and Butte
             College, where I teach as an adjunct across statistics, calculus, and finite
@@ -218,9 +218,10 @@ export function AboutView() {
             style={{ color: 'var(--color-text-secondary)', opacity: 0 }}
           >
             My research examines how students perceive and use tutoring and support services,
-            and what gets in the way of them asking for help. That same curiosity drives a <span style={{ color: 'var(--color-accent)' }}>$300K</span>
-            robotics grant, a <span style={{ color: 'var(--color-accent)' }}>CNC machining certification</span> earned alongside my students, and a
-            career shaped by one persistent question.
+            and what gets in the way of them asking for help. That same curiosity drives involvement
+            in a <span style={{ color: 'var(--color-accent)' }}>$300K grant</span>, development of a <span style={{ color: 'var(--color-accent)' }}>robotics course and computer
+            science pathway</span>, a <span style={{ color: 'var(--color-accent)' }}>CNC internship</span>, and a career shaped by one persistent
+            question.
           </p>
         </div>
 
