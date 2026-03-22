@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { languages, software, systems, hardware, shinyAppsUrl } from '@/data/skills'
+import { languages, software, systems, hardware } from '@/data/skills'
 import { AnimatedItem } from '@/components/ui/AnimatedItem'
 
 /* ── Types ── */
@@ -60,7 +60,6 @@ const ALL_SKILLS: SkillItem[] = [
   ...software.map(name => ({
     name,
     category: 'software' as SkillCategory,
-    link: name === 'Shiny Apps' ? shinyAppsUrl : undefined,
   })),
   ...systems.map(name  => ({ name, category: 'system'   as SkillCategory })),
   ...hardware.map(name => ({ name, category: 'hardware'  as SkillCategory })),

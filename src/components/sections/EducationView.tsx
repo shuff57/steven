@@ -205,8 +205,8 @@ function ThesisCard({ thesis }: { thesis: NonNullable<Education['thesis']> }) {
 
   return (
     <div
-      className="chalk-card border-l-4 border-l-[var(--color-accent)] rounded-xl overflow-hidden relative group transition-colors duration-200"
-      style={{ borderTop: `1px solid ${isExpanded ? 'var(--color-accent)' : 'var(--color-border)'}`, borderRight: `1px solid ${isExpanded ? 'var(--color-accent)' : 'var(--color-border)'}`, borderBottom: `1px solid ${isExpanded ? 'var(--color-accent)' : 'var(--color-border)'}`, borderLeft: '4px solid var(--color-accent)' }}
+      className="chalk-card rounded-xl overflow-hidden relative group transition-colors duration-200"
+      style={{ border: `1px solid ${isExpanded ? 'var(--color-accent)' : 'var(--color-border)'}` }}
       onTouchStart={() => { hasTouched.current = true }}
       onMouseEnter={() => { if (!hasTouched.current) setIsHovered(true) }}
       onMouseLeave={() => { if (!hasTouched.current) setIsHovered(false) }}
