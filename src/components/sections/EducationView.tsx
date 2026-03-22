@@ -120,7 +120,7 @@ function DegreeCard({ degree }: { degree: Credential }) {
           <span className="text-xs font-mono text-[var(--color-text-secondary)]">
             {degree.date}
           </span>
-          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(degree.status)}`}>
+          <span className={`text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wide shrink-0 ${getUniversalStatusClass(degree.status)}`}>
             {getUniversalStatusLabel(degree.status)}
           </span>
         </div>
@@ -173,7 +173,7 @@ function CredentialCard({ credential }: { credential: Credential }) {
           <span className="text-xs font-mono text-[var(--color-text-secondary)]">
             {credential.date}
           </span>
-          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(credential.status)}`}>
+          <span className={`text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wide shrink-0 ${getUniversalStatusClass(credential.status)}`}>
             {getUniversalStatusLabel(credential.status)}
           </span>
         </div>
@@ -386,7 +386,7 @@ function CatalogEducationCard({ item }: { item: CatalogItem }) {
           {item.title}
         </p>
         <span
-          className="text-xs font-semibold px-2 py-0.5 rounded-full shrink-0"
+          className="text-xs font-semibold px-2 py-0.5 rounded shrink-0"
           style={{ background: TYPE_BG[item.type], color: TYPE_TEXT[item.type] }}
         >
           {TYPE_LABELS[item.type]}
