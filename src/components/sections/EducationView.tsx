@@ -117,11 +117,11 @@ function DegreeCard({ degree }: { degree: Credential }) {
           </p>
         </div>
         <div className="flex flex-col items-end gap-1 shrink-0">
-          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(degree.status)}`}>
-            {getUniversalStatusLabel(degree.status)}
-          </span>
           <span className="text-xs font-mono text-[var(--color-text-secondary)]">
             {degree.date}
+          </span>
+          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(degree.status)}`}>
+            {getUniversalStatusLabel(degree.status)}
           </span>
         </div>
       </div>
@@ -169,12 +169,12 @@ function CredentialCard({ credential }: { credential: Credential }) {
             {credential.field}
           </p>
         </div>
-        <div className="flex flex-col items-end gap-1 shrink-0">
-          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(credential.status)}`}>
-            {getUniversalStatusLabel(credential.status)}
-          </span>
+         <div className="flex flex-col items-end gap-1 shrink-0">
           <span className="text-xs font-mono text-[var(--color-text-secondary)]">
             {credential.date}
+          </span>
+          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(credential.status)}`}>
+            {getUniversalStatusLabel(credential.status)}
           </span>
         </div>
       </div>

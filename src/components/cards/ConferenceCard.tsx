@@ -24,14 +24,14 @@ export function ConferenceCard({ item }: { item: ConferenceItem }) {
           )}
         </div>
         <div className="flex flex-col items-end gap-1 shrink-0">
-          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(item.status)}`}>
-            {getUniversalStatusLabel(item.status)}
-          </span>
           {item.date && (
             <span className="text-xs font-mono text-[var(--color-text-secondary)]">
               {item.date}
             </span>
           )}
+          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(item.status)}`}>
+            {getUniversalStatusLabel(item.status)}
+          </span>
         </div>
       </div>
 

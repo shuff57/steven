@@ -139,11 +139,11 @@ function CourseCard({ course }: { course: FlatCourse }) {
           </p>
         </div>
         <div className="flex flex-col items-end gap-1 shrink-0">
-          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(course.status)}`}>
-            {getUniversalStatusLabel(course.status)}
-          </span>
           <span className="text-xs font-mono text-[var(--color-text-secondary)]">
             {course.dateStart} – {course.dateEnd ?? 'Present'}
+          </span>
+          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(course.status)}`}>
+            {getUniversalStatusLabel(course.status)}
           </span>
         </div>
       </div>
