@@ -140,12 +140,12 @@ export const experiences: Institution[] = [
           {
             code: 'Integrated I',
             name: 'Integrated Mathematics I',
-            description: 'Integrated Mathematics I',
+            description: 'First course in the integrated mathematics sequence covering linear relationships, systems of equations, basic statistics, and an introduction to geometric reasoning aligned to California Common Core standards.',
           },
           {
             code: 'Integrated III',
             name: 'Integrated Mathematics III',
-            description: 'Integrated Mathematics III',
+            description: 'Capstone high school mathematics course covering polynomial, rational, exponential, and logarithmic functions, trigonometry, and statistical inference, preparing students for college-level mathematics.',
           },
         ],
       },
@@ -155,12 +155,12 @@ export const experiences: Institution[] = [
           {
             code: 'Intro CS',
             name: 'Introduction to Computer Science',
-            description: 'Introduction to Computer Science',
+            description: 'Survey course introducing foundational computing concepts including algorithms, problem decomposition, programming logic, and the societal impact of technology. No prior experience required.',
           },
           {
             code: 'AP CSP',
             name: 'Advanced Placement Computer Science Principles',
-            description: 'Advanced Placement Computer Science Principles',
+            description: 'College Board AP course exploring the big ideas of computer science: creativity, abstraction, data, algorithms, programming, the internet, and global impact. Prepares students for the AP exam and college CS coursework.',
           },
         ],
       },
@@ -197,17 +197,17 @@ export const experiences: Institution[] = [
           {
             code: 'Integrated I/Algebra 1',
             name: 'Integrated I/Algebra 1 for ELL Students',
-            description: 'Integrated I/Algebra 1 for English Language Learner students',
+            description: 'Integrated Mathematics I and Algebra 1 content adapted for English Language Learner students, with emphasis on mathematical vocabulary development, visual representations, and scaffolded problem-solving.',
           },
           {
             code: 'Integrated III/Precalculus',
             name: 'Integrated III/Precalculus',
-            description: 'Integrated III/Precalculus',
+            description: 'Advanced high school mathematics covering polynomial and rational functions, trigonometry, exponential and logarithmic models, and an introduction to limits, preparing students for calculus.',
           },
           {
             code: 'Calculus AB',
             name: 'Calculus AB',
-            description: 'Calculus AB',
+            description: 'Introductory calculus course covering limits, derivatives, and integrals of single-variable functions with applications to motion, optimization, and area. Aligned to College Board AP Calculus AB standards.',
           },
         ],
       },
@@ -217,7 +217,7 @@ export const experiences: Institution[] = [
           {
             code: 'Technology',
             name: 'Technology, Coding and Modeling',
-            description: 'Technology, Coding and Modeling',
+            description: 'Middle school elective integrating digital literacy, introductory programming, and 3D modeling. Students explore computational thinking through hands-on projects using coding environments and design tools.',
           },
         ],
       },
@@ -249,7 +249,7 @@ export const experiences: Institution[] = [
           {
             code: 'Algebra 1',
             name: 'Algebra 1',
-            description: 'Algebra 1',
+            description: 'Foundational high school algebra covering linear equations and inequalities, systems of equations, functions, exponents, and an introduction to quadratic expressions. Emphasis on mathematical reasoning and real-world applications.',
           },
         ],
       },
@@ -271,12 +271,12 @@ export const experiences: Institution[] = [
           {
             code: '7th Grade Math',
             name: '7th Grade Math/Beginning Algebra',
-            description: '7th Grade Math/Beginning Algebra',
+            description: 'Seventh grade mathematics bridging arithmetic and algebraic thinking. Topics include ratios and proportional relationships, operations with rational numbers, expressions and equations, geometry, and introductory statistics.',
           },
           {
             code: '8th Grade Math',
             name: '8th Grade Math/Core Algebraic Ideas',
-            description: '8th Grade Math/Core Algebraic Ideas',
+            description: 'Eighth grade mathematics deepening algebraic foundations with linear functions, systems of equations, transformations, the Pythagorean theorem, and introductory work with irrational numbers and statistics.',
           },
         ],
       },

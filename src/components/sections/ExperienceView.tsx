@@ -51,6 +51,15 @@ const LEVEL_GROUP_LABELS: Record<string, string> = {
 // Ordered level groups for TOC and rendering
 const LEVEL_ORDER = ['post-secondary', 'secondary', 'primary'] as const
 
+const INSTITUTION_ABBR: Record<string, string> = {
+  'Butte College': 'Butte College',
+  'California State University, Chico': 'CSU Chico',
+  'Pleasant Valley High School': 'PVHS',
+  'Anderson Valley Jr./Sr. High School': 'AVHS',
+  'San Leandro High School': 'SLHS',
+  'Clifford Elementary School': 'Clifford Elem.',
+}
+
 const INSTITUTION_IDS: Record<string, string> = {
   'Butte College': 'section-butte-college',
   'Pleasant Valley High School': 'section-pleasant-valley',
@@ -131,8 +140,13 @@ function CourseCard({ course }: { course: FlatCourse }) {
       {/* Always-visible header */}
       <div className="px-5 py-4 flex justify-between items-start">
         <div className="flex-1 min-w-0 pr-3">
-          <h3 className="text-xl font-bold font-display truncate" style={{ color: 'var(--color-accent)' }}>
-            {course.name}
+          <h3 className="text-xl font-bold font-display" style={{ color: 'var(--color-accent)' }}>
+            {course.name.includes('(')
+              ? <>
+                  {course.name.slice(0, course.name.indexOf('('))}
+                  <span className="whitespace-nowrap">{course.name.slice(course.name.indexOf('('))}</span>
+                </>
+              : course.name}
           </h3>
           <p className="text-sm text-white mt-0.5 font-medium">
             {course.code}
@@ -169,31 +183,33 @@ function CourseCard({ course }: { course: FlatCourse }) {
 function CatalogCourseCard({ course }: { course: CatalogCourse }) {
   return (
     <div className="chalk-card rounded-xl border border-[var(--color-border)] overflow-hidden p-5">
-      <div className="flex items-start justify-between gap-2 mb-3">
-        <span
-          className="inline-block text-xs font-bold px-2 py-0.5 rounded"
-          style={{
-            background: SUBJECT_COLORS[course.subject],
-            color: SUBJECT_TEXT[course.subject],
-          }}
-        >
-          {SUBJECT_LABELS[course.subject]}
-        </span>
+      <div className="flex items-start justify-between gap-2 mb-1">
+        <h3 className="font-display text-base font-semibold leading-snug" style={{ color: 'var(--color-accent)' }}>
+          {course.name}
+        </h3>
+        <div className="flex flex-col items-end gap-1 shrink-0">
+          <span
+            className="inline-block text-xs font-bold px-2 py-0.5 rounded"
+            style={{
+              background: SUBJECT_COLORS[course.subject],
+              color: SUBJECT_TEXT[course.subject],
+            }}
+          >
+            {SUBJECT_LABELS[course.subject]}
+          </span>
+          <p className="text-xs text-[var(--color-text-muted)] font-mono">
+            {INSTITUTION_ABBR[course.institution] ?? course.institution}
+          </p>
+        </div>
       </div>
-      <h3 className="font-mono text-sm font-bold mb-1" style={{ color: 'var(--color-accent)' }}>
+      <h4 className="font-mono text-sm font-bold mb-2" style={{ color: 'white' }}>
         {course.code}
-      </h3>
-      <h4 className="font-display text-base font-semibold leading-snug mb-2" style={{ color: 'white' }}>
-        {course.name}
       </h4>
       {course.description && course.description !== course.name && (
         <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mb-3">
           {course.description}
         </p>
       )}
-      <p className="text-xs text-[var(--color-text-muted)] font-mono">
-        {course.institution}
-      </p>
     </div>
   )
 }
@@ -683,7 +699,7 @@ function ExperienceViewInner() {
               <p>No courses match your search.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-5xl mx-auto">
               {filtered.map((course) => (
                 <CatalogCourseCard
                   key={`${course.code}|${course.institution}`}
