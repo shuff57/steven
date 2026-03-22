@@ -10,7 +10,8 @@ export function ConferenceCard({ item }: { item: ConferenceItem }) {
 
   return (
     <div
-      className="chalk-card rounded-xl border border-[var(--color-border)] overflow-hidden"
+      className="chalk-card rounded-xl border overflow-hidden"
+      style={{ borderColor: isExpanded ? 'rgba(240, 192, 96, 0.6)' : 'var(--color-border)', transition: 'border-color 0.3s, box-shadow 0.3s' }}
       onMouseEnter={() => setIsExpanded(true)}
       onMouseLeave={() => setIsExpanded(false)}
     >
