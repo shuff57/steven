@@ -373,7 +373,7 @@ function AchievementCard({ project }: AchievementCardProps) {
           )}
         </div>
         <div className="flex flex-col items-end gap-1 shrink-0">
-          <span className="text-xs font-bold px-2 py-0.5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] uppercase tracking-wider">
+          <span className="text-xs font-bold px-2 py-0.5 rounded-lg bg-[var(--color-surface)] text-[var(--color-text-muted)] uppercase tracking-wider">
             {getTypeLabel(project.type)}
           </span>
           <span className="text-xs font-mono text-[var(--color-text-secondary)]">
