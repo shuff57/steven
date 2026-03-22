@@ -16,11 +16,11 @@ export function ConferenceCard({ item }: { item: ConferenceItem }) {
     >
       <div className="px-5 py-4 flex justify-between items-start">
         <div className="flex-1 min-w-0 pr-3">
-          <h3 className="text-lg font-bold font-display text-[var(--color-text-primary)] leading-snug">
+          <h3 className="text-lg font-bold font-display text-[var(--color-accent)] leading-snug">
             {item.title}
           </h3>
           {item.location && (
-            <p className="text-xs text-[var(--color-text-muted)] mt-0.5">{item.location}</p>
+            <p className="text-xs text-[var(--color-text-primary)] mt-0.5">{item.location}</p>
           )}
         </div>
         <div className="flex flex-col items-end gap-1 shrink-0">

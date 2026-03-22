@@ -131,10 +131,10 @@ function CourseCard({ course }: { course: FlatCourse }) {
       {/* Always-visible header */}
       <div className="px-5 py-4 flex justify-between items-start">
         <div className="flex-1 min-w-0 pr-3">
-          <h3 className="text-xl font-bold font-display text-[var(--color-text-primary)] truncate">
+          <h3 className="text-xl font-bold font-display truncate" style={{ color: 'var(--color-accent)' }}>
             {course.code}
           </h3>
-          <p className="text-sm text-[var(--color-accent)] mt-0.5 font-medium">
+          <p className="text-sm text-white mt-0.5 font-medium">
             {course.name}
           </p>
         </div>
@@ -180,10 +180,10 @@ function CatalogCourseCard({ course }: { course: CatalogCourse }) {
           {SUBJECT_LABELS[course.subject]}
         </span>
       </div>
-      <h3 className="font-mono text-sm font-bold text-[var(--color-text-primary)] mb-1">
+      <h3 className="font-mono text-sm font-bold mb-1" style={{ color: 'var(--color-accent)' }}>
         {course.code}
       </h3>
-      <h4 className="font-display text-base font-semibold text-[var(--color-text-primary)] leading-snug mb-2">
+      <h4 className="font-display text-base font-semibold leading-snug mb-2" style={{ color: 'white' }}>
         {course.name}
       </h4>
       {course.description && course.description !== course.name && (

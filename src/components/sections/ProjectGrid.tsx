@@ -138,11 +138,11 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe 
           aria-expanded={isExpanded}
         >
           <div className="flex-1 min-w-0 pr-3">
-            <h3 className="text-xl font-bold font-display text-[var(--color-text-primary)] truncate">
+            <h3 className="text-xl font-bold font-display text-[var(--color-accent)] truncate">
               {project.title}
             </h3>
             {project.subtitle && (
-              <p className="text-sm text-[var(--color-accent)] mt-0.5 font-medium">
+              <p className="text-sm text-[var(--color-text-primary)] mt-0.5 font-medium">
                 {project.subtitle}
               </p>
             )}
@@ -366,11 +366,11 @@ function AchievementCard({ project }: AchievementCardProps) {
           <span className="text-xs font-bold px-2 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] uppercase tracking-wider mb-2 inline-block">
             {getTypeLabel(project.type)}
           </span>
-          <h3 className={`text-base font-bold font-display leading-snug ${isGrant ? 'text-[var(--color-accent)]' : 'text-[var(--color-text-primary)]'}`}>
+          <h3 className="text-base font-bold font-display leading-snug text-[var(--color-accent)]">
             {project.title}
           </h3>
           {project.subtitle && (
-            <p className="text-sm text-[var(--color-accent)] mt-0.5 font-medium">
+            <p className="text-sm text-[var(--color-text-primary)] mt-0.5 font-medium">
               {project.subtitle}
             </p>
           )}
@@ -427,11 +427,11 @@ function CatalogProjectCard({ project }: { project: Project }) {
           {getUniversalStatusLabel(project.status)}
         </span>
       </div>
-      <p className="text-sm font-bold text-[var(--color-text-primary)] leading-snug mb-1">
+      <p className="text-sm font-bold text-[var(--color-accent)] leading-snug mb-1">
         {project.title}
       </p>
       {project.subtitle && (
-        <p className="text-xs text-[var(--color-accent)] mb-1 font-medium">{project.subtitle}</p>
+        <p className="text-xs text-[var(--color-text-primary)] mb-1 font-medium">{project.subtitle}</p>
       )}
       <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed mb-3 line-clamp-3">
         {project.description}
