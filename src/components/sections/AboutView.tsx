@@ -217,7 +217,7 @@ export function AboutView() {
             className="text-base md:text-lg leading-relaxed"
             style={{ color: 'var(--color-text-secondary)', opacity: 0 }}
           >
-            My research examines how students perceive and use tutoring and support services —
+            My research examines how students perceive and use tutoring and support services,
             and what gets in the way of them asking for help. That same curiosity drives a <span style={{ color: 'var(--color-accent)' }}>$300K</span>
             robotics grant, a <span style={{ color: 'var(--color-accent)' }}>CNC machining certification</span> earned alongside my students, and a
             career shaped by one persistent question.
