@@ -130,6 +130,7 @@ export const projects: Project[] = [
     dateEnd: null,
     status: 'concept',
     featured: false,
+    externalUrl: 'https://aistudio.google.com/apps/drive/121tDWYDOJOH78Xqge_mZlRCEASRTva69?showPreview=true&showAssistant=true',
     repoUrl: 'https://github.com/shuff57/animated-fill-buttons',
     type: 'tool',
   },
