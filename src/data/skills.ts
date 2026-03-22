@@ -24,6 +24,7 @@ export const software: string[] = [
   'StatCrunch',
   'VCarve',
   'Ultimaker Cura',
+  'FreeCAD 1.1',
   'Fusion 360',
   'Google Sketchup',
   'Geogebra',
