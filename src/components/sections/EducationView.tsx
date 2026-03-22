@@ -71,6 +71,7 @@ function EducationTOC() {
           const isActive = activeId === item.id
           return (
             <button
+              type="button"
               key={item.id}
               onClick={() => {
                 document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -98,16 +99,22 @@ function EducationTOC() {
 
 function DegreeCard({ degree }: { degree: Credential }) {
   const [isExpanded, setIsExpanded] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
   const bodyRef = useRef<HTMLDivElement>(null)
+  const showBody = isExpanded || isHovered
 
   return (
-    <div
-      className="chalk-card rounded-xl border border-[var(--color-border)] overflow-hidden"
-      onMouseEnter={() => setIsExpanded(true)}
-      onMouseLeave={() => setIsExpanded(false)}
-    >
+    <div className="chalk-card rounded-xl border border-[var(--color-border)] overflow-hidden">
       {/* Always-visible header */}
-      <div className="px-5 py-4 flex justify-between items-start">
+      <button
+        type="button"
+        className="px-5 py-4 flex justify-between items-start w-full text-left"
+        style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+        onClick={() => setIsExpanded((prev) => !prev)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        aria-expanded={showBody}
+      >
         <div className="flex-1 min-w-0 pr-3">
           <h3 className="text-xl font-bold font-display text-[var(--color-accent)]">
             {degree.field}
@@ -124,12 +131,12 @@ function DegreeCard({ degree }: { degree: Credential }) {
             {getUniversalStatusLabel(degree.status)}
           </span>
         </div>
-      </div>
+      </button>
 
       {/* Expandable body */}
       <div
         style={{
-          height: isExpanded ? `${bodyRef.current?.scrollHeight ?? 100}px` : '0px',
+          height: showBody ? `${bodyRef.current?.scrollHeight ?? 100}px` : '0px',
           overflow: 'hidden',
           transition: 'height 0.3s ease-in-out',
         }}
@@ -151,16 +158,22 @@ function DegreeCard({ degree }: { degree: Credential }) {
 
 function CredentialCard({ credential }: { credential: Credential }) {
   const [isExpanded, setIsExpanded] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
   const bodyRef = useRef<HTMLDivElement>(null)
+  const showBody = isExpanded || isHovered
 
   return (
-    <div
-      className="chalk-card rounded-xl border border-[var(--color-border)] overflow-hidden"
-      onMouseEnter={() => setIsExpanded(true)}
-      onMouseLeave={() => setIsExpanded(false)}
-    >
+    <div className="chalk-card rounded-xl border border-[var(--color-border)] overflow-hidden">
       {/* Always-visible header */}
-      <div className="px-5 py-4 flex justify-between items-start">
+      <button
+        type="button"
+        className="px-5 py-4 flex justify-between items-start w-full text-left"
+        style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+        onClick={() => setIsExpanded((prev) => !prev)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        aria-expanded={showBody}
+      >
         <div className="flex-1 min-w-0 pr-3">
           <h3 className="text-xl font-bold font-display text-[var(--color-accent)] leading-snug">
             {credential.field}
@@ -169,7 +182,7 @@ function CredentialCard({ credential }: { credential: Credential }) {
             {credential.degree}
           </p>
         </div>
-         <div className="flex flex-col items-end gap-1 shrink-0">
+        <div className="flex flex-col items-end gap-1 shrink-0">
           <span className="text-xs font-mono text-[var(--color-text-secondary)]">
             {credential.date}
           </span>
@@ -177,12 +190,12 @@ function CredentialCard({ credential }: { credential: Credential }) {
             {getUniversalStatusLabel(credential.status)}
           </span>
         </div>
-      </div>
+      </button>
 
       {/* Expandable body */}
       <div
         style={{
-          height: isExpanded ? `${bodyRef.current?.scrollHeight ?? 80}px` : '0px',
+          height: showBody ? `${bodyRef.current?.scrollHeight ?? 80}px` : '0px',
           overflow: 'hidden',
           transition: 'height 0.3s ease-in-out',
         }}
@@ -207,29 +220,27 @@ function ThesisCard({ thesis }: { thesis: NonNullable<Education['thesis']> }) {
     <div
       className="chalk-card rounded-xl overflow-hidden relative group transition-colors duration-200"
       style={{ border: `1px solid ${isExpanded ? 'var(--color-accent)' : 'var(--color-border)'}` }}
-      onTouchStart={() => { hasTouched.current = true }}
-      onMouseEnter={() => { if (!hasTouched.current) setIsHovered(true) }}
-      onMouseLeave={() => { if (!hasTouched.current) setIsHovered(false) }}
     >
       {/* Decorative background icon */}
       <div
         className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity pointer-events-none"
         aria-hidden="true"
       >
-        <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
+        <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round" aria-label="book icon">
           <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
           <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
         </svg>
       </div>
 
       {/* Always-visible header — tap to expand on touch */}
-      <div
-        className="relative z-10 px-8 pt-8 pb-5"
-        style={{ cursor: 'pointer' }}
-        role="button"
-        tabIndex={0}
+      <button
+        type="button"
+        className="relative z-10 px-8 pt-8 pb-5 w-full text-left"
+        style={{ cursor: 'pointer', background: 'transparent', border: 'none' }}
         onClick={() => setIsTouchExpanded((prev) => !prev)}
-        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setIsTouchExpanded((prev) => !prev) }}
+        onMouseEnter={() => { if (!hasTouched.current) setIsHovered(true) }}
+        onMouseLeave={() => { if (!hasTouched.current) setIsHovered(false) }}
+        onTouchStart={() => { hasTouched.current = true }}
         aria-expanded={isExpanded}
       >
         <div className="text-sm font-bold uppercase tracking-wider text-[var(--color-accent)] mb-3">
@@ -241,7 +252,7 @@ function ThesisCard({ thesis }: { thesis: NonNullable<Education['thesis']> }) {
         <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
           {thesis.summary}
         </p>
-      </div>
+      </button>
 
       {/* Expandable body — abstract + button */}
       <div
@@ -463,6 +474,7 @@ function EducationViewInner() {
           style={{ border: '1px solid var(--color-border)' }}
         >
           <button
+            type="button"
             onClick={() => setActiveTab('category')}
             className="px-6 py-2.5 text-sm transition-colors duration-200 cursor-pointer border-none"
             style={{
@@ -474,6 +486,7 @@ function EducationViewInner() {
             By Category
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab('catalog')}
             className="px-6 py-2.5 text-sm transition-colors duration-200 cursor-pointer border-none"
             style={{
@@ -504,8 +517,8 @@ function EducationViewInner() {
                 California State University, Chico · Department of Mathematics and Statistics
               </p>
               <div className="grid grid-cols-1 gap-3 w-full">
-                {education.degrees.map((degree, i) => (
-                  <AnimatedItem key={i}>
+                {education.degrees.map((degree) => (
+                  <AnimatedItem key={degree.field}>
                     <DegreeCard degree={degree} />
                   </AnimatedItem>
                 ))}
@@ -536,8 +549,8 @@ function EducationViewInner() {
                 California State University, Chico
               </p>
               <div className="grid grid-cols-1 gap-3 w-full">
-                {education.credentials.map((cred, i) => (
-                  <AnimatedItem key={i}>
+                {education.credentials.map((cred) => (
+                  <AnimatedItem key={cred.field}>
                     <CredentialCard credential={cred} />
                   </AnimatedItem>
                 ))}
@@ -554,8 +567,8 @@ function EducationViewInner() {
               </p>
 
               <div className="grid grid-cols-1 gap-3 w-full">
-                {profile.researchInterests.map((interest, i) => (
-                  <AnimatedItem key={i}>
+                {profile.researchInterests.map((interest) => (
+                  <AnimatedItem key={interest}>
                     <div className="chalk-card rounded-xl border border-[var(--color-border)] px-5 py-3">
                       <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed">
                         {interest}
@@ -594,6 +607,7 @@ function EducationViewInner() {
                 const colorKey = opt.value === 'all' ? null : opt.value as CatalogItemType
                 return (
                   <button
+                    type="button"
                     key={opt.value}
                     onClick={() => setActiveFilter(opt.value)}
                     className="px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 cursor-pointer border"
@@ -616,8 +630,8 @@ function EducationViewInner() {
 
           {/* Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {filteredItems.map((item, i) => (
-              <CatalogEducationCard key={i} item={item} />
+            {filteredItems.map((item) => (
+              <CatalogEducationCard key={`${item.type}-${item.title}`} item={item} />
             ))}
           </div>
 

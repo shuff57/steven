@@ -7,7 +7,6 @@ import type { Institution } from '@/data/experience'
 import {
   buildCourseCatalog,
   SUBJECT_LABELS,
-  LEVEL_LABELS,
   type CourseSubject,
   type CourseLevel,
   type CatalogCourse,
@@ -129,16 +128,22 @@ const SUBJECT_TEXT: Record<CourseSubject, string> = {
 
 function CourseCard({ course }: { course: FlatCourse }) {
   const [isExpanded, setIsExpanded] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
   const bodyRef = useRef<HTMLDivElement>(null)
+  const showBody = isExpanded || isHovered
 
   return (
-    <div
-      className="chalk-card rounded-xl border border-[var(--color-border)] overflow-hidden"
-      onMouseEnter={() => setIsExpanded(true)}
-      onMouseLeave={() => setIsExpanded(false)}
-    >
+    <div className="chalk-card rounded-xl border border-[var(--color-border)] overflow-hidden">
       {/* Always-visible header */}
-      <div className="px-5 py-4 flex justify-between items-start">
+      <button
+        type="button"
+        className="px-5 py-4 flex justify-between items-start w-full text-left"
+        style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
+        onClick={() => setIsExpanded((prev) => !prev)}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        aria-expanded={showBody}
+      >
         <div className="flex-1 min-w-0 pr-3">
           <h3 className="text-xl font-bold font-display" style={{ color: 'var(--color-accent)' }}>
             {course.name.includes('(')
@@ -160,12 +165,12 @@ function CourseCard({ course }: { course: FlatCourse }) {
             {getUniversalStatusLabel(course.status)}
           </span>
         </div>
-      </div>
+      </button>
 
       {/* Expandable body */}
       <div
         style={{
-          height: isExpanded ? `${bodyRef.current?.scrollHeight ?? 200}px` : '0px',
+          height: showBody ? `${bodyRef.current?.scrollHeight ?? 200}px` : '0px',
           overflow: 'hidden',
           transition: 'height 0.3s ease-in-out',
         }}
@@ -202,7 +207,7 @@ function CatalogCourseCard({ course }: { course: CatalogCourse }) {
           </p>
         </div>
       </div>
-      <h4 className="font-mono text-sm font-bold mb-2" style={{ color: 'white' }}>
+      <h4 className="font-mono text-sm font-bold mb-2" style={{ color: 'var(--color-text-secondary)' }}>
         {course.code}
       </h4>
       {course.description && course.description !== course.name && (
@@ -226,13 +231,11 @@ function ExperienceTOC({ visible, sortedList, flat = false }: { visible: boolean
     : (INSTITUTION_IDS['Butte College'] ?? institutionIds[0])
   const [activeId, setActiveId] = useState(defaultId ?? groupIds[0])
   const [tocWidth, setTocWidth] = useState('calc((50vw - 336px) / 2)')
-  const [tocLeft, setTocLeft] = useState('calc((50vw - 336px) / 4)')
 
   useEffect(() => {
     const update = () => {
       const gap = Math.max(0, window.innerWidth / 2 - 336)
       setTocWidth(`${gap / 2}px`)
-      setTocLeft(`${gap / 4}px`)
     }
     update()
     window.addEventListener('resize', update)
@@ -281,6 +284,7 @@ function ExperienceTOC({ visible, sortedList, flat = false }: { visible: boolean
             const isActive = activeId === id
             return (
               <button
+                type="button"
                 key={id}
                 onClick={() => {
                   document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -311,6 +315,7 @@ function ExperienceTOC({ visible, sortedList, flat = false }: { visible: boolean
               <div key={level}>
                 {/* Group heading — clickable, scrolls to group anchor */}
                 <button
+                  type="button"
                   onClick={() => {
                     document.getElementById(groupId)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
                     setActiveId(groupId)
@@ -331,6 +336,7 @@ function ExperienceTOC({ visible, sortedList, flat = false }: { visible: boolean
                   const isActive = activeId === id
                   return (
                     <button
+                      type="button"
                       key={id}
                       onClick={() => {
                         document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' })
@@ -435,6 +441,7 @@ function ExperienceViewInner() {
           style={{ border: '1px solid var(--color-border)' }}
         >
           <button
+            type="button"
             onClick={() => setActiveTab('institution')}
             className="px-6 py-2.5 text-sm transition-colors duration-200 cursor-pointer border-none"
             style={{
@@ -446,6 +453,7 @@ function ExperienceViewInner() {
             By Institution
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab('catalog')}
             className="px-6 py-2.5 text-sm transition-colors duration-200 cursor-pointer border-none"
             style={{
@@ -457,6 +465,7 @@ function ExperienceViewInner() {
             Course Catalog
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab('chronological')}
             className="px-6 py-2.5 text-sm transition-colors duration-200 cursor-pointer border-none"
             style={{
@@ -481,7 +490,6 @@ function ExperienceViewInner() {
               {sortedExperiences.filter(inst => inst.level === 'post-secondary').map(institution => {
                 const sectionId = getInstitutionId(institution.name)
                 const courses = flattenCourses(institution)
-                const dateRange = `${institution.dateStart} – ${institution.dateEnd ?? 'Present'}`
                 return (
                   <div key={institution.name} id={sectionId} className="mb-20 last:mb-0">
                     <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
@@ -491,8 +499,8 @@ function ExperienceViewInner() {
                       {institution.location}
                     </p>
                     <div className="grid grid-cols-1 gap-3 w-full">
-                      {courses.map((course, idx) => (
-                        <AnimatedItem key={`${institution.name}-${course.code}-${idx}`}>
+                      {courses.map((course) => (
+                        <AnimatedItem key={`${institution.name}-${course.code}`}>
                           <CourseCard course={course} />
                         </AnimatedItem>
                       ))}
@@ -507,7 +515,6 @@ function ExperienceViewInner() {
               {sortedExperiences.filter(inst => inst.level === 'secondary').map(institution => {
                 const sectionId = getInstitutionId(institution.name)
                 const courses = flattenCourses(institution)
-                const dateRange = `${institution.dateStart} – ${institution.dateEnd ?? 'Present'}`
                 return (
                   <div key={institution.name} id={sectionId} className="mb-20 last:mb-0">
                     <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
@@ -517,8 +524,8 @@ function ExperienceViewInner() {
                       {institution.location}
                     </p>
                     <div className="grid grid-cols-1 gap-3 w-full">
-                      {courses.map((course, idx) => (
-                        <AnimatedItem key={`${institution.name}-${course.code}-${idx}`}>
+                      {courses.map((course) => (
+                        <AnimatedItem key={`${institution.name}-${course.code}`}>
                           <CourseCard course={course} />
                         </AnimatedItem>
                       ))}
@@ -533,7 +540,6 @@ function ExperienceViewInner() {
               {sortedExperiences.filter(inst => inst.level === 'primary').map(institution => {
                 const sectionId = getInstitutionId(institution.name)
                 const courses = flattenCourses(institution)
-                const dateRange = `${institution.dateStart} – ${institution.dateEnd ?? 'Present'}`
                 return (
                   <div key={institution.name} id={sectionId} className="mb-20 last:mb-0">
                     <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
@@ -543,8 +549,8 @@ function ExperienceViewInner() {
                       {institution.location}
                     </p>
                     <div className="grid grid-cols-1 gap-3 w-full">
-                      {courses.map((course, idx) => (
-                        <AnimatedItem key={`${institution.name}-${course.code}-${idx}`}>
+                      {courses.map((course) => (
+                        <AnimatedItem key={`${institution.name}-${course.code}`}>
                           <CourseCard course={course} />
                         </AnimatedItem>
                       ))}
@@ -563,7 +569,6 @@ function ExperienceViewInner() {
             {chronologicalExperiences.map(institution => {
               const sectionId = getInstitutionId(institution.name)
               const courses = flattenCourses(institution)
-              const dateRange = `${institution.dateStart} – ${institution.dateEnd ?? 'Present'}`
               return (
                 <div key={institution.name} id={sectionId}>
                   <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
@@ -573,8 +578,8 @@ function ExperienceViewInner() {
                     {institution.location}
                   </p>
                   <div className="grid grid-cols-1 gap-3 w-full">
-                    {courses.map((course, idx) => (
-                      <AnimatedItem key={`${institution.name}-${course.code}-${idx}`}>
+                    {courses.map((course) => (
+                      <AnimatedItem key={`${institution.name}-${course.code}`}>
                         <CourseCard course={course} />
                       </AnimatedItem>
                     ))}
@@ -628,8 +633,8 @@ function ExperienceViewInner() {
             <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by subject">
               {SUBJECT_FILTERS.map((f) => (
                 <button
+                  type="button"
                   key={f.value}
-                  onClick={() => setActiveSubject(f.value)}
                   className="px-3 py-1.5 text-xs font-semibold rounded-full transition-all duration-200 cursor-pointer"
                   style={{
                     background:
@@ -663,6 +668,7 @@ function ExperienceViewInner() {
             <div className="flex flex-wrap gap-2" role="group" aria-label="Filter by level">
               {LEVEL_FILTERS.map((f) => (
                 <button
+                  type="button"
                   key={f.value}
                   onClick={() => setActiveLevel(f.value)}
                   className="px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200 cursor-pointer"
