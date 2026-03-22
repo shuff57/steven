@@ -35,23 +35,7 @@ export default function ContactPage() {
           </div>
         </ScrollReveal>
 
-        <ScrollReveal animation="scale-in" delay={0.3}>
-          <div id="section-download-cv" className="text-center mb-20">
-            <h2 className="text-3xl font-bold mb-4 font-display text-[var(--color-text-primary)]">
-              Prefer the Traditional Format?
-            </h2>
-            <p className="text-lg text-[var(--color-text-secondary)] mb-8">
-              Download the complete CV as a PDF.
-            </p>
-            <a 
-              href="/Curriculum%20Vitae.pdf" 
-              download
-              className="inline-block bg-[var(--color-accent)] text-[var(--color-bg-primary)] font-bold py-3 px-8 rounded-lg hover:opacity-90 transition-opacity"
-            >
-              Download Full CV (PDF)
-            </a>
-          </div>
-        </ScrollReveal>
+
       </section>
 
 
