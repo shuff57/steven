@@ -148,7 +148,7 @@ function CourseCard({ course }: { course: FlatCourse }) {
                 </>
               : course.name}
           </h3>
-          <p className="text-sm text-white mt-0.5 font-medium">
+          <p className="text-sm text-[var(--color-text-secondary)] mt-0.5 font-medium">
             {course.code}
           </p>
         </div>

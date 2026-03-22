@@ -112,7 +112,7 @@ function DegreeCard({ degree }: { degree: Credential }) {
           <h3 className="text-xl font-bold font-display text-[var(--color-accent)]">
             {degree.field}
           </h3>
-          <p className="text-sm text-[var(--color-text-primary)] mt-0.5 font-medium">
+          <p className="text-sm text-[var(--color-text-secondary)] mt-0.5 font-medium">
             {degree.degree}
           </p>
         </div>
@@ -165,7 +165,7 @@ function CredentialCard({ credential }: { credential: Credential }) {
           <h3 className="text-xl font-bold font-display text-[var(--color-accent)] leading-snug">
             {credential.field}
           </h3>
-          <p className="text-sm text-[var(--color-text-primary)] mt-0.5 font-medium">
+          <p className="text-sm text-[var(--color-text-secondary)] mt-0.5 font-medium">
             {credential.degree}
           </p>
         </div>

@@ -142,9 +142,9 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe 
               {project.title}
             </h3>
             {project.subtitle && (
-              <p className="text-sm text-[var(--color-text-primary)] mt-0.5 font-medium">
-                {project.subtitle}
-              </p>
+               <p className="text-sm text-[var(--color-text-secondary)] mt-0.5 font-medium">
+                 {project.subtitle}
+               </p>
             )}
           </div>
           <div className="flex flex-col items-end gap-1 shrink-0">
@@ -367,9 +367,9 @@ function AchievementCard({ project }: AchievementCardProps) {
             {project.title}
           </h3>
           {project.subtitle && (
-            <p className="text-sm text-[var(--color-text-primary)] mt-0.5 font-medium">
-              {project.subtitle}
-            </p>
+             <p className="text-sm text-[var(--color-text-secondary)] mt-0.5 font-medium">
+               {project.subtitle}
+             </p>
           )}
         </div>
         <div className="flex flex-col items-end gap-1 shrink-0">
@@ -427,7 +427,7 @@ function CatalogProjectCard({ project }: { project: Project }) {
         {project.title}
       </p>
       {project.subtitle && (
-        <p className="text-xs text-[var(--color-text-primary)] mb-1 font-medium">{project.subtitle}</p>
+        <p className="text-xs text-[var(--color-text-secondary)] mb-1 font-medium">{project.subtitle}</p>
       )}
       <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed mb-3 line-clamp-3">
         {project.description}
