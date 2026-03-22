@@ -8,6 +8,7 @@ export const languages: string[] = [
   'R',
   'C++',
   'HTML',
+  'CSS',
   'LaTeX',
   'Scratch',
   'Python',

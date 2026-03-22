@@ -151,7 +151,7 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe 
             <span className="text-xs font-mono text-[var(--color-text-secondary)]">
               {project.dateStart}{project.dateEnd ? ` – ${project.dateEnd}` : ' – Present'}
             </span>
-            <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(project.status)}`}>
+            <span className={`text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wide shrink-0 ${getUniversalStatusClass(project.status)}`}>
               {getUniversalStatusLabel(project.status)}
             </span>
           </div>
@@ -363,9 +363,6 @@ function AchievementCard({ project }: AchievementCardProps) {
         aria-expanded={isExpanded}
       >
         <div className="flex-1 min-w-0 pr-3">
-          <span className="text-xs font-bold px-2 py-0.5 rounded bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] uppercase tracking-wider mb-2 inline-block">
-            {getTypeLabel(project.type)}
-          </span>
           <h3 className="text-base font-bold font-display leading-snug text-[var(--color-accent)]">
             {project.title}
           </h3>
@@ -376,10 +373,13 @@ function AchievementCard({ project }: AchievementCardProps) {
           )}
         </div>
         <div className="flex flex-col items-end gap-1 shrink-0">
+          <span className="text-xs font-bold px-2 py-0.5 rounded-lg bg-[var(--color-surface)] border border-[var(--color-border)] text-[var(--color-text-muted)] uppercase tracking-wider">
+            {getTypeLabel(project.type)}
+          </span>
           <span className="text-xs font-mono text-[var(--color-text-secondary)]">
             {project.dateStart}{project.dateEnd ? ` – ${project.dateEnd}` : ' – Present'}
           </span>
-          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(project.status)}`}>
+          <span className={`text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wide shrink-0 ${getUniversalStatusClass(project.status)}`}>
             {getUniversalStatusLabel(project.status)}
           </span>
         </div>
@@ -394,13 +394,9 @@ function AchievementCard({ project }: AchievementCardProps) {
       >
         <div style={{ overflow: 'hidden', minHeight: 0 }}>
           <div className="px-5 pb-5 border-t border-[var(--color-border)]">
-            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-3 mb-3">
+            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-3">
               {project.description}
             </p>
-            <div className="text-xs font-mono text-[var(--color-text-muted)] pt-3 border-t border-[var(--color-border)] border-dashed">
-              {project.dateStart}
-              {project.dateEnd ? ` – ${project.dateEnd}` : ' – Present'}
-            </div>
           </div>
         </div>
       </div>
@@ -423,7 +419,7 @@ function CatalogProjectCard({ project }: { project: Project }) {
         >
           {TYPE_LABELS[project.type]}
         </span>
-        <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(project.status)}`}>
+        <span className={`text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wide shrink-0 ${getUniversalStatusClass(project.status)}`}>
           {getUniversalStatusLabel(project.status)}
         </span>
       </div>

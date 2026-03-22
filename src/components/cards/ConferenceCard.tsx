@@ -30,7 +30,7 @@ export function ConferenceCard({ item }: { item: ConferenceItem }) {
               {item.date}
             </span>
           )}
-          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(item.status)}`}>
+          <span className={`text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wide shrink-0 ${getUniversalStatusClass(item.status)}`}>
             {getUniversalStatusLabel(item.status)}
           </span>
         </div>

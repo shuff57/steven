@@ -142,7 +142,7 @@ function CourseCard({ course }: { course: FlatCourse }) {
           <span className="text-xs font-mono text-[var(--color-text-secondary)]">
             {course.dateStart} – {course.dateEnd ?? 'Present'}
           </span>
-          <span className={`text-xs font-bold px-2 py-0.5 rounded-full uppercase tracking-wide shrink-0 ${getUniversalStatusClass(course.status)}`}>
+          <span className={`text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wide shrink-0 ${getUniversalStatusClass(course.status)}`}>
             {getUniversalStatusLabel(course.status)}
           </span>
         </div>
@@ -472,7 +472,7 @@ function ExperienceViewInner() {
                       {institution.name}
                     </h2>
                     <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
-                      {institution.location} · {dateRange}
+                      {institution.location}
                     </p>
                     <div className="grid grid-cols-1 gap-3 w-full">
                       {courses.map((course, idx) => (
@@ -498,7 +498,7 @@ function ExperienceViewInner() {
                       {institution.name}
                     </h2>
                     <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
-                      {institution.location} · {dateRange}
+                      {institution.location}
                     </p>
                     <div className="grid grid-cols-1 gap-3 w-full">
                       {courses.map((course, idx) => (
@@ -524,7 +524,7 @@ function ExperienceViewInner() {
                       {institution.name}
                     </h2>
                     <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
-                      {institution.location} · {dateRange}
+                      {institution.location}
                     </p>
                     <div className="grid grid-cols-1 gap-3 w-full">
                       {courses.map((course, idx) => (
@@ -554,7 +554,7 @@ function ExperienceViewInner() {
                     {institution.name}
                   </h2>
                   <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
-                    {institution.location} · {dateRange}
+                    {institution.location}
                   </p>
                   <div className="grid grid-cols-1 gap-3 w-full">
                     {courses.map((course, idx) => (

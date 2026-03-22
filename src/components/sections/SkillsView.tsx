@@ -156,34 +156,34 @@ function SkillCard({ skill }: { skill: SkillItem }) {
 
   return (
     <div className="chalk-card rounded-xl border border-[var(--color-border)] overflow-hidden p-4">
-      <div className="flex items-start justify-between gap-2 mb-2">
-        <span
-          className="inline-block text-xs font-bold px-2 py-0.5 rounded"
-          style={{ background: colors, color: textColor }}
-        >
-          {CATEGORY_LABELS[skill.category]}
-        </span>
-      </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-between gap-2">
         <span className="text-sm font-medium text-[var(--color-text-primary)] leading-snug">
           {skill.name}
         </span>
-        {skill.link && (
-          <a
-            href={skill.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`Open ${skill.name}`}
-            className="ml-auto shrink-0 transition-colors duration-150"
-            style={{ color: textColor }}
+        <div className="flex items-center gap-1.5 shrink-0">
+          {skill.link && (
+            <a
+              href={skill.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={`Open ${skill.name}`}
+              className="shrink-0 transition-colors duration-150"
+              style={{ color: textColor }}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+            </a>
+          )}
+          <span
+            className="inline-block text-xs font-bold px-2 py-0.5 rounded"
+            style={{ background: colors, color: textColor }}
           >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
-              <polyline points="15 3 21 3 21 9" />
-              <line x1="10" y1="14" x2="21" y2="3" />
-            </svg>
-          </a>
-        )}
+            {CATEGORY_LABELS[skill.category]}
+          </span>
+        </div>
       </div>
     </div>
   )
@@ -207,7 +207,7 @@ function CategorySection({
       {subtitle && (
         <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">{subtitle}</p>
       )}
-      <div className="grid grid-cols-1 gap-3 w-full">
+      <div className="grid grid-cols-2 gap-3 w-full">
         {skills.map((skill, i) => (
           <AnimatedItem key={`${skill.name}-${i}`}>
             <SkillCard skill={skill} />
