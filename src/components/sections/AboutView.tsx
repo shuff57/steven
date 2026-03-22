@@ -89,7 +89,7 @@ const pillars: Pillar[] = [
     title: 'Maker',
     accent: '#fb923c',
     summary:
-      'Norfield-certified on Haas CNC mills. Programs Arduino microcontrollers. Secured a $300K grant to build a high school robotics and embedded systems pathway.',
+      'Norfield-trained on Haas CNC mills. Programs Arduino microcontrollers. Involved in securing a $300K grant to build a high school robotics and embedded systems pathway.',
     icon: (
       <svg
         width="26"
