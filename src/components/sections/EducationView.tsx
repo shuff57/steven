@@ -110,10 +110,10 @@ function DegreeCard({ degree }: { degree: Credential }) {
       <div className="px-5 py-4 flex justify-between items-start">
         <div className="flex-1 min-w-0 pr-3">
           <h3 className="text-xl font-bold font-display text-[var(--color-accent)]">
-            {degree.degree}
+            {degree.field}
           </h3>
           <p className="text-sm text-[var(--color-text-primary)] mt-0.5 font-medium">
-            {degree.field}
+            {degree.degree}
           </p>
         </div>
         <div className="flex flex-col items-end gap-1 shrink-0">
@@ -163,10 +163,10 @@ function CredentialCard({ credential }: { credential: Credential }) {
       <div className="px-5 py-4 flex justify-between items-start">
         <div className="flex-1 min-w-0 pr-3">
           <h3 className="text-xl font-bold font-display text-[var(--color-accent)] leading-snug">
-            {credential.degree}
+            {credential.field}
           </h3>
           <p className="text-sm text-[var(--color-text-primary)] mt-0.5 font-medium">
-            {credential.field}
+            {credential.degree}
           </p>
         </div>
          <div className="flex flex-col items-end gap-1 shrink-0">
@@ -382,7 +382,7 @@ function CatalogEducationCard({ item }: { item: CatalogItem }) {
       style={{ minHeight: '100px' }}
     >
       <div className="flex items-start justify-between gap-2">
-        <p className="text-sm font-semibold text-[var(--color-text-primary)] leading-snug line-clamp-3 flex-1 min-w-0">
+        <p className="text-sm font-semibold text-[var(--color-accent)] leading-snug line-clamp-3 flex-1 min-w-0">
           {item.title}
         </p>
         <span
