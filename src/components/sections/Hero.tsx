@@ -29,7 +29,7 @@ const statCards = [
   },
   {
     value: '$300K',
-    label: 'Grant Awarded',
+    label: 'Grant Recipient',
     links: [
       { title: 'Golden State Pathways Grant', href: '/projects#section-achievements' },
     ],

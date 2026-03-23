@@ -150,7 +150,7 @@ export const projects: Project[] = [
   // ─── INITIATIVES / CURRICULUM / GRANTS ─────────────────────────────
   {
     id: 'golden-state-pathways-grant',
-    title: 'Awarded Golden State Pathways Grant for approximately $300,000',
+    title: 'Golden State Pathways Grant Recipient – approximately $300,000',
     subtitle: 'Robotics pathway development at Pleasant Valley High School',
     description:
       'Create/Develop a robotics pathway at Pleasant Valley High School.',
