@@ -220,6 +220,8 @@ function ThesisCard({ thesis }: { thesis: NonNullable<Education['thesis']> }) {
     <div
       className="chalk-card rounded-xl overflow-hidden relative group transition-colors duration-200"
       style={{ border: `1px solid ${isExpanded ? 'var(--color-accent)' : 'var(--color-border)'}` }}
+      onMouseEnter={() => { if (!hasTouched.current) setIsHovered(true) }}
+      onMouseLeave={() => { if (!hasTouched.current) setIsHovered(false) }}
     >
       {/* Decorative background icon */}
       <div
@@ -238,8 +240,6 @@ function ThesisCard({ thesis }: { thesis: NonNullable<Education['thesis']> }) {
         className="relative z-10 px-8 pt-8 pb-5 w-full text-left"
         style={{ cursor: 'pointer', background: 'transparent', border: 'none' }}
         onClick={() => setIsTouchExpanded((prev) => !prev)}
-        onMouseEnter={() => { if (!hasTouched.current) setIsHovered(true) }}
-        onMouseLeave={() => { if (!hasTouched.current) setIsHovered(false) }}
         onTouchStart={() => { hasTouched.current = true }}
         aria-expanded={isExpanded}
       >
