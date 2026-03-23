@@ -10,6 +10,7 @@ export interface Project {
   status: ProjectStatus
   featured: boolean
   externalUrl?: string   // live app / demo URL
+  externalLabel?: string // custom label for the external link
   repoUrl?: string       // GitHub / source code URL
   iframeUrl?: string     // embeddable preview URL
   videoUrl?: string      // demo video path (public/)
@@ -36,13 +37,27 @@ export const projects: Project[] = [
     title: 'O.G.R.E',
     subtitle: 'AI-powered grading desktop app for educators',
     description:
-      'O.G.R.E is a native desktop app (Electron + Svelte 5) that grades 30+ student written responses in minutes. Load any grading page in the embedded browser, attach a saved rubric, and run a batch grade — all students are scored in a single AI pass for consistent, calibrated results. Scores and feedback are written back to the page for your review before anything is submitted. Supports Ollama (local, no student data leaves your machine), OpenAI, Anthropic, Gemini, and more. Rubrics are stored in SQLite and reused across sessions. Supports any grading platform via configurable Site Profiles — MyOpenMath included out of the box.',
+      'O.G.R.E is a native desktop app (Electron + Svelte 5) that grades 30+ student written responses in minutes. It uses a fine-tuned AI model that runs locally via Ollama — student data never leaves the machine or connects to any cloud service, keeping it fully private. Load any grading page in the embedded browser, attach a saved rubric, and run a batch grade — all students are scored in a single AI pass for consistent, calibrated results. Scores and feedback are written back to the page for your review before anything is submitted. Rubrics are stored in SQLite and reused across sessions. Supports any grading platform via configurable Site Profiles — MyOpenMath included out of the box.',
     dateStart: 'Spring 2026',
     dateEnd: null,
     status: 'active',
     featured: true,
     repoUrl: 'https://github.com/shuff57/O.G.R.E-OllamaGradingRubricEvaluator',
     videoUrl: '/videos/OGRE-demo.mp4',
+    type: 'tool',
+  },
+  {
+    id: 'stat-grader',
+    title: 'Fine-tuned AI',
+    subtitle: 'Fine-tuned LLM for grading statistics',
+    description:
+      'A fine-tuned Qwen 3.5 9B model built for locally grading introductory statistics written responses. Designed to run privately via Ollama — student data never connects to any cloud service. Powers the grading engine behind O.G.R.E.',
+    dateStart: '2026',
+    dateEnd: null,
+    status: 'active',
+    featured: true,
+    externalUrl: 'https://ollama.com/shuff57/qwen3.5-9B-stat-grader',
+    externalLabel: 'Ollama AI Model',
     type: 'tool',
   },
   {

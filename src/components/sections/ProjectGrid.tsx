@@ -121,6 +121,7 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe 
 
   return (
     <div>
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
       <div
         className="chalk-card rounded-xl border overflow-hidden transition-colors duration-200"
         style={{ borderColor: isExpanded ? 'var(--color-accent)' : 'var(--color-border)' }}
@@ -128,13 +129,11 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe 
         onMouseEnter={() => { if (!hasTouched.current) setIsHovered(true) }}
         onMouseLeave={() => { if (!hasTouched.current) setIsHovered(false) }}
       >
-        <div
-          className="px-5 py-4 flex justify-between items-start"
-          style={{ cursor: 'pointer' }}
-          role="button"
-          tabIndex={0}
+        <button
+          type="button"
+          className="px-5 py-4 flex justify-between items-start w-full text-left"
+          style={{ cursor: 'pointer', background: 'transparent', border: 'none' }}
           onClick={() => setIsTouchExpanded((prev) => !prev)}
-          onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setIsTouchExpanded((prev) => !prev) }}
           aria-expanded={isExpanded}
         >
           <div className="flex-1 min-w-0 pr-3">
@@ -155,7 +154,7 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe 
               {getUniversalStatusLabel(project.status)}
             </span>
           </div>
-        </div>
+        </button>
 
         <div
           style={{
@@ -211,7 +210,7 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe 
                           <polyline points="15 3 21 3 21 9" />
                           <line x1="10" y1="14" x2="21" y2="3" />
                         </svg>
-                        {project.title}
+                        {project.externalLabel ?? project.title}
                       </a>
                     )}
                   </div>
@@ -249,11 +248,12 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe 
                           <polyline points="15 3 21 3 21 9" />
                           <line x1="10" y1="14" x2="21" y2="3" />
                         </svg>
-                        {project.title}
+                        {project.externalLabel ?? project.title}
                       </a>
                     )}
                     {(project.iframeUrl || project.videoUrl) && (
                       <button
+                        type="button"
                         onClick={(e) => { e.stopPropagation(); onToggleIframe() }}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded border transition-colors duration-200 hover:bg-white/5 ml-auto cursor-pointer"
                         style={{ borderColor: isIframeExpanded ? 'var(--color-accent)' : 'var(--color-border)', color: isIframeExpanded ? 'var(--color-accent)' : 'var(--color-text-secondary)' }}
@@ -300,7 +300,7 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe 
                     Open ↗
                   </a>
                 )}
-                <button onClick={onCollapseIframe} className="text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors duration-150 text-lg leading-none cursor-pointer border-none bg-transparent">
+                <button type="button" onClick={onCollapseIframe} className="text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] transition-colors duration-150 text-lg leading-none cursor-pointer border-none bg-transparent">
                   ×
                 </button>
               </div>
@@ -346,61 +346,56 @@ function AchievementCard({ project }: AchievementCardProps) {
   const isGrant = project.id === 'golden-state-pathways-grant'
 
   return (
-    <div
-      className="chalk-card rounded-xl border overflow-hidden transition-colors duration-200"
-      style={{ borderColor: isExpanded ? 'var(--color-accent)' : 'var(--color-border)' }}
-      onTouchStart={() => { hasTouched.current = true }}
-      onMouseEnter={() => { if (!hasTouched.current) setIsHovered(true) }}
-      onMouseLeave={() => { if (!hasTouched.current) setIsHovered(false) }}
-    >
-      <div
-        className="px-5 py-4 flex justify-between items-start"
-        style={{ cursor: 'pointer' }}
-        role="button"
-        tabIndex={0}
+      <button
+        type="button"
+        className="chalk-card rounded-xl border overflow-hidden transition-colors duration-200 w-full text-left"
+        style={{ borderColor: isExpanded ? 'var(--color-accent)' : 'var(--color-border)', cursor: 'pointer', background: 'transparent' }}
+        onTouchStart={() => { hasTouched.current = true }}
+        onMouseEnter={() => { if (!hasTouched.current) setIsHovered(true) }}
+        onMouseLeave={() => { if (!hasTouched.current) setIsHovered(false) }}
         onClick={() => setIsTouchExpanded((prev) => !prev)}
-        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setIsTouchExpanded((prev) => !prev) }}
         aria-expanded={isExpanded}
       >
-        <div className="flex-1 min-w-0 pr-3">
-          <h3 className="text-base font-bold font-display leading-snug text-[var(--color-accent)]">
-            {project.title}
-          </h3>
-          {project.subtitle && (
-             <p className="text-sm text-[var(--color-text-secondary)] mt-0.5 font-medium">
-               {project.subtitle}
-             </p>
-          )}
-        </div>
-        <div className="flex flex-col items-end gap-1 shrink-0">
-          <span className="text-xs font-bold px-2 py-0.5 rounded-lg bg-[var(--color-surface)] text-[var(--color-text-muted)] uppercase tracking-wider">
-            {getTypeLabel(project.type)}
-          </span>
-          <span className="text-xs font-mono text-[var(--color-text-secondary)]">
-            {project.dateStart}{project.dateEnd ? ` – ${project.dateEnd}` : ' – Present'}
-          </span>
-          <span className={`text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wide shrink-0 ${getUniversalStatusClass(project.status)}`}>
-            {getUniversalStatusLabel(project.status)}
-          </span>
-        </div>
-      </div>
-
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateRows: isExpanded ? '1fr' : '0fr',
-          transition: 'grid-template-rows 0.3s ease-in-out',
-        }}
-      >
-        <div style={{ overflow: 'hidden', minHeight: 0 }}>
-          <div className="px-5 pb-5 border-t border-[var(--color-border)]">
-            <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-3">
-              {project.description}
-            </p>
+        <div className="px-5 py-4 flex justify-between items-start">
+          <div className="flex-1 min-w-0 pr-3">
+            <h3 className="text-base font-bold font-display leading-snug text-[var(--color-accent)]">
+              {project.title}
+            </h3>
+            {project.subtitle && (
+               <p className="text-sm text-[var(--color-text-secondary)] mt-0.5 font-medium">
+                 {project.subtitle}
+               </p>
+            )}
+          </div>
+          <div className="flex flex-col items-end gap-1 shrink-0">
+            <span className="text-xs font-bold px-2 py-0.5 rounded-lg bg-[var(--color-surface)] text-[var(--color-text-muted)] uppercase tracking-wider">
+              {getTypeLabel(project.type)}
+            </span>
+            <span className="text-xs font-mono text-[var(--color-text-secondary)]">
+              {project.dateStart}{project.dateEnd ? ` – ${project.dateEnd}` : ' – Present'}
+            </span>
+            <span className={`text-xs font-bold px-2 py-0.5 rounded uppercase tracking-wide shrink-0 ${getUniversalStatusClass(project.status)}`}>
+              {getUniversalStatusLabel(project.status)}
+            </span>
           </div>
         </div>
-      </div>
-    </div>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateRows: isExpanded ? '1fr' : '0fr',
+            transition: 'grid-template-rows 0.3s ease-in-out',
+          }}
+        >
+          <div style={{ overflow: 'hidden', minHeight: 0 }}>
+            <div className="px-5 pb-5 border-t border-[var(--color-border)]">
+              <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-3">
+                {project.description}
+              </p>
+            </div>
+          </div>
+        </div>
+      </button>
   )
 }
 
@@ -545,6 +540,10 @@ function ProjectTOC({ tools, achievements }: ProjectTOCProps) {
     if (!container) return
 
     const syncPanelScroll = () => {
+      if (window.scrollY < 120) {
+        container.scrollTop = 0
+        return
+      }
       const distFromBottom = document.body.scrollHeight - window.scrollY - window.innerHeight
       if (distFromBottom < 120) {
         container.scrollTop = container.scrollHeight
@@ -618,6 +617,7 @@ function ProjectTOC({ tools, achievements }: ProjectTOCProps) {
       >
         <div>
           <button
+            type="button"
             onClick={() => {
               const firstToolId = toolIds[0]
               if (firstToolId) {
@@ -640,6 +640,7 @@ function ProjectTOC({ tools, achievements }: ProjectTOCProps) {
             const isActive = activeId === id
             return (
               <button
+                type="button"
                 key={id}
                 data-toc-id={id}
                 onClick={() => {
@@ -665,6 +666,7 @@ function ProjectTOC({ tools, achievements }: ProjectTOCProps) {
 
         <div className="mt-1">
           <button
+            type="button"
             onClick={() => {
               const firstId = achievementIds[0]
               if (firstId) {
@@ -687,6 +689,7 @@ function ProjectTOC({ tools, achievements }: ProjectTOCProps) {
             const isActive = activeId === id
             return (
               <button
+                type="button"
                 key={id}
                 data-toc-id={id}
                 onClick={() => {
@@ -776,6 +779,7 @@ function ProjectGridInner({ projects }: ProjectGridProps) {
           style={{ border: '1px solid var(--color-border)' }}
         >
           <button
+            type="button"
             onClick={() => setActiveTab('category')}
             className="px-6 py-2.5 text-sm transition-colors duration-200 cursor-pointer border-none"
             style={{
@@ -787,6 +791,7 @@ function ProjectGridInner({ projects }: ProjectGridProps) {
             By Category
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab('catalog')}
             className="px-6 py-2.5 text-sm transition-colors duration-200 cursor-pointer border-none"
             style={{
@@ -886,9 +891,9 @@ function ProjectGridInner({ projects }: ProjectGridProps) {
               const txtColor = f.value !== 'all' ? TYPE_TEXT[f.value as ProjectType]   : undefined
               return (
                 <button
+                  type="button"
                   key={f.value}
                   onClick={() => setActiveType(f.value)}
-                  className="px-3 py-1.5 text-xs font-semibold rounded-full transition-all duration-200 cursor-pointer"
                   style={{
                     background: isActive
                       ? (f.value === 'all' ? 'var(--color-accent)' : bgColor)
