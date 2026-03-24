@@ -133,15 +133,17 @@ function CourseCard({ course }: { course: FlatCourse }) {
   const showBody = isExpanded || isHovered
 
   return (
-    <div className="chalk-card rounded-xl border border-[var(--color-border)] overflow-hidden">
+    <div
+      className="chalk-card rounded-xl border border-[var(--color-border)] overflow-hidden"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
       {/* Always-visible header */}
       <button
         type="button"
         className="px-5 py-4 flex justify-between items-start w-full text-left"
         style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
         onClick={() => setIsExpanded((prev) => !prev)}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
         aria-expanded={showBody}
       >
         <div className="flex-1 min-w-0 pr-3">

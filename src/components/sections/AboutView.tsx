@@ -193,8 +193,9 @@ export function AboutView() {
             style={{ color: 'var(--color-text-secondary)', opacity: 0 }}
           >
             I&apos;m a mathematics and computer science educator based in Chico, California. Over{' '}
-            <span style={{ color: 'var(--color-accent)' }}>ten years</span> of teaching at every level, middle school through community
-            college, I&apos;ve brought the same curiosity to an <span style={{ color: 'var(--color-accent)' }}>AP Computer Science</span> course as to a
+            <Link href="/experience" style={{ color: 'var(--color-accent)' }} className="hover:underline">ten years</Link> of teaching at every level, middle school through community
+            college, I&apos;ve brought the same curiosity to an{' '}
+            <Link href="/experience#section-pleasant-valley" style={{ color: 'var(--color-accent)' }} className="hover:underline">AP Computer Science</Link> course as to a
             first-year statistics lecture. Right now I split my time between Pleasant Valley High
             School, where I teach Integrated Math, CS, and dual-enrollment statistics, and Butte
             College, where I teach as an adjunct across statistics, calculus, and finite
@@ -206,10 +207,11 @@ export function AboutView() {
             style={{ color: 'var(--color-text-secondary)', opacity: 0 }}
           >
             I build tools. When a problem shows up in my classroom and the existing solutions
-            don&apos;t fit, I write code. <span style={{ color: 'var(--color-accent)' }}>rāSHio</span> is a clean, student-focused statistics
-            calculator. <span style={{ color: 'var(--color-accent)' }}>bookSHelf</span> automates textbook remastering into modern, accessible formats.{' '}
-            <span style={{ color: 'var(--color-accent)' }}>O.G.R.E.</span> is a Chrome extension that brings AI-powered rubric evaluation to teacher
-            workflows. Each project starts with a frustration felt at the whiteboard and ends with
+            don&apos;t fit, I write code.{' '}
+            <Link href="/projects#section-tool-rashio" style={{ color: 'var(--color-accent)' }} className="hover:underline">rāSHio</Link> is a clean, student-focused statistics
+            calculator.{' '}
+            <Link href="/projects#section-tool-bookshelf" style={{ color: 'var(--color-accent)' }} className="hover:underline">bookSHelf</Link> automates textbook remastering into modern, accessible formats.{' '}
+            <Link href="/projects#section-tool-ogre" style={{ color: 'var(--color-accent)' }} className="hover:underline">O.G.R.E.</Link> is a native desktop app that grades 30+ student written responses in minutes using AI, with scores and feedback written back to the page before anything is submitted. Each project starts with a frustration felt at the whiteboard and ends with
             working software.
           </p>
           <p
@@ -219,8 +221,11 @@ export function AboutView() {
           >
             My research examines how students perceive and use tutoring and support services,
             and what gets in the way of them asking for help. That same curiosity drives involvement
-            in a <span style={{ color: 'var(--color-accent)' }}>$300K grant</span>, development of a <span style={{ color: 'var(--color-accent)' }}>robotics course and computer
-            science pathway</span>, a <span style={{ color: 'var(--color-accent)' }}>CNC internship</span>, and a career shaped by one persistent
+            in a{' '}
+            <Link href="/projects#section-achievement-golden-state-pathways-grant" style={{ color: 'var(--color-accent)' }} className="hover:underline">$300K grant</Link>, development of a{' '}
+            <Link href="/projects#section-achievement-embedded-systems-robotics" style={{ color: 'var(--color-accent)' }} className="hover:underline">robotics course and computer
+            science pathway</Link>, a{' '}
+            <Link href="/professional-development" style={{ color: 'var(--color-accent)' }} className="hover:underline">CNC internship</Link>, and a career shaped by one persistent
             question.
           </p>
         </div>
