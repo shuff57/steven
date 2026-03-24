@@ -274,7 +274,7 @@ function ExperienceTOC({ visible, sortedList, flat = false }: { visible: boolean
   if (!visible) return null
 
   return (
-    <nav className="hidden lg:block fixed z-40 print:hidden" style={{ left: 0, width: tocWidth, top: '64px', height: 'calc(100vh - 64px)', display: 'flex', alignItems: 'center' }}>
+    <nav className="hidden lg:flex fixed z-40 print:hidden items-center" style={{ left: 0, width: tocWidth, top: '64px', height: 'calc(100vh - 64px)' }}>
       <div
         className="flex flex-col p-2 rounded-r-xl"
         style={{ width: '100%', background: 'var(--color-surface)', borderTop: '1px solid var(--color-border)', borderRight: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}

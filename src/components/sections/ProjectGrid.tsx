@@ -600,7 +600,7 @@ function ProjectTOC({ tools, achievements }: ProjectTOCProps) {
   }, [allObservedIdsKey])
 
   return (
-    <nav className="hidden lg:block fixed z-40 print:hidden" style={{ left: 0, width: tocWidth, top: '64px', height: 'calc(100vh - 64px)', display: 'flex', alignItems: 'center' }}>
+    <nav className="hidden lg:flex fixed z-40 print:hidden items-center" style={{ left: 0, width: tocWidth, top: '64px', height: 'calc(100vh - 64px)' }}>
       <div
         ref={scrollRef}
         className="flex flex-col p-2 rounded-r-xl"

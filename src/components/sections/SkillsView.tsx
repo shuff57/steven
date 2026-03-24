@@ -107,8 +107,8 @@ function SkillsTOC({ visible }: { visible: boolean }) {
 
   return (
     <nav
-      className="hidden lg:block fixed z-40 print:hidden flex items-center"
-      style={{ left: 0, width: tocWidth, top: '64px', height: 'calc(100vh - 64px)', display: 'flex', alignItems: 'center' }}
+      className="hidden lg:flex fixed z-40 print:hidden items-center"
+      style={{ left: 0, width: tocWidth, top: '64px', height: 'calc(100vh - 64px)' }}
     >
       <div
         className="flex flex-col gap-1 p-2 rounded-r-xl"
