@@ -71,7 +71,7 @@ export function Navigation() {
         </Link>
 
         {/* Desktop nav links — centered */}
-        <div className="hidden md:flex items-center justify-center gap-8">
+        <div className="hidden lg:flex items-center justify-center gap-8">
           {navLinks.map(({ href, label }) => {
             const isActive = pathname === href
             return (
@@ -94,7 +94,7 @@ export function Navigation() {
 
         {/* Right: Documents dropdown (desktop) + hamburger (mobile) */}
         <div className="flex items-center gap-3" style={{ justifySelf: 'end' }}>
-          <div ref={dropdownRef} className="hidden md:block" style={{ position: 'relative' }}>
+          <div ref={dropdownRef} className="hidden lg:block" style={{ position: 'relative' }}>
             {/* Trigger */}
             <button
               onClick={() => setDropdownOpen((o) => !o)}
@@ -210,7 +210,7 @@ export function Navigation() {
 
           {/* Hamburger button */}
           <button
-            className="md:hidden flex flex-col justify-center items-center gap-1.5 w-12 h-12 p-2 rounded-md hover:bg-white/5 transition-colors"
+            className="lg:hidden flex flex-col justify-center items-center gap-1.5 w-12 h-12 p-2 rounded-md hover:bg-white/5 transition-colors"
             onClick={() => setMobileOpen((o) => !o)}
             aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
             aria-expanded={mobileOpen}
@@ -246,7 +246,7 @@ export function Navigation() {
 
       {/* Mobile drawer */}
       <div
-        className="md:hidden overflow-hidden transition-all duration-300"
+        className="lg:hidden overflow-hidden transition-all duration-300"
         style={{
           maxHeight: mobileOpen ? '400px' : '0',
           borderTop: mobileOpen ? '1px solid var(--color-border)' : 'none',
