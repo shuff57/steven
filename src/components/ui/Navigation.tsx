@@ -253,14 +253,14 @@ export function Navigation() {
           backgroundColor: 'var(--color-bg-primary)',
         }}
       >
-        <div className="px-4 py-6 flex flex-col gap-1">
+        <div className="px-4 py-6 flex flex-col gap-1 items-end">
           {navLinks.map(({ href, label }) => {
             const isActive = pathname === href
             return (
               <Link
                 key={href}
                 href={href}
-                className="block py-3 px-2 text-base rounded-md transition-colors duration-200"
+                className="block py-3 px-2 text-base rounded-md transition-colors duration-200 text-right w-full"
                 style={{
                   color: isActive ? 'var(--color-accent)' : 'var(--color-text-secondary)',
                   backgroundColor: isActive ? 'var(--color-accent-muted)' : 'transparent',
@@ -273,7 +273,7 @@ export function Navigation() {
             )
           })}
           {/* Documents section in mobile drawer */}
-          <div style={{ borderTop: '1px solid var(--color-border)', marginTop: '8px', paddingTop: '8px' }}>
+          <div className="w-full" style={{ borderTop: '1px solid var(--color-border)', marginTop: '8px', paddingTop: '8px' }}>
             {([
               { label: 'View CV', href: DOCUMENTS_PATH, download: false },
               { label: 'Download CV', href: CV_PDF_PATH, download: true },
@@ -284,7 +284,7 @@ export function Navigation() {
                 key={item.label}
                 href={item.href}
                 {...(item.download ? { download: true } : {})}
-                className="block py-3 px-2 text-base rounded-md transition-colors duration-200"
+                className="block py-3 px-2 text-base rounded-md transition-colors duration-200 text-right"
                 style={{
                   color: !item.download && pathname === '/documents' ? 'var(--color-accent)' : 'var(--color-text-secondary)',
                   backgroundColor: !item.download && pathname === '/documents' ? 'var(--color-accent-muted)' : 'transparent',
