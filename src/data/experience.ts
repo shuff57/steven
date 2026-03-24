@@ -51,8 +51,8 @@ export const experiences: Institution[] = [
               'Linear functions, systems of linear equations and inequalities, matrices, linear programming, mathematics of finance, sets and Venn diagrams, combinatorial techniques and an introduction to probability. Applications in business, economics and social sciences. Transfers to CSU/UC.',
           },
           {
-            code: 'Stats-C1000',
-            name: 'Intro to Statistics (formerly Math 18)',
+            code: 'Stats-C1000 (formerly Math 18)',
+            name: 'Intro to Statistics',
             description:
               'This course uses data from disciplines including business, social sciences, psychology, life science, health science, and education to create better understanding of probability techniques, hypothesis testing, and predictive techniques to facilitate decision-making. Topics include descriptive statistics; probability and sampling distributions; statistical inference; correlation and linear regression; analysis of variance, chi-square and t-tests; and application of technology for statistical analysis including the interpretation of the relevance of the statistical findings. Transfers to CSU/UC.',
           },
@@ -169,8 +169,8 @@ export const experiences: Institution[] = [
         notes: '2024 - Present',
         courses: [
           {
-            code: 'Stats-C1000',
-            name: 'Introduction to Statistics (formerly Math 18)',
+            code: 'Stats-C1000 (formerly Math 18)',
+            name: 'Introduction to Statistics',
             description: 'Introduction to Statistics (Dual Enrollment through Butte Community College)',
           },
           {
