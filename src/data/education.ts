@@ -58,7 +58,7 @@ export const education: Education = {
       field: 'Career Technical Education: Information and Communication Technologies',
       institution: 'California State University, Chico',
       date: 'Spring 2026',
-      status: 'in-progress',
+      status: 'earned',
     },
   ],
   thesis: {
