@@ -208,6 +208,28 @@ function CredentialCard({ credential }: { credential: Credential }) {
           <p className="text-sm text-[var(--color-text-secondary)] leading-relaxed mt-3">
             {credential.institution}
           </p>
+          {credential.notes && (
+            <p className="text-sm text-[var(--color-text-muted)] mt-1">
+              {credential.notes}
+            </p>
+          )}
+          {credential.link && (
+            <a
+              href={credential.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 mt-3 text-xs font-medium hover:opacity-80 transition-opacity"
+              style={{ color: 'var(--color-accent)' }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
+              </svg>
+              Verify Certificate
+            </a>
+          )}
         </div>
       </div>
     </div>
@@ -363,6 +385,7 @@ function buildCatalogItems(): CatalogItem[] {
       subtitle: c.field,
       meta:     c.date,
       detail:   c.institution,
+      link:     c.link,
     })
   }
 
@@ -425,14 +448,23 @@ function CatalogEducationCard({ item }: { item: CatalogItem }) {
       {item.link && (
         <a
           href={item.link}
+          {...(item.link.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
           className="mt-auto text-xs font-medium flex items-center gap-1 hover:opacity-80 transition-opacity"
           style={{ color: TYPE_TEXT[item.type] }}
         >
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-            <polyline points="14 2 14 8 20 8" />
-          </svg>
-          Read Thesis
+          {item.link.startsWith('http') ? (
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+              <polyline points="15 3 21 3 21 9" />
+              <line x1="10" y1="14" x2="21" y2="3" />
+            </svg>
+          ) : (
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+          )}
+          {item.type === 'thesis' ? 'Read Thesis' : 'Verify Certificate'}
         </a>
       )}
     </div>

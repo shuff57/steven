@@ -60,6 +60,16 @@ export const education: Education = {
       date: 'Spring 2026',
       status: 'earned',
     },
+    {
+      degree: 'Certificate of Completion',
+      field: 'AI Fluency for Education',
+      institution: 'Anthropic Academy',
+      date: 'March 2026',
+      status: 'earned',
+      notes:
+        'Anthropic has partnered with academic experts Prof. Joseph Feller (University College Cork) and Prof. Rick Dakan (Ringling College) to launch an AI fluency course that empowers academic faculty, instructional designers, and apply AI Fluency into their own teaching practices.',
+      link: 'https://verify.skilljar.com/c/9qjpp6envazb',
+    },
   ],
   thesis: {
     title:
