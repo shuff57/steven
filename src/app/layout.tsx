@@ -6,6 +6,7 @@ import { Navigation } from '@/components/ui/Navigation'
 import { ConditionalFooter } from '@/components/ui/ConditionalFooter'
 import { PageTransition } from '@/components/ui/PageTransition'
 import { NavigationLoader } from '@/components/ui/NavigationLoader'
+import { NewContentToast } from '@/components/ui/NewContentToast'
 
 
 const inter = Inter({
@@ -64,6 +65,7 @@ export default function RootLayout({
             <PageTransition>{children}</PageTransition>
           </main>
           <ConditionalFooter />
+          <NewContentToast />
         </LenisProvider>
       </body>
     </html>

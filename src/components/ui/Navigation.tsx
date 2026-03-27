@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
 import { CV_PDF_PATH, THESIS_PDF_PATH, DOCUMENTS_PATH } from '@/lib/pdfConfig'
+import { useNewRoutes } from '@/lib/useNewContent'
 
 const navLinks = [
   { href: '/', label: 'Home' },
@@ -21,6 +22,7 @@ export function Navigation() {
   const [mobileOpen, setMobileOpen] = useState(false)
   const [dropdownOpen, setDropdownOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
+  const newRoutes = useNewRoutes()
   // Close mobile menu on Escape; close dropdown on Escape + outside click
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -74,12 +76,14 @@ export function Navigation() {
         <div className="hidden lg:flex items-center justify-center gap-8">
           {navLinks.map(({ href, label }) => {
             const isActive = pathname === href
+            const hasNew = newRoutes.has(href)
             return (
               <Link
                 key={href}
                 href={href}
                 className="text-sm font-medium transition-colors duration-200"
                 style={{
+                  position: 'relative',
                   color: isActive ? 'var(--color-accent)' : 'var(--color-text-secondary)',
                   textDecorationLine: isActive ? 'underline' : 'none',
                   textDecorationColor: 'var(--color-accent)',
@@ -87,6 +91,19 @@ export function Navigation() {
                 }}
               >
                 {label}
+                {hasNew && (
+                  <span
+                    style={{
+                      position: 'absolute',
+                      top: '-4px',
+                      right: '-8px',
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      backgroundColor: 'var(--color-accent)',
+                    }}
+                  />
+                )}
               </Link>
             )
           })}
@@ -256,12 +273,14 @@ export function Navigation() {
         <div className="px-4 py-6 flex flex-col gap-1 items-center">
           {navLinks.map(({ href, label }) => {
             const isActive = pathname === href
+            const hasNew = newRoutes.has(href)
             return (
               <Link
                 key={href}
                 href={href}
                 className="block py-3 px-2 text-base rounded-md transition-colors duration-200 text-center w-full"
                 style={{
+                  position: 'relative',
                   color: isActive ? 'var(--color-accent)' : 'var(--color-text-secondary)',
                   backgroundColor: isActive ? 'var(--color-accent-muted)' : 'transparent',
                 }}
@@ -269,6 +288,19 @@ export function Navigation() {
                 tabIndex={mobileOpen ? 0 : -1}
               >
                 {label}
+                {hasNew && (
+                  <span
+                    style={{
+                      display: 'inline-block',
+                      marginLeft: '6px',
+                      verticalAlign: 'middle',
+                      width: '6px',
+                      height: '6px',
+                      borderRadius: '50%',
+                      backgroundColor: 'var(--color-accent)',
+                    }}
+                  />
+                )}
               </Link>
             )
           })}
