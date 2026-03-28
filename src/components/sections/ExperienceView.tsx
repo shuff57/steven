@@ -13,6 +13,7 @@ import {
 } from '@/data/courseCatalog'
 import { AnimatedItem } from '@/components/ui/AnimatedItem'
 import { getUniversalStatusLabel, getUniversalStatusClass } from '@/lib/statusHelpers'
+import { useAutoExpand } from '@/lib/autoExpandContext'
 
 type FlatCourse = {
   code: string
@@ -130,7 +131,8 @@ function CourseCard({ course }: { course: FlatCourse }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const bodyRef = useRef<HTMLDivElement>(null)
-  const showBody = isExpanded || isHovered
+  const { autoExpand } = useAutoExpand()
+  const showBody = isExpanded || (autoExpand && isHovered)
 
   return (
     <div

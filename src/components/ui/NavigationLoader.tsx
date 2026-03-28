@@ -19,8 +19,9 @@ export function NavigationLoader() {
       if (!anchor) return
 
       const href = anchor.getAttribute('href') ?? ''
+      const hrefPath = href.split('#')[0]
       const isInternal = href.startsWith('/')
-      const isSamePage = href === pathname || href === window.location.pathname
+      const isSamePage = hrefPath === pathname || hrefPath === window.location.pathname
       const isHash = href.startsWith('#')
       const isDownload = anchor.hasAttribute('download')
       const isBlank = anchor.target === '_blank'

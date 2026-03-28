@@ -1,15 +1,34 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { usePathname } from 'next/navigation'
-import Link from 'next/link'
+import { usePathname, useRouter } from 'next/navigation'
 import { useNewContent } from '@/lib/useNewContent'
 
 export function NewContentToast() {
   const pathname = usePathname()
   const { isNew, markSeen, additions } = useNewContent(pathname)
+  const router = useRouter()
   const [expanded, setExpanded] = useState(false)
+
+  const scrollToItem = useCallback((href: string) => {
+    markSeen()
+    const [path, hash] = href.split('#')
+    const targetPath = path || pathname
+
+    const scrollToEl = () => {
+      if (!hash) return
+      const el = document.getElementById(hash)
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+    }
+
+    if (targetPath === pathname) {
+      scrollToEl()
+    } else {
+      router.push(href)
+      requestAnimationFrame(() => requestAnimationFrame(scrollToEl))
+    }
+  }, [markSeen, pathname, router])
 
   return (
     <AnimatePresence>
@@ -100,14 +119,14 @@ export function NewContentToast() {
                           {item.label} ↗
                         </a>
                       ) : (
-                        <Link
-                          href={item.href}
-                          onClick={markSeen}
-                          className="text-sm font-semibold hover:underline transition-colors duration-150"
+                        <button
+                          type="button"
+                          onClick={() => scrollToItem(item.href)}
+                          className="text-sm font-semibold hover:underline transition-colors duration-150 border-none bg-transparent cursor-pointer text-left p-0"
                           style={{ color: 'var(--color-accent)' }}
                         >
                           {item.label}
-                        </Link>
+                        </button>
                       )}
                       {item.description && (
                         <span

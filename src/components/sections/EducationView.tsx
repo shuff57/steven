@@ -7,6 +7,7 @@ import { profile } from '@/data/profile'
 import type { Credential, Education } from '@/data/education'
 import { AnimatedItem } from '@/components/ui/AnimatedItem'
 import { getUniversalStatusLabel, getUniversalStatusClass } from '@/lib/statusHelpers'
+import { useAutoExpand } from '@/lib/autoExpandContext'
 
 /* ── TOC config ── */
 
@@ -101,7 +102,8 @@ function DegreeCard({ degree }: { degree: Credential }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const bodyRef = useRef<HTMLDivElement>(null)
-  const showBody = isExpanded || isHovered
+  const { autoExpand } = useAutoExpand()
+  const showBody = isExpanded || (autoExpand && isHovered)
 
   return (
     <div
@@ -162,7 +164,8 @@ function CredentialCard({ credential }: { credential: Credential }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const bodyRef = useRef<HTMLDivElement>(null)
-  const showBody = isExpanded || isHovered
+  const { autoExpand } = useAutoExpand()
+  const showBody = isExpanded || (autoExpand && isHovered)
 
   return (
     <div
@@ -240,7 +243,8 @@ function ThesisCard({ thesis }: { thesis: NonNullable<Education['thesis']> }) {
   const [isHovered, setIsHovered] = useState(false)
   const [isTouchExpanded, setIsTouchExpanded] = useState(false)
   const hasTouched = useRef(false)
-  const isExpanded = isHovered || isTouchExpanded
+  const { autoExpand } = useAutoExpand()
+  const isExpanded = (autoExpand && isHovered) || isTouchExpanded
 
   return (
     <div

@@ -4,16 +4,17 @@ import { useState, useRef } from 'react'
 import type { ConferenceItem } from '@/data/conferences'
 import { getUniversalStatusLabel, getUniversalStatusClass } from '@/lib/statusHelpers'
 
-export function ConferenceCard({ item }: { item: ConferenceItem }) {
+export function ConferenceCard({ item, autoExpand }: { item: ConferenceItem; autoExpand: boolean }) {
   const [isExpanded, setIsExpanded] = useState(false)
   const bodyRef = useRef<HTMLDivElement>(null)
 
   return (
     <div
       className="chalk-card rounded-xl border overflow-hidden"
-      style={{ borderColor: isExpanded ? 'rgba(240, 192, 96, 0.6)' : 'var(--color-border)', transition: 'border-color 0.3s, box-shadow 0.3s' }}
-      onMouseEnter={() => setIsExpanded(true)}
-      onMouseLeave={() => setIsExpanded(false)}
+      style={{ borderColor: isExpanded ? 'rgba(240, 192, 96, 0.6)' : 'var(--color-border)', transition: 'border-color 0.3s, box-shadow 0.3s', cursor: autoExpand ? 'default' : 'pointer' }}
+      onMouseEnter={autoExpand ? () => setIsExpanded(true) : undefined}
+      onMouseLeave={autoExpand ? () => setIsExpanded(false) : undefined}
+      onClick={autoExpand ? undefined : () => setIsExpanded((v) => !v)}
     >
         <div className="px-5 py-4 flex justify-between items-start">
           <div className="flex-1 min-w-0 pr-3">

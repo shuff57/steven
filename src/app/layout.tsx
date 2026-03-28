@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Inter, Crimson_Pro, Caveat, Fira_Code } from 'next/font/google'
 import './globals.css'
 import { LenisProvider } from '@/lib/lenis'
+import { AutoExpandProvider } from '@/lib/autoExpandContext'
 import { Navigation } from '@/components/ui/Navigation'
 import { ConditionalFooter } from '@/components/ui/ConditionalFooter'
 import { PageTransition } from '@/components/ui/PageTransition'
@@ -59,6 +60,7 @@ export default function RootLayout({
           Skip to main content
         </a>
         <LenisProvider>
+          <AutoExpandProvider>
           <NavigationLoader />
           <Navigation />
           <main id="main-content">
@@ -66,6 +68,7 @@ export default function RootLayout({
           </main>
           <ConditionalFooter />
           <NewContentToast />
+          </AutoExpandProvider>
         </LenisProvider>
       </body>
     </html>

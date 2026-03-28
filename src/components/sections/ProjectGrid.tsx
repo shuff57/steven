@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation'
 import { motion, useInView } from 'framer-motion'
 import { Project } from '@/data/projects'
 import { getUniversalStatusLabel, getUniversalStatusClass } from '@/lib/statusHelpers'
+import { useAutoExpand } from '@/lib/autoExpandContext'
 
 /* ── Types ── */
 
@@ -86,7 +87,8 @@ interface ToolCardProps {
 function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe }: ToolCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isTouchExpanded, setIsTouchExpanded] = useState(false)
-  const isExpanded = isHovered || isTouchExpanded
+  const { autoExpand } = useAutoExpand()
+  const isExpanded = (autoExpand && isHovered) || isTouchExpanded
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const hoverVideoRef = useRef<HTMLVideoElement>(null)

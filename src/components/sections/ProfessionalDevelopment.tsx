@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react'
 import { conferences } from '@/data/conferences'
 import { ConferenceCard } from '@/components/cards/ConferenceCard'
+import { useAutoExpand } from '@/lib/autoExpandContext'
 
 type Category = 'all' | 'faculty-dev' | 'math-ed' | 'technical'
 
@@ -42,6 +43,7 @@ function getCategory(title: string): Exclude<Category, 'all'> {
 export function ProfessionalDevelopment() {
   const [query, setQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState<Category>('all')
+  const { autoExpand } = useAutoExpand()
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim()
@@ -101,22 +103,24 @@ export function ProfessionalDevelopment() {
       </div>
 
       {/* Category filters */}
-      <div className="flex flex-wrap gap-2 mb-8" role="group" aria-label="Filter by category">
-        {CATEGORY_FILTERS.map((f) => (
-          <button
-            key={f.value}
-            onClick={() => setActiveCategory(f.value)}
-            className="px-3 py-1.5 text-xs font-semibold rounded-full transition-all duration-200 cursor-pointer"
-            style={{
-              background: activeCategory === f.value ? 'var(--color-accent)' : 'var(--color-surface)',
-              color: activeCategory === f.value ? 'var(--color-bg-primary)' : 'var(--color-text-muted)',
-              border: `1px solid ${activeCategory === f.value ? 'var(--color-accent)' : 'var(--color-border)'}`,
-            }}
-            aria-pressed={activeCategory === f.value}
-          >
-            {f.label}
-          </button>
-        ))}
+      <div className="flex flex-wrap items-center gap-2 mb-8">
+        <div className="flex flex-wrap gap-2 flex-1" role="group" aria-label="Filter by category">
+          {CATEGORY_FILTERS.map((f) => (
+            <button
+              key={f.value}
+              onClick={() => setActiveCategory(f.value)}
+              className="px-3 py-1.5 text-xs font-semibold rounded-full transition-all duration-200 cursor-pointer"
+              style={{
+                background: activeCategory === f.value ? 'var(--color-accent)' : 'var(--color-surface)',
+                color: activeCategory === f.value ? 'var(--color-bg-primary)' : 'var(--color-text-muted)',
+                border: `1px solid ${activeCategory === f.value ? 'var(--color-accent)' : 'var(--color-border)'}`,
+              }}
+              aria-pressed={activeCategory === f.value}
+            >
+              {f.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Result count */}
@@ -135,7 +139,7 @@ export function ProfessionalDevelopment() {
       ) : (
         <div className="grid grid-cols-1 max-w-2xl mx-auto gap-3">
           {filtered.map((item, i) => (
-            <ConferenceCard key={`${item.title}-${i}`} item={item} />
+            <ConferenceCard key={`${item.title}-${i}`} item={item} autoExpand={autoExpand} />
           ))}
         </div>
       )}
