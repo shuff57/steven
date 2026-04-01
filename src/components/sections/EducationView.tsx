@@ -583,12 +583,9 @@ function EducationViewInner() {
 
             {/* Credentials */}
             <div id="section-credentials">
-              <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
+              <h2 className="text-3xl font-bold mb-8 font-display border-b border-[var(--color-border)] pb-4 text-center">
                 Credentials <span style={{ color: 'var(--color-accent)' }}>&amp;</span> Certifications
               </h2>
-              <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
-                California State University, Chico
-              </p>
               <div className="grid grid-cols-1 gap-3 w-full">
                 {education.credentials.map((cred) => (
                   <AnimatedItem key={cred.field}>

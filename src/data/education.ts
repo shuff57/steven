@@ -56,7 +56,7 @@ export const education: Education = {
     {
       degree: 'Supplementary Authorization Credential',
       field: 'Career Technical Education: Information and Communication Technologies',
-      institution: 'California State University, Chico',
+      institution: 'Experience',
       date: 'Spring 2026',
       status: 'earned',
     },
