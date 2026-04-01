@@ -184,6 +184,7 @@ export function Hero() {
                       href={link.href}
                       className="text-sm font-medium text-center leading-tight hover:opacity-80 transition-opacity"
                       style={{ color: 'var(--color-accent)' }}
+                      onClick={(e) => e.stopPropagation()}
                     >
                       {link.title}
                     </Link>

@@ -13,7 +13,7 @@ interface AutoExpandContextValue {
 const AutoExpandContext = createContext<AutoExpandContextValue | null>(null)
 
 export function AutoExpandProvider({ children }: { children: ReactNode }) {
-  const [autoExpand, setAutoExpandState] = useState(true)
+  const [autoExpand, setAutoExpandState] = useState(false)
 
   useEffect(() => {
     try {

@@ -1,7 +1,11 @@
+'use client'
+
+import { useAutoExpand } from '@/lib/autoExpandContext'
 import { CV_PDF_PATH, THESIS_PDF_PATH } from '@/lib/pdfConfig'
 
 export function Footer() {
   const year = new Date().getFullYear()
+  const { autoExpand, setAutoExpand } = useAutoExpand()
 
   return (
     <footer
@@ -69,6 +73,47 @@ export function Footer() {
             >
               ↓ Download Thesis
             </a>
+          </div>
+
+          {/* Settings — Card Expand Mode */}
+          <div className="flex flex-col items-center gap-2">
+            <span className="text-xs" style={{ color: 'var(--color-text-muted)' }}>
+              Card Expand Mode
+            </span>
+            <div
+              className="inline-flex rounded-md overflow-hidden"
+              style={{ border: '1px solid var(--color-border)' }}
+              role="group"
+              aria-label="Card expand mode"
+            >
+              <button
+                type="button"
+                onClick={() => setAutoExpand(true)}
+                className="px-2.5 py-1 text-xs font-medium transition-colors duration-150 cursor-pointer border-none"
+                style={{
+                  background: autoExpand ? 'var(--color-accent)' : 'transparent',
+                  color: autoExpand ? 'var(--color-bg-primary)' : 'var(--color-text-muted)',
+                }}
+                aria-pressed={autoExpand}
+                title="Cards expand on hover"
+              >
+                Auto-open
+              </button>
+              <button
+                type="button"
+                onClick={() => setAutoExpand(false)}
+                className="px-2.5 py-1 text-xs font-medium transition-colors duration-150 cursor-pointer border-none"
+                style={{
+                  background: !autoExpand ? 'var(--color-accent)' : 'transparent',
+                  color: !autoExpand ? 'var(--color-bg-primary)' : 'var(--color-text-muted)',
+                  borderLeft: '1px solid var(--color-border)',
+                }}
+                aria-pressed={!autoExpand}
+                title="Cards open only on click"
+              >
+                Click to open
+              </button>
+            </div>
           </div>
 
           {/* Copyright */}

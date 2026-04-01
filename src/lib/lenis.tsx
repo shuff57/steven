@@ -26,7 +26,7 @@ export function LenisProvider({ children }: LenisProviderProps) {
 
   useEffect(() => {
     // Don't run smooth-scroll on full-viewport PDF pages
-    if (pathname === '/cv' || pathname === '/thesis') return
+    if (pathname === '/cv' || pathname === '/thesis' || pathname === '/documents') return
 
     const lenis = new Lenis({
       duration: 1.2,

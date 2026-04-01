@@ -11,11 +11,9 @@ interface PdfViewerProps {
 const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl, title }) => {
   // Lock body scroll — the iframe handles its own scrolling
   useEffect(() => {
-    const html = document.documentElement
-    const prev = html.style.overflow
-    html.style.overflow = 'hidden'
+    document.body.style.overflow = 'hidden'
     return () => {
-      html.style.overflow = prev
+      document.body.style.overflow = ''
     }
   }, [])
 
@@ -24,7 +22,7 @@ const PdfViewer: React.FC<PdfViewerProps> = ({ pdfUrl, title }) => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        height: 'calc(100vh - 64px)',  // 64px = h-16 nav height
+        height: 'calc(100vh - 64px - 53px)',  // 64px nav + 53px segmented control bar
       }}
     >
       {/* Native browser PDF viewer — provides zoom, page nav, search, print */}

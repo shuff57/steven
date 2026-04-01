@@ -107,7 +107,7 @@ function SkillsTOC({ visible }: { visible: boolean }) {
 
   return (
     <nav
-      className="hidden lg:flex fixed z-40 print:hidden items-center"
+      className="hidden xl:flex fixed z-40 print:hidden items-center"
       style={{ left: 0, width: tocWidth, top: '64px', height: 'calc(100vh - 64px)' }}
     >
       <div

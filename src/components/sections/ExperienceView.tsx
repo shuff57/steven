@@ -276,7 +276,7 @@ function ExperienceTOC({ visible, sortedList, flat = false }: { visible: boolean
   if (!visible) return null
 
   return (
-    <nav className="hidden lg:flex fixed z-40 print:hidden items-center" style={{ left: 0, width: tocWidth, top: '64px', height: 'calc(100vh - 64px)' }}>
+    <nav className="hidden xl:flex fixed z-40 print:hidden items-center" style={{ left: 0, width: tocWidth, top: '64px', height: 'calc(100vh - 64px)' }}>
       <div
         className="flex flex-col p-2 rounded-r-xl"
         style={{ width: '100%', background: 'var(--color-surface)', borderTop: '1px solid var(--color-border)', borderRight: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}
@@ -639,7 +639,8 @@ function ExperienceViewInner() {
                 <button
                   type="button"
                   key={f.value}
-                  className="px-3 py-1.5 text-xs font-semibold rounded-full transition-all duration-200 cursor-pointer"
+                  onClick={() => setActiveSubject(f.value)}
+                  className="px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200 cursor-pointer border"
                   style={{
                     background:
                       activeSubject === f.value
@@ -653,13 +654,13 @@ function ExperienceViewInner() {
                           ? 'var(--color-bg-primary)'
                           : SUBJECT_TEXT[f.value as CourseSubject]
                         : 'var(--color-text-muted)',
-                    border: `1px solid ${
+                    borderColor:
                       activeSubject === f.value
                         ? f.value === 'all'
                           ? 'var(--color-accent)'
                           : SUBJECT_TEXT[f.value as CourseSubject]
-                        : 'var(--color-border)'
-                    }`,
+                        : 'var(--color-border)',
+                    fontWeight: activeSubject === f.value ? 600 : 400,
                   }}
                   aria-pressed={activeSubject === f.value}
                 >
@@ -675,17 +676,17 @@ function ExperienceViewInner() {
                   type="button"
                   key={f.value}
                   onClick={() => setActiveLevel(f.value)}
-                  className="px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200 cursor-pointer"
+                  className="px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200 cursor-pointer border"
                   style={{
                     background:
-                      activeLevel === f.value ? 'rgba(240, 237, 232, 0.12)' : 'transparent',
+                      activeLevel === f.value ? 'rgba(240, 237, 232, 0.12)' : 'var(--color-surface)',
                     color:
                       activeLevel === f.value
                         ? 'var(--color-text-primary)'
                         : 'var(--color-text-muted)',
-                    border: `1px solid ${
-                      activeLevel === f.value ? 'rgba(240, 237, 232, 0.3)' : 'var(--color-border)'
-                    }`,
+                    borderColor:
+                      activeLevel === f.value ? 'rgba(240, 237, 232, 0.3)' : 'var(--color-border)',
+                    fontWeight: activeLevel === f.value ? 600 : 400,
                   }}
                   aria-pressed={activeLevel === f.value}
                 >

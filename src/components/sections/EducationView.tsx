@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
+import Link from 'next/link'
 import { education } from '@/data/education'
 import { profile } from '@/data/profile'
 import type { Credential, Education } from '@/data/education'
@@ -55,7 +56,7 @@ function EducationTOC() {
 
   return (
     <nav
-      className="hidden lg:flex fixed z-40 print:hidden items-center"
+      className="hidden xl:flex fixed z-40 print:hidden items-center"
       style={{ left: 0, width: tocWidth, top: '64px', height: 'calc(100vh - 64px)' }}
     >
       <div
@@ -301,7 +302,7 @@ function ThesisCard({ thesis }: { thesis: NonNullable<Education['thesis']> }) {
               </p>
             </div>
             <div className="flex items-center justify-center gap-3 mt-1 mb-1">
-              <a
+              <Link
                 href="/documents?doc=thesis"
                 className="flex-1 flex items-center justify-center gap-2 py-2.5 text-sm font-semibold rounded transition-colors duration-200 hover:opacity-80"
                 style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-bg-primary)' }}
@@ -315,7 +316,7 @@ function ThesisCard({ thesis }: { thesis: NonNullable<Education['thesis']> }) {
                   <polyline points="10 9 9 9 8 9" />
                 </svg>
                 Read Full Thesis
-              </a>
+              </Link>
             </div>
           </div>
         </div>
@@ -583,7 +584,7 @@ function EducationViewInner() {
             {/* Credentials */}
             <div id="section-credentials">
               <h2 className="text-3xl font-bold mb-2 font-display border-b border-[var(--color-border)] pb-4 text-center">
-                Credentials
+                Credentials <span style={{ color: 'var(--color-accent)' }}>&amp;</span> Certifications
               </h2>
               <p className="text-sm text-[var(--color-text-secondary)] text-center mb-8">
                 California State University, Chico
@@ -650,9 +651,9 @@ function EducationViewInner() {
                     type="button"
                     key={opt.value}
                     onClick={() => setActiveFilter(opt.value)}
-                    className="px-3 py-1 text-xs font-medium rounded-full transition-all duration-200 cursor-pointer border"
+                    className="px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200 cursor-pointer border"
                     style={{
-                      background:  isActive ? (colorKey ? TYPE_BG[colorKey] : 'var(--color-accent)') : 'transparent',
+                      background:  isActive ? (colorKey ? TYPE_BG[colorKey] : 'var(--color-accent)') : 'var(--color-surface)',
                       borderColor: isActive ? (colorKey ? TYPE_TEXT[colorKey] : 'var(--color-accent)') : 'var(--color-border)',
                       color:       isActive ? (colorKey ? TYPE_TEXT[colorKey] : 'var(--color-bg-primary)') : 'var(--color-text-muted)',
                       fontWeight:  isActive ? 600 : 400,
@@ -671,7 +672,7 @@ function EducationViewInner() {
           {/* Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredItems.map((item) => (
-              <CatalogEducationCard key={`${item.type}-${item.title}`} item={item} />
+              <CatalogEducationCard key={`${item.type}-${item.title}-${item.subtitle}`} item={item} />
             ))}
           </div>
 

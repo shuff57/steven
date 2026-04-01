@@ -37,8 +37,7 @@ export const CONTENT_ADDITIONS: Record<string, ContentAddition[]> = {
     {
       label: 'AI Fluency for Education',
       description: 'Certificate of Completion — Anthropic Academy, March 2026',
-      href: 'https://verify.skilljar.com/c/9qjpp6envazb',
-      external: true,
+      href: '/education#section-credentials',
     },
   ],
 }

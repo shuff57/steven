@@ -23,7 +23,7 @@ const pillars: Pillar[] = [
     title: 'Educator',
     accent: '#f0c060',
     summary:
-      '10+ years spanning middle school, high school, university, and community college — from algebra foundations to Calculus I, intro CS to AP Computer Science Principles.',
+      '10+ years spanning middle school, high school, and university — from algebra foundations to Calculus I, intro CS to AP Computer Science Principles.',
     icon: (
       <svg
         width="26"
@@ -164,7 +164,7 @@ export function AboutView() {
       <div className="relative z-10 max-w-5xl mx-auto">
 
         {/* ── Header ── */}
-        <div className="mb-16 text-center">
+        <div className="mb-10 text-center">
           <h1
             ref={headingRef}
             className="text-4xl md:text-5xl font-bold mb-4"
@@ -193,12 +193,11 @@ export function AboutView() {
             style={{ color: 'var(--color-text-secondary)', opacity: 0 }}
           >
             I&apos;m a mathematics and computer science educator based in Chico, California. Over{' '}
-            <Link href="/experience" style={{ color: 'var(--color-accent)' }} className="hover:underline">ten years</Link> of teaching at every level, middle school through community
-            college, I&apos;ve brought the same curiosity to an{' '}
+            <Link href="/experience" style={{ color: 'var(--color-accent)' }} className="hover:underline">ten years</Link> of teaching at every level, middle school through university, I&apos;ve brought the same curiosity to an{' '}
             <Link href="/experience#section-pleasant-valley" style={{ color: 'var(--color-accent)' }} className="hover:underline">AP Computer Science</Link> course as to a
             first-year statistics lecture. Right now I split my time between Pleasant Valley High
             School, where I teach Integrated Math, CS, and dual-enrollment statistics, and Butte
-            College, where I teach as an adjunct across statistics, calculus, and finite
+            College, where I teach as a part-time instructor across statistics, calculus, and finite
             mathematics.
           </p>
           <p
@@ -226,25 +225,9 @@ export function AboutView() {
             <Link href="/projects#section-achievement-embedded-systems-robotics" style={{ color: 'var(--color-accent)' }} className="hover:underline">robotics course and computer
             science pathway</Link>, a{' '}
             <Link href="/professional-development" style={{ color: 'var(--color-accent)' }} className="hover:underline">CNC internship</Link>, and a career shaped by one persistent
-            question.
+            question. <span style={{ fontFamily: 'var(--font-handwritten)', fontSize: '1.25em', backgroundColor: 'rgba(240, 192, 96, 0.1)', padding: '0.1em 0.4em', borderRadius: '0.25em' }}>What would actually help?</span>
           </p>
         </div>
-
-        {/* ── Pull Quote ── */}
-        <AnimatedItem>
-          <div className="pull-quote text-center my-16 max-w-2xl mx-auto">
-            <p
-              style={{
-                fontFamily: 'var(--font-handwritten)',
-                fontSize: 'clamp(1.5rem, 3vw, 2.25rem)',
-                color: 'var(--color-text-primary)',
-                lineHeight: 1.3,
-              }}
-            >
-              &ldquo;What would actually help?&rdquo;
-            </p>
-          </div>
-        </AnimatedItem>
 
         {/* ── What I Do ── */}
         <div className="mb-20">

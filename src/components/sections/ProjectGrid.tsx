@@ -139,7 +139,7 @@ function ToolCard({ project, isIframeExpanded, onToggleIframe, onCollapseIframe 
           aria-expanded={isExpanded}
         >
           <div className="flex-1 min-w-0 pr-3">
-            <h3 className="text-xl font-bold font-display text-[var(--color-accent)] truncate">
+            <h3 className="text-xl font-bold font-display text-[var(--color-accent)] leading-snug">
               {project.title}
             </h3>
             {project.subtitle && (
@@ -343,24 +343,29 @@ interface AchievementCardProps {
 function AchievementCard({ project }: AchievementCardProps) {
   const [isHovered, setIsHovered] = useState(false)
   const [isTouchExpanded, setIsTouchExpanded] = useState(false)
+  const { autoExpand } = useAutoExpand()
   const hasTouched = useRef(false)
-  const isExpanded = isHovered || isTouchExpanded
-  const isGrant = project.id === 'golden-state-pathways-grant'
+  const isExpanded = (autoExpand && isHovered) || isTouchExpanded
 
   return (
-      <button
-        type="button"
-        className="chalk-card rounded-xl border overflow-hidden transition-colors duration-200 w-full text-left"
-        style={{ borderColor: isExpanded ? 'var(--color-accent)' : 'var(--color-border)', cursor: 'pointer', background: 'transparent' }}
+    <div>
+      {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
+      <div
+        className="chalk-card rounded-xl border overflow-hidden transition-colors duration-200"
+        style={{ borderColor: isExpanded ? 'var(--color-accent)' : 'var(--color-border)' }}
         onTouchStart={() => { hasTouched.current = true }}
         onMouseEnter={() => { if (!hasTouched.current) setIsHovered(true) }}
         onMouseLeave={() => { if (!hasTouched.current) setIsHovered(false) }}
-        onClick={() => setIsTouchExpanded((prev) => !prev)}
-        aria-expanded={isExpanded}
       >
-        <div className="px-5 py-4 flex justify-between items-start">
+        <button
+          type="button"
+          className="px-5 py-4 flex justify-between items-start w-full text-left"
+          style={{ cursor: 'pointer', background: 'transparent', border: 'none' }}
+          onClick={() => setIsTouchExpanded((prev) => !prev)}
+          aria-expanded={isExpanded}
+        >
           <div className="flex-1 min-w-0 pr-3">
-            <h3 className="text-base font-bold font-display leading-snug text-[var(--color-accent)]">
+            <h3 className="text-xl font-bold font-display text-[var(--color-accent)] leading-snug">
               {project.title}
             </h3>
             {project.subtitle && (
@@ -370,9 +375,6 @@ function AchievementCard({ project }: AchievementCardProps) {
             )}
           </div>
           <div className="flex flex-col items-end gap-1 shrink-0">
-            <span className="text-xs font-bold px-2 py-0.5 rounded-lg bg-[var(--color-surface)] text-[var(--color-text-muted)] uppercase tracking-wider">
-              {getTypeLabel(project.type)}
-            </span>
             <span className="text-xs font-mono text-[var(--color-text-secondary)]">
               {project.dateStart}{project.dateEnd ? ` – ${project.dateEnd}` : ' – Present'}
             </span>
@@ -380,7 +382,7 @@ function AchievementCard({ project }: AchievementCardProps) {
               {getUniversalStatusLabel(project.status)}
             </span>
           </div>
-        </div>
+        </button>
 
         <div
           style={{
@@ -397,7 +399,8 @@ function AchievementCard({ project }: AchievementCardProps) {
             </div>
           </div>
         </div>
-      </button>
+      </div>
+    </div>
   )
 }
 
@@ -602,7 +605,7 @@ function ProjectTOC({ tools, achievements }: ProjectTOCProps) {
   }, [allObservedIdsKey])
 
   return (
-    <nav className="hidden lg:flex fixed z-40 print:hidden items-center" style={{ left: 0, width: tocWidth, top: '64px', height: 'calc(100vh - 64px)' }}>
+    <nav className="hidden xl:flex fixed z-40 print:hidden items-center" style={{ left: 0, width: tocWidth, top: '64px', height: 'calc(100vh - 64px)' }}>
       <div
         ref={scrollRef}
         className="flex flex-col p-2 rounded-r-xl"
@@ -896,6 +899,7 @@ function ProjectGridInner({ projects }: ProjectGridProps) {
                   type="button"
                   key={f.value}
                   onClick={() => setActiveType(f.value)}
+                  className="px-3 py-1.5 text-xs font-medium rounded-full transition-all duration-200 cursor-pointer border"
                   style={{
                     background: isActive
                       ? (f.value === 'all' ? 'var(--color-accent)' : bgColor)
@@ -903,9 +907,10 @@ function ProjectGridInner({ projects }: ProjectGridProps) {
                     color: isActive
                       ? (f.value === 'all' ? 'var(--color-bg-primary)' : txtColor)
                       : 'var(--color-text-muted)',
-                    border: `1px solid ${isActive
+                    borderColor: isActive
                       ? (f.value === 'all' ? 'var(--color-accent)' : txtColor)
-                      : 'var(--color-border)'}`,
+                      : 'var(--color-border)',
+                    fontWeight: isActive ? 600 : 400,
                   }}
                   aria-pressed={isActive}
                 >
