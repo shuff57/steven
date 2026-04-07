@@ -23,7 +23,7 @@ const pillars: Pillar[] = [
     title: 'Educator',
     accent: '#f0c060',
     summary:
-      '10+ years spanning middle school, high school, and university — from algebra foundations to Calculus I, intro CS to AP Computer Science Principles.',
+      '10+ years spanning middle school, high school, and university, from algebra foundations to Calculus I, intro CS to AP Computer Science Principles.',
     icon: (
       <svg
         width="26"
@@ -45,7 +45,7 @@ const pillars: Pillar[] = [
     title: 'Builder',
     accent: '#7dd3fc',
     summary:
-      'Writes tools that solve real classroom problems — rāSHio, bookSHelf, O.G.R.E., D.A.D. Each project starts with a frustration felt at the whiteboard.',
+      'Writes tools that solve real classroom problems: rāSHio, bookSHelf, O.G.R.E., D.A.D. Each project starts with a frustration felt at the whiteboard.',
     icon: (
       <svg
         width="26"

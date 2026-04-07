@@ -145,7 +145,7 @@ export function Hero() {
             style={{ color: 'var(--color-text-secondary)', opacity: 0 }}
           >
             Dedicated to building bridges between abstract mathematics and student
-            intuition — through innovative curriculum, technology, and
+            intuition through innovative curriculum, technology, and
             hands-on learning at the high school and college level.
           </p>
         </div>

@@ -37,7 +37,7 @@ export const projects: Project[] = [
     title: 'O.G.R.E',
     subtitle: 'AI-powered grading desktop app for educators',
     description:
-      'O.G.R.E is a native desktop app (Electron + Svelte 5) that grades 30+ student written responses in minutes. It uses a fine-tuned AI model that runs locally via Ollama — student data never leaves the machine or connects to any cloud service, keeping it fully private. Load any grading page in the embedded browser, attach a saved rubric, and run a batch grade — all students are scored in a single AI pass for consistent, calibrated results. Scores and feedback are written back to the page for your review before anything is submitted. Rubrics are stored in SQLite and reused across sessions. Supports any grading platform via configurable Site Profiles — MyOpenMath included out of the box.',
+      'O.G.R.E is a native desktop app (Electron + Svelte 5) that grades 30+ student written responses in minutes. It uses a fine-tuned AI model that runs locally via Ollama, keeping student data fully private and off any cloud service. Load any grading page in the embedded browser, attach a saved rubric, and run a batch grade. All students are scored in a single AI pass for consistent, calibrated results. Scores and feedback are written back to the page for your review before anything is submitted. Rubrics are stored in SQLite and reused across sessions. Supports any grading platform via configurable Site Profiles, with MyOpenMath included out of the box.',
     dateStart: 'Spring 2026',
     dateEnd: null,
     status: 'active',
@@ -51,7 +51,7 @@ export const projects: Project[] = [
     title: 'Fine-tuned AI',
     subtitle: 'Fine-tuned LLM for grading statistics',
     description:
-      'A fine-tuned Qwen 3.5 9B model built for locally grading introductory statistics written responses. Designed to run privately via Ollama — student data never connects to any cloud service. Powers the grading engine behind O.G.R.E.',
+      'A fine-tuned Qwen 3.5 9B model built for locally grading introductory statistics written responses. Designed to run privately via Ollama, keeping student data off any cloud service. Powers the grading engine behind O.G.R.E.',
     dateStart: '2026',
     dateEnd: null,
     status: 'active',
@@ -80,7 +80,7 @@ export const projects: Project[] = [
     title: 'bookSHelf',
     subtitle: 'AI-powered textbook enhancement pipeline',
     description:
-      'An 11-step automated pipeline that transforms raw textbook content into interactive Student Enhanced Edition HTML pages — complete with plain-English explanations, worked examples, step-by-step solutions, verified math, embedded videos, and a navigable web interface. Features AI-driven rewriting for student accessibility, independent math verification by subagents, and generates standalone pages with MathJax and collapsible solutions.',
+      'An 11-step automated pipeline that transforms raw textbook content into interactive Student Enhanced Edition HTML pages, complete with plain-English explanations, worked examples, step-by-step solutions, verified math, embedded videos, and a navigable web interface. Features AI-driven rewriting for student accessibility, independent math verification by subagents, and generates standalone pages with MathJax and collapsible solutions.',
     dateStart: '2025',
     dateEnd: '2026',
     status: 'active',
@@ -111,7 +111,7 @@ export const projects: Project[] = [
     title: 'shDev',
     subtitle: 'Browser-based code editor with built-in version control',
     description:
-      'A self-hosted, browser-based code editor built with Next.js, Monaco Editor (the engine behind VS Code), and React Arborist for file tree navigation. Includes shRepo — a custom-built, user-friendly Git-style version control interface that serves as the central hub for project management, with commit, history, and restore functionality.',
+      'A self-hosted, browser-based code editor built with Next.js, Monaco Editor (the engine behind VS Code), and React Arborist for file tree navigation. Includes shRepo, a custom-built, user-friendly Git-style version control interface that serves as the central hub for project management, with commit, history, and restore functionality.',
     dateStart: '2025',
     dateEnd: null,
     status: 'concept',
@@ -126,7 +126,7 @@ export const projects: Project[] = [
     title: '11Gauge',
     subtitle: 'AI-powered weld grader',
     description:
-      'An AI-powered weld grading tool that analyzes photos and videos of welds using vision models (Qwen3-VL) and a configurable reasoning model (ChatGPT, Gemini, DeepSeek, and more). Configure material type, weld process (MIG, TIG, Stick, Flux Core), material thickness, joint type, and weld position — then upload media to receive a detailed grading report.',
+      'An AI-powered weld grading tool that analyzes photos and videos of welds using vision models (Qwen3-VL) and a configurable reasoning model (ChatGPT, Gemini, DeepSeek, and more). Configure material type, weld process (MIG, TIG, Stick, Flux Core), material thickness, joint type, and weld position, then upload media to receive a detailed grading report.',
     dateStart: '2015',
     dateEnd: null,
     status: 'concept',
