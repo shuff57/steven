@@ -196,7 +196,7 @@ export function AboutView() {
             <Link href="/experience" style={{ color: 'var(--color-accent)' }} className="hover:underline">ten years</Link> of teaching at every level, middle school through university, I&apos;ve brought the same curiosity to an{' '}
             <Link href="/experience#section-pleasant-valley" style={{ color: 'var(--color-accent)' }} className="hover:underline">AP Computer Science</Link> course as to a
             first-year statistics lecture. Right now I split my time between Pleasant Valley High
-            School, where I teach Integrated Math, CS, and dual-enrollment statistics, and Butte
+            School, where I teach Integrated Math, Computer Science, and dual-enrollment statistics, and Butte
             College, where I teach as a part-time instructor across statistics, calculus, and finite
             mathematics.
           </p>
