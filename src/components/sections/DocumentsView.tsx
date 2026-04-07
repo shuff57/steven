@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
+import { useSearchParams } from 'next/navigation'
 
 import { SegmentedControl, PdfViewer } from '@/components/ui'
 import { CV_PDF_PATH, THESIS_PDF_PATH } from '@/lib/pdfConfig'
@@ -10,19 +11,26 @@ const DOC_OPTIONS = [
   { label: "Master's Thesis", value: 'thesis' },
 ]
 
-export function DocumentsView() {
-  const [active, setActive] = useState('cv')
+function DocumentsViewInner() {
+  const searchParams = useSearchParams()
+  const docParam = searchParams.get('doc')
+  const [active, setActive] = useState<'cv' | 'thesis'>(
+    docParam === 'thesis' ? 'thesis' : 'cv'
+  )
 
-  // Read ?doc= query param on mount for direct deep-links from nav dropdown
+  // Sync whenever the ?doc= param changes
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    if (params.get('doc') === 'thesis') setActive('thesis')
-  }, [])
+    setActive(docParam === 'thesis' ? 'thesis' : 'cv')
+  }, [docParam])
+
   return (
     <div>
-      {/* Segmented control bar */}
+      {/* Segmented control bar — sticky below nav (nav = 64px) */}
       <div
         style={{
+          position: 'sticky',
+          top: 64,
+          zIndex: 40,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -31,7 +39,7 @@ export function DocumentsView() {
           backgroundColor: 'var(--color-bg-primary)',
         }}
       >
-        <SegmentedControl options={DOC_OPTIONS} value={active} onChange={setActive} />
+        <SegmentedControl options={DOC_OPTIONS} value={active} onChange={(v) => setActive(v as 'cv' | 'thesis')} />
       </div>
 
       {/* PdfViewer handles its own height + body scroll lock */}
@@ -49,6 +57,14 @@ export function DocumentsView() {
         />
       )}
     </div>
+  )
+}
+
+export function DocumentsView() {
+  return (
+    <Suspense>
+      <DocumentsViewInner />
+    </Suspense>
   )
 }
 
