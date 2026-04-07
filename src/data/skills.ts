@@ -53,6 +53,7 @@ export const hardware: string[] = [
   'Metal/Wood/Laser CNC Machines',
   'Raspberry Pis (Single Board Computers)',
   'ESP8266/ESP32 and other various microcontrollers',
+  'Trained to operate Haas Mills',
 ]
 
 /** Shiny Apps URL referenced in the CV */
