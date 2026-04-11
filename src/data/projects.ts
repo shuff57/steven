@@ -290,8 +290,8 @@ export const projects: Project[] = [
     description:
       'Responsibilities include but are not limited to CAASPP Data collection, organization and updating high school data. Visit service area high schools to present to 11th grade students.',
     dateStart: '2018',
-    dateEnd: null,
-    status: 'active',
+    dateEnd: '2024',
+    status: 'completed',
     featured: false,
     type: 'initiative',
   },
