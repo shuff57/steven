@@ -101,7 +101,6 @@ export const projects: Project[] = [
     dateEnd: null,
     status: 'concept',
     featured: false,
-    externalUrl: 'https://wishlist.huffpalmer.fyi/',
     repoUrl: 'https://github.com/shuff57/wiSHlist',
     videoUrl: '/videos/wiSHlist-demo.mp4',
     type: 'tool',
