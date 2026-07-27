@@ -104,6 +104,7 @@ export const projects: Project[] = [
     dateEnd: null,
     status: 'active',
     featured: false,
+    videoUrl: '/videos/earSHot-demo.mp4',
     // repoUrl omitted — shuff57/earSHot is private (404s for visitors)
     type: 'tool',
   },
