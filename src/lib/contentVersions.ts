@@ -6,7 +6,7 @@
  * Format: route → version string (any string; change it to trigger a toast).
  */
 export const CONTENT_VERSIONS: Record<string, string> = {
-  '/projects': '2026-03-27b',
+  '/projects': '2026-07-26',
   '/education': '2026-03-27b',
 }
 
@@ -28,9 +28,29 @@ export interface ContentAddition {
 export const CONTENT_ADDITIONS: Record<string, ContentAddition[]> = {
   '/projects': [
     {
-      label: 'Fine-tuned AI',
-      description: 'Fine-tuned LLM for grading statistics responses',
-      href: '/projects#section-tool-stat-grader',
+      label: 'Boring Clicks',
+      description: 'Teach-by-example browser automation for repetitive tasks',
+      href: '/projects#section-tool-boring-clicks',
+    },
+    {
+      label: 'reSHape',
+      description: 'STL/3MF meshes into true analytic CAD solids',
+      href: '/projects#section-tool-reshape',
+    },
+    {
+      label: 'earSHot',
+      description: 'Self-hosted music library and discovery engine',
+      href: '/projects#section-tool-earshot',
+    },
+    {
+      label: 'Agent-Evo',
+      description: 'Self-evolving agent framework for Claude Code',
+      href: '/projects#section-tool-agent-evo',
+    },
+    {
+      label: 'SLAG',
+      description: 'Weld settings translated to your machine’s actual dials',
+      href: '/projects#section-tool-slag',
     },
   ],
   '/education': [
