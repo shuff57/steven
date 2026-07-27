@@ -90,6 +90,7 @@ export const projects: Project[] = [
     status: 'concept',
     featured: false,
     externalUrl: 'https://slagweld.pages.dev',
+    videoUrl: '/videos/SLAG-demo.mp4',
     // repoUrl omitted — shuff57/slag is private (404s for visitors)
     type: 'tool',
   },
