@@ -777,6 +777,30 @@ function ProjectGridInner({ projects }: ProjectGridProps) {
         </p>
       </div>
 
+      {/* Featured Projects */}
+      <div className="mb-16">
+        <h2 className="text-2xl font-bold mb-6 font-display text-center" style={{ color: 'var(--color-accent)' }}>
+          Featured
+        </h2>
+        <div className="grid grid-cols-1 max-w-2xl mx-auto gap-3 w-full">
+          {projects.filter((p) => p.featured).map((project) => {
+            const isIframeExpanded = expandedId === project.id
+            return (
+              <div key={project.id}>
+                <AnimatedItem skip={skipAnimation}>
+                  <ToolCard
+                    project={project}
+                    isIframeExpanded={isIframeExpanded}
+                    onToggleIframe={() => setExpandedId(isIframeExpanded ? null : project.id)}
+                    onCollapseIframe={() => setExpandedId(null)}
+                  />
+                </AnimatedItem>
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
       {/* Tab bar */}
       <div className="flex justify-center mb-12">
         <div

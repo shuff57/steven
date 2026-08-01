@@ -148,6 +148,21 @@ export const projects: Project[] = [
     type: 'tool',
   },
   {
+    id: 'inishial',
+    title: 'iniSHial',
+    subtitle: 'No backpack required.',
+    description:
+      'A living, editable syllabus that parents initial section by section — so a signature proves they read the late-work policy, not that they scrolled past it and ticked one box at the end. Teachers paste a DOCX or PDF, the editor structures it into sections with AI, then publishes a version. Students register with their ID, parents enter an access code and initial each section individually. The teacher dashboard shows who has signed and who is missing. Built on Cloudflare Pages, D1, and vanilla JS — no build step, no email sent by the app.',
+    dateStart: '2026',
+    dateEnd: null,
+    status: 'active',
+    featured: true,
+    externalUrl: 'https://inishial.pages.dev',
+    repoUrl: 'https://github.com/shuff57/inishial',
+    videoUrl: '/videos/iniSHial-demo.mp4',
+    type: 'tool',
+  },
+  {
     id: 'dad',
     title: 'D.A.D',
     subtitle: 'Dynamic Assessment Developer',
