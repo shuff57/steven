@@ -48,3 +48,4 @@ public/videos/clip*.mp4
 
 # Temporary files
 tmp/
+graphify-out/
