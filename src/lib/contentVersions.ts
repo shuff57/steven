@@ -6,7 +6,7 @@
  * Format: route → version string (any string; change it to trigger a toast).
  */
 export const CONTENT_VERSIONS: Record<string, string> = {
-  '/projects': '2026-07-26',
+  '/projects': '2026-08-21',
   '/education': '2026-03-27b',
 }
 
@@ -27,6 +27,11 @@ export interface ContentAddition {
  */
 export const CONTENT_ADDITIONS: Record<string, ContentAddition[]> = {
   '/projects': [
+    {
+      label: 'shCode',
+      description: 'Full-stack classroom platform for teaching JavaScript',
+      href: '/projects#section-tool-shcode',
+    },
     {
       label: 'Boring Clicks',
       description: 'Teach-by-example browser automation for repetitive tasks',
