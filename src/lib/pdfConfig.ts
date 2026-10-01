@@ -1,12 +1,9 @@
-const isProd = process.env.NODE_ENV === 'production'
-
 /**
- * Returns the base path for the application.
- * In production: '/steven'
- * In development: ''
+ * Returns the base path for the application, set at build time via NEXT_PUBLIC_BASE_PATH.
+ * '/steven' on GitHub Pages, '' at a domain root (Cloudflare) and in development.
  */
 export function getBasePath(): string {
-  return isProd ? '/steven' : ''
+  return process.env.NEXT_PUBLIC_BASE_PATH ?? ''
 }
 
 export const CV_PDF_PATH = getBasePath() + '/Curriculum%20Vitae.pdf'
