@@ -49,3 +49,12 @@ public/videos/clip*.mp4
 # Temporary files
 tmp/
 graphify-out/
+
+# wrangler
+/.wrangler/
+
+# Playwright MCP scratch: screenshots and page snapshots, not project files
+/.playwright-mcp/
+
+# msgbox cursors are per-device read positions; the log itself is committed
+/.msgbox/cursor-*
