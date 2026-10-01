@@ -90,8 +90,19 @@ export function NewContentToast() {
   }, [router, markRouteSeen])
 
   const isVisible = !dismissed && unseen.length > 0
+  // Cap each route at 4 newest so the panel always fits a short viewport and the
+  // Dismiss button is never stranded below the fold. Additions are newest-first,
+  // so the oldest are the ones dropped; everything dropped is still on the page.
+  //
+  // Do not make this list scroll to show more: Lenis runs with smoothWheel, and it
+  // swallows wheel events over a nested scroller even with data-lenis-prevent, so the
+  // page scrolls and the list does not. Measured, not assumed. Shorten the
+  // descriptions or drop the toast before reaching for a scroll container here.
+  const MAX_ITEMS_PER_ROUTE = 4
   const allAdditions = unseen.flatMap((g) =>
-    g.additions.map((a) => ({ ...a, route: g.route }))
+    g.additions
+      .slice(0, MAX_ITEMS_PER_ROUTE)
+      .map((a) => ({ ...a, route: g.route }))
   )
 
   return (
