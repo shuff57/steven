@@ -6,7 +6,7 @@
  * Format: route → version string (any string; change it to trigger a toast).
  */
 export const CONTENT_VERSIONS: Record<string, string> = {
-  '/projects': '2026-08-21',
+  '/projects': '2026-09-30',
   '/education': '2026-03-27b',
 }
 
@@ -28,6 +28,21 @@ export interface ContentAddition {
 export const CONTENT_ADDITIONS: Record<string, ContentAddition[]> = {
   '/projects': [
     {
+      label: 'L.E.A.F',
+      description: 'Self-hosted plant identification that also runs in the browser',
+      href: '/projects#section-tool-leaf',
+    },
+    {
+      label: 'reSHape CAD',
+      description: 'Browser-first CAD on an independent B-rep kernel',
+      href: '/projects#section-tool-reshape-cad',
+    },
+    {
+      label: 'moSHion',
+      description: 'A 2D game engine for the web, with real Box2D physics',
+      href: '/projects#section-tool-moshion',
+    },
+    {
       label: 'shCode',
       description: 'Full-stack classroom platform for teaching JavaScript',
       href: '/projects#section-tool-shcode',
@@ -36,11 +51,6 @@ export const CONTENT_ADDITIONS: Record<string, ContentAddition[]> = {
       label: 'Boring Clicks',
       description: 'Teach-by-example browser automation for repetitive tasks',
       href: '/projects#section-tool-boring-clicks',
-    },
-    {
-      label: 'reSHape',
-      description: 'STL/3MF meshes into true analytic CAD solids',
-      href: '/projects#section-tool-reshape',
     },
     {
       label: 'earSHot',

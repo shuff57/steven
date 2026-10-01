@@ -109,18 +109,6 @@ export const projects: Project[] = [
     type: 'tool',
   },
   {
-    id: 'reshape',
-    title: 'reSHape',
-    subtitle: 'Mesh-to-CAD converter for mechanical parts',
-    description:
-      'Converts STL and 3MF triangle meshes of mechanical parts into STEP solids with true analytic geometry — real planes, cylinders, cones, and spheres with exact edges, not thousands of triangles wrapped as faces. It segments the mesh into smooth regions, fits a primitive surface to each, merges fragments back into whole features, strips engraving, and hands the analytic surfaces to OpenCASCADE to build a watertight solid. Every output is scored against the input mesh and reported as pass, warn, or fail, so it never silently returns a bad conversion. Includes promptCAD, a companion tool that turns a plain-language description into a parametric FreeCAD model.',
-    dateStart: '2026',
-    dateEnd: null,
-    status: 'in-progress',
-    featured: false,
-    type: 'tool',
-  },
-  {
     id: 'agent-evo',
     title: 'Agent-Evo',
     subtitle: 'Self-evolving agent framework for Claude Code',
@@ -160,6 +148,49 @@ export const projects: Project[] = [
     externalUrl: 'https://inishial.pages.dev',
     repoUrl: 'https://github.com/shuff57/inishial',
     videoUrl: '/videos/iniSHial-demo.mp4',
+    type: 'tool',
+  },
+  {
+    id: 'moshion',
+    title: 'moSHion',
+    subtitle: 'A 2D game engine for the web, with real Box2D physics',
+    description:
+      'A beginner-friendly 2D game engine for the web: a drawing canvas and real Box2D physics, side by side in one API. It was built for the shCode high school JavaScript course, where students write sprite and physics games inside a sandboxed iframe. The whole engine is a handful of globals, Sprite, Group, world, camera, kb and mouse, with no imports, no install and no build step: write setup() and draw() and the engine runs them for you. Sketches execute in an opaque origin, because the runner is embedded without allow-same-origin, and saves reach the host page over postMessage instead of the URL, so a full sketch never runs into a request line limit. Hinge, distance, slider, wheel, grabber and glue joints; edge-triggered keyboard input; one touch driving the same mouse counters, so a pointer sketch works on a phone. Ships with six demo games, a live editor, a complete typed API reference, and Playwright specs that drive the real browser surface. Static files only: no server, no telemetry, no CDN fetches. MIT licensed.',
+    dateStart: '2026',
+    dateEnd: null,
+    status: 'active',
+    featured: false,
+    externalUrl: 'https://shuff57.github.io/moshion/',
+    repoUrl: 'https://github.com/shuff57/moshion',
+    type: 'tool',
+  },
+  {
+    id: 'reshape-cad',
+    title: 'reSHape CAD',
+    subtitle: 'Browser-first CAD on an independent B-rep kernel',
+    description:
+      'Browser-first CAD. reSHape Script describes 2D sketches and 3D parts in plain words, and brep-rs, an independent B-rep kernel written in Rust and compiled to WebAssembly, builds the solid. One kernel, no fallback: a shape the kernel cannot build yet is refused per feature, in a sentence, alongside everything that did build, so a half-finished model never reads as finished. A React studio wraps it, with an editor, a viewport and a timeline; the sketch solver handles constraints, arcs and outlines; and a ModelDoc round-trips back into the script that produced it. OpenCascade is wired in only as a referee, never as a dependency: each parity fixture is built twice, once by brep-rs and once by OpenCascade, then compared on volume, bounding box, face count, watertight tessellation and STEP round-trip, so a kernel that gets a feature wrong in a way that looks like the feature being missing still has an independent oracle. Nothing from OpenCascade ships in the app.',
+    dateStart: '2026',
+    dateEnd: null,
+    status: 'in-progress',
+    featured: false,
+    // externalUrl omitted — no deployed site yet, only the local dev sandbox
+    repoUrl: 'https://github.com/shuff57/reshape-cad',
+    type: 'tool',
+  },
+  {
+    id: 'leaf',
+    title: 'L.E.A.F',
+    subtitle: 'Lightweight Engine for Assessing Flora',
+    description:
+      'A small self-hosted plant identification service. Drop in a photo, get ranked species with common names. A FastAPI backend with swappable models serves the web page from the same container, and the page can also run those models in the browser, on the device that took the photo, which is how the live site is built. Seven real models sit behind one switch, plus a mock for testing the plumbing: a ResNet trained on Pl@ntNet-300K (1,081 species), four BioCLIP variants scored zero-shot against a species list you provide, and two iNaturalist 2021 classifiers, EVA-02 Large and ConvNeXt Large, that keep the 4,271 plant species out of the full 10,000. The four BioCLIPs share one label table, so BioCLIP can only ever name what is on your list, which is how it covers the plants no fixed classifier was trained on. Every model is compared head to head on the same 16 photos across CPU and an AMD GPU, on top-1 accuracy, time per photo and peak RAM, and the README says plainly that 16 clear photos make a smoke test, not an evaluation. Common names are looked up once, offline, and stored beside the weights, so the running service never contacts iNaturalist. Docker or Podman, with separate CPU and ROCm profiles. MIT, with the iNaturalist weights under CC BY-NC 4.0.',
+    dateStart: '2026',
+    dateEnd: null,
+    status: 'active',
+    featured: false,
+    externalUrl: 'https://leaf.lefthanddev.com',
+    externalLabel: 'leaf.lefthanddev.com',
+    repoUrl: 'https://github.com/shuff57/LEAF',
     type: 'tool',
   },
   {
