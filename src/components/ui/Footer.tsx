@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useAutoExpand } from '@/lib/autoExpandContext'
 import { CV_PDF_PATH, THESIS_PDF_PATH } from '@/lib/pdfConfig'
 
@@ -29,13 +30,13 @@ export function Footer() {
               Steven Huff
             </span>
             <div className="flex flex-wrap gap-4 text-sm justify-center md:justify-start">
-              <a
-                href="mailto:shuff57@gmail.com"
+              <Link
+                href="/contact"
                 className="transition-opacity hover:opacity-70"
                 style={{ color: 'var(--color-accent)' }}
               >
-                shuff57@gmail.com
-              </a>
+                Get in touch
+              </Link>
 
             </div>
           </div>
